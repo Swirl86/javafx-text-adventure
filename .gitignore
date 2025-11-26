@@ -1,3 +1,16 @@
+# IntelliJ IDEA
+QuestBound/.idea/
+QuestBound/*.iml
+QuestBound/out/
+
+# Maven
+QuestBound/target/
+QuestBound/.mvn/
+
+# OS-specifika filer
+.DS_Store
+Thumbs.db
+
 # Compiled class file
 *.class
 
