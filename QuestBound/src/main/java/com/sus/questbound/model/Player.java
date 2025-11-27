@@ -8,7 +8,7 @@ public class Player {
 
     private final String name;
     private int health;
-    private final List<String> inventory;
+    private final List<Item> inventory;
 
     public Player(String name) {
         this.name = name;
@@ -36,19 +36,19 @@ public class Player {
      * Returns an unmodifiable view of the player's inventory.
      * Prevents external modification.
      */
-    public List<String> getInventory() {
+    public List<Item > getInventory() {
         return Collections.unmodifiableList(inventory);
     }
 
-    public void addItem(String item) {
+    public void addItem(Item  item) {
         inventory.add(item);
     }
 
-    public boolean removeItem(String item) {
+    public boolean removeItem(Item  item) {
         return inventory.remove(item);
     }
 
-    public boolean hasItem(String item) {
+    public boolean hasItem(Item  item) {
         return inventory.contains(item);
     }
 }

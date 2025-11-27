@@ -1,5 +1,6 @@
 package com.sus.questbound;
 
+import com.sus.questbound.model.Item;
 import com.sus.questbound.model.Player;
 import com.sus.questbound.model.Room;
 import javafx.fxml.FXML;
@@ -7,6 +8,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class MainController {
 
@@ -23,13 +25,13 @@ public class MainController {
     public void initialize() {
         // Test setup
         player = new Player("Hero");
-        player.addItem("Map");
-        player.addItem("Torch");
+        player.addItem(Item.MAP);
+        player.addItem(Item.TORCH);
 
         currentRoom = new Room("Entrance Hall", "A grand hall with high ceilings.\nThe walls are adorned with faded tapestries and an old chandelier hangs from above.");
-        currentRoom.addItem("Key");
-        currentRoom.addItem("Lantern");
-        currentRoom.addItem("Old Book");
+        currentRoom.addItem(Item.KEY);
+        currentRoom.addItem(Item.LANTERN);
+        currentRoom.addItem(Item.OLD_BOOK);
 
         println("GM says: Welcome, " + player.getName() + "!");
         println("You hear distant sounds echoing around you. Type 'look' to explore your surroundings.");
@@ -58,7 +60,10 @@ public class MainController {
         if (currentRoom.getItems().isEmpty()) {
             outputArea.appendText("You see nothing of interest.\n");
         } else {
-            outputArea.appendText("You see: " + String.join(", ", currentRoom.getItems()) + "\n");
+            String items = currentRoom.getItems().stream()
+                    .map(Item::getName)
+                    .collect(Collectors.joining(", "));
+            outputArea.appendText("You see: " + items + "\n");
         }
     }
 
@@ -66,7 +71,10 @@ public class MainController {
         if (player.getInventory().isEmpty()) {
             outputArea.appendText("Your inventory is empty.\n");
         } else {
-            outputArea.appendText("Inventory: " + String.join(", ", player.getInventory()) + "\n");
+            String items = player.getInventory().stream()
+                    .map(Item::getName)
+                    .collect(Collectors.joining(", "));
+            outputArea.appendText("Inventory: " + items + "\n");
         }
     }
 

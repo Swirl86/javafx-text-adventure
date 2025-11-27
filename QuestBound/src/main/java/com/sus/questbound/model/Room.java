@@ -8,7 +8,7 @@ public class Room {
 
     private final String name;
     private final String description;
-    private final List<String> items;
+    private final List<Item> items;
 
     public Room(String name, String description) {
         this.name = name;
@@ -24,19 +24,19 @@ public class Room {
         return description;
     }
 
-    public List<String> getItems() {
+    public List<Item> getItems() {
         return Collections.unmodifiableList(items);
     }
 
-    public void addItem(String item) {
+    public void addItem(Item item) {
         items.add(item);
     }
 
-    public boolean removeItem(String item) {
+    public boolean removeItem(Item item) {
         return items.remove(item);
     }
 
-    public boolean hasItem(String item) {
+    public boolean hasItem(Item item) {
         return items.contains(item);
     }
 }
