@@ -1,14 +1,13 @@
 package com.sus.questbound.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Room {
 
     private final String name;
     private final String description;
     private final List<Item> items;
+    private final Map<String, Room> exits = new HashMap<>();
 
     public Room(String name, String description) {
         this.name = name;
@@ -22,6 +21,18 @@ public class Room {
 
     public String getDescription() {
         return description;
+    }
+
+    public void setExit(String direction, Room room) {
+        exits.put(direction.toLowerCase(), room);
+    }
+
+    public Room getExit(String direction) {
+        return exits.get(direction.toLowerCase());
+    }
+
+    public Set<String> getAvailableExits() {
+        return exits.keySet();
     }
 
     public List<Item> getItems() {

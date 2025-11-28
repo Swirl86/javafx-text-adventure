@@ -1,8 +1,7 @@
 package com.sus.questbound;
 
-import com.sus.questbound.model.Item;
-import com.sus.questbound.model.Player;
-import com.sus.questbound.model.Room;
+import com.sus.questbound.game.*;
+import com.sus.questbound.model.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -18,8 +17,8 @@ public class MainController {
     @FXML
     private TextField inputField;
 
+    private Game game;
     private Player player;
-    private Room currentRoom;
 
     @FXML
     public void initialize() {
@@ -28,10 +27,8 @@ public class MainController {
         player.addItem(Item.MAP);
         player.addItem(Item.TORCH);
 
-        currentRoom = new Room("Entrance Hall", "A grand hall with high ceilings.\nThe walls are adorned with faded tapestries and an old chandelier hangs from above.");
-        currentRoom.addItem(Item.KEY);
-        currentRoom.addItem(Item.LANTERN);
-        currentRoom.addItem(Item.OLD_BOOK);
+        Player player = new Player("Hero");
+        game = new Game(player);
 
         println("GM says: Welcome, " + player.getName() + "!");
         println("You hear distant sounds echoing around you. Type 'look' to explore your surroundings.");
@@ -40,46 +37,73 @@ public class MainController {
 
     @FXML
     private void handleInput() {
-        String command = inputField.getText().trim().toLowerCase();
+        String raw = inputField.getText().trim();
         inputField.clear();
 
-        if (command.isEmpty()) {
+        if (raw.isEmpty()) {
             return;
         }
 
-        switch (command) {
+        Command cmd = CommandParser.parse(raw);
+
+        switch (cmd.action()) {
             case "look" -> handleLook();
             case "inventory" -> handleInventory();
+            case "go" -> handleGo(cmd.argument());
             default -> handleUnknownCommand();
         }
     }
 
+    private void handleGo(String direction) {
+        String fullDirection = CommandAliasHelper.normalizeDirection(direction);
+        MoveResult result = game.move(fullDirection);
+
+        if (result.success()) {
+            println("You move " + fullDirection + ". . .");
+            handleLook();
+        } else {
+            List<String> exits = result.availableExits();
+            if (exits.isEmpty()) {
+                println("GM says: You try to go " + fullDirection + " but hit a dead end.\nYou can only look around or go back the way you came.");
+            } else {
+                handleDeadEnd(exits);
+            }
+        }
+    }
+
     private void handleLook() {
+        Room currentRoom = game.getCurrentRoom();
         outputArea.appendText("You are in: " + currentRoom.getName() + "\n");
         outputArea.appendText(currentRoom.getDescription() + "\n");
-        if (currentRoom.getItems().isEmpty()) {
+
+        List<Item> items = currentRoom.getItems();
+        if (items.isEmpty()) {
             outputArea.appendText("You see nothing of interest.\n");
+        } else if (items.size() == 1) {
+            Item item = items.get(0);
+            outputArea.appendText("You see one item: " + item.getName() + " - " + item.getDescription() + "\n");
         } else {
-            String items = currentRoom.getItems().stream()
+            String itemList = items.stream()
                     .map(Item::getName)
                     .collect(Collectors.joining(", "));
-            outputArea.appendText("You see: " + items + "\n");
+            outputArea.appendText("You see some items: " + itemList + "\n");
         }
     }
 
     private void handleInventory() {
-        if (player.getInventory().isEmpty()) {
+        List<Item> inventory = player.getInventory();
+
+        if (inventory.isEmpty()) {
             outputArea.appendText("Your inventory is empty.\n");
+        } else if (inventory.size() == 1) {
+            Item item = inventory.get(0);
+            outputArea.appendText("You have one item: " + item.getName() + " - " + item.getDescription() + "\n");
         } else {
-            String items = player.getInventory().stream()
+            String itemList = inventory.stream()
                     .map(Item::getName)
                     .collect(Collectors.joining(", "));
-            outputArea.appendText("Inventory: " + items + "\n");
+            outputArea.appendText("You have some items: " + itemList + "\n");
         }
-    }
-
-    private void println(String text) {
-        outputArea.appendText(text + "\n");
     }
 
     private void handleUnknownCommand() {
@@ -93,6 +117,20 @@ public class MainController {
 
         Random rand = new Random();
         String response = gmResponses.get(rand.nextInt(gmResponses.size()));
-        outputArea.appendText(response + "\n");
+        println(response + "\n");
+    }
+
+    private void handleDeadEnd(List<String> exits) {
+        List<String> gmHints = List.of(
+                "GM whispers: Oops, no door that way! Available exits: " + String.join(", ", exits),
+                "GM chuckles: That direction seems blocked. You could try: " + String.join(", ", exits),
+                "GM remarks: Hmm, nothing but walls that way. Your options: " + String.join(", ", exits)
+        );
+        Random rand = new Random();
+        println(gmHints.get(rand.nextInt(gmHints.size())));
+    }
+
+    private void println(String text) {
+        outputArea.appendText(text + "\n");
     }
 }
