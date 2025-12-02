@@ -1,4 +1,4 @@
-package com.sus.questbound.game;
+package com.sus.questbound.util;
 
 import java.util.HashMap;
 import java.util.Map;

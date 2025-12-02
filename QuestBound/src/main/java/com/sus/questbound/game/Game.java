@@ -1,5 +1,6 @@
 package com.sus.questbound.game;
 
+import com.sus.questbound.util.CommandAliasHelper;
 import com.sus.questbound.model.*;
 
 import java.util.List;

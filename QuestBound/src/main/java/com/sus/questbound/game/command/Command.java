@@ -1,4 +1,4 @@
-package com.sus.questbound.game;
+package com.sus.questbound.game.command;
 
 public record Command(String action, String argument) {
     public Command {

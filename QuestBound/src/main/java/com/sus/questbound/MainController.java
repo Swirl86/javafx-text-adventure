@@ -1,9 +1,9 @@
 package com.sus.questbound;
 
 import com.sus.questbound.game.*;
+import com.sus.questbound.game.command.*;
 import com.sus.questbound.model.*;
-import com.sus.questbound.util.GMHelper;
-import com.sus.questbound.util.PlayerMsgHelper;
+import com.sus.questbound.util.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

@@ -1,4 +1,6 @@
-package com.sus.questbound.game;
+package com.sus.questbound.game.command;
+
+import com.sus.questbound.util.CommandAliasHelper;
 
 public class CommandParser {
 
