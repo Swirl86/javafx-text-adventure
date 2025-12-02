@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 public class Main extends Application {
 
     @Override
@@ -12,6 +14,7 @@ public class Main extends Application {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/sus/questbound/view/main_window.fxml"));
         Scene scene = new Scene(loader.load(), 500, 400);
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/sus/questbound/style.css")).toExternalForm());
         stage.setTitle("QuestBound – JavaFX Text Game");
         stage.setScene(scene);
         stage.show();

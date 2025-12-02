@@ -4,22 +4,60 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.text.TextFlow?>
 <VBox xmlns="http://javafx.com/javafx/21.0.6"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.sus.questbound.MainController"
-      spacing="10">
+      spacing="20">
 
     <padding>
         <Insets top="10" right="10" bottom="10" left="10"/>
     </padding>
 
-    <!-- Output area -->
-    <TextArea fx:id="outputArea" editable="false" prefHeight="300"/>
+    <!-- Output area: scrollable TextFlow so we can style GM vs Player messages -->
+    <ScrollPane fx:id="outputScroll" fitToWidth="true" prefHeight="320">
+        <TextFlow fx:id="outputFlow" prefWidth="480" styleClass="output-flow"/>
+    </ScrollPane>
 
-    <!-- Input field -->
-    <HBox spacing="5">
-        <TextField fx:id="inputField" HBox.hgrow="ALWAYS"/>
-        <Button text="Enter" onAction="#handleInput"/>
+    <!-- Buttons row: navigation + actions -->
+    <GridPane hgap="10" vgap="10">
+        <!-- First row -->
+        <Button text="North" onAction="#onNorth" GridPane.columnIndex="1" GridPane.rowIndex="0"
+                GridPane.hgrow="ALWAYS" GridPane.halignment="CENTER" styleClass="grid-button, btn-north"/>
+        <Button text="Pickup" onAction="#onPickup" GridPane.columnIndex="4" GridPane.rowIndex="0"
+                GridPane.hgrow="ALWAYS" GridPane.halignment="CENTER" styleClass="grid-button"/>
+        <Button text="Inventory" onAction="#onInventory" GridPane.columnIndex="5" GridPane.rowIndex="0"
+                GridPane.hgrow="ALWAYS" GridPane.halignment="CENTER" styleClass="grid-button"/>
+        <Button text="Quest" onAction="#onQuest" GridPane.columnIndex="6" GridPane.rowIndex="0"
+                GridPane.hgrow="ALWAYS" GridPane.halignment="CENTER" styleClass="grid-button"/>
+
+        <!-- Second row -->
+        <Button text="West" onAction="#onWest" GridPane.columnIndex="0" GridPane.rowIndex="1"
+                GridPane.hgrow="ALWAYS" GridPane.halignment="CENTER" styleClass="grid-button, btn-west"/>
+        <Button text="East" onAction="#onEast" GridPane.columnIndex="2" GridPane.rowIndex="1"
+                GridPane.hgrow="ALWAYS" GridPane.halignment="CENTER" styleClass="grid-button, btn-east"/>
+        <Button text="Drop" onAction="#onDrop" GridPane.columnIndex="4" GridPane.rowIndex="1"
+                GridPane.hgrow="ALWAYS" GridPane.halignment="CENTER" styleClass="grid-button"/>
+        <Button text="Look" onAction="#onLook" GridPane.columnIndex="5" GridPane.rowIndex="1"
+                GridPane.hgrow="ALWAYS" GridPane.halignment="CENTER" styleClass="grid-button"/>
+        <Button text="Status" onAction="#onStatus" GridPane.columnIndex="6" GridPane.rowIndex="1"
+                GridPane.hgrow="ALWAYS" GridPane.halignment="CENTER" styleClass="grid-button"/>
+
+        <!-- Third row -->
+        <Button text="South" onAction="#onSouth" GridPane.columnIndex="1" GridPane.rowIndex="2"
+                GridPane.hgrow="ALWAYS" GridPane.halignment="CENTER" styleClass="grid-button, btn-south"/>
+        <Button text="Use" onAction="#onUse" GridPane.columnIndex="4" GridPane.rowIndex="2"
+                GridPane.hgrow="ALWAYS" GridPane.halignment="CENTER" styleClass="grid-button"/>
+        <Button text="Map" onAction="#onMap" GridPane.columnIndex="5" GridPane.rowIndex="2"
+                GridPane.hgrow="ALWAYS" GridPane.halignment="CENTER" styleClass="grid-button"/>
+        <Button text="Hint" onAction="#onHint" GridPane.columnIndex="6" GridPane.rowIndex="2"
+                GridPane.hgrow="ALWAYS" GridPane.halignment="CENTER" styleClass="grid-button"/>
+    </GridPane>
+
+
+    <!-- Input row for custom commands -->
+    <HBox spacing="5" alignment="CENTER">
+        <TextField fx:id="inputField" HBox.hgrow="ALWAYS" promptText="Type a command (e.g. look, go north or [n,s,e,w])"/>
+        <Button text="Enter" onAction="#handleInput" defaultButton="true"/>
     </HBox>
-
 </VBox>

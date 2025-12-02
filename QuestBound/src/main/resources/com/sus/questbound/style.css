@@ -1,0 +1,97 @@
+/* ====== Dark Theme Base ====== */
+.root {
+    -fx-base: #1e1e1e;
+    -fx-background-color: #1e1e1e;
+    -fx-text-fill: #e0e0e0;
+    -fx-control-inner-background: #2b2b2b;
+    -fx-accent: #3c82f6; /* blå highlight */
+}
+
+/* ScrollPane background */
+.scroll-pane {
+    -fx-background: #1e1e1e;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: #1e1e1e;
+}
+
+/* ====== Output Text Area ====== */
+.output-flow {
+    -fx-font-family: "Consolas", "Monospaced", "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-background-color: #1e1e1e;
+    -fx-padding: 10;
+}
+
+/* GM messages = ljus blå */
+.msg-gm {
+    -fx-fill: #8ab4f8;
+    -fx-font-weight: bold;
+}
+
+/* Player messages = ljusgrön */
+.msg-player {
+    -fx-fill: #b6f7c1;
+}
+
+/* System messages = gulaktig */
+.msg-system {
+    -fx-fill: #f5dd77;
+    -fx-font-style: italic;
+}
+
+.text {
+    -fx-wrapping-width: 480;
+}
+
+/* ====== Buttons ====== */
+.button {
+    -fx-background-color: #3c3f41;
+    -fx-text-fill: #e0e0e0;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-padding: 6 12 6 12;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-border-color: #555555;
+}
+
+.button:hover {
+    -fx-background-color: #505354;
+}
+
+.button:pressed {
+    -fx-background-color: #606366;
+}
+
+/* Make buttons expand to fill column */
+.grid-button {
+    -fx-max-width: 1.7976931348623157E308; /* infinity */
+}
+
+/* Directional colors */
+.btn-north {
+    -fx-background-color: #FFD700; /* Yellow */
+    -fx-text-fill: black;
+}
+
+.btn-east {
+    -fx-background-color: #FF4500; /* Red / OrangeRed */
+}
+
+.btn-south {
+    -fx-background-color: #32CD32; /* Green */
+}
+
+.btn-west {
+    -fx-background-color: #1E90FF; /* Blue */
+}
+
+/* ====== TextField ====== */
+.text-field {
+    -fx-background-color: #2b2b2b;
+    -fx-text-fill: #ffffff;
+    -fx-prompt-text-fill: #888888;
+    -fx-background-radius: 5;
+}
