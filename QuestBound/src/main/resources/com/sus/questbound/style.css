@@ -24,18 +24,18 @@
     -fx-padding: 10;
 }
 
-/* GM messages = ljus blå */
+/* GM messages = light blue */
 .msg-gm {
     -fx-fill: #8ab4f8;
     -fx-font-weight: bold;
 }
 
-/* Player messages = ljusgrön */
+/* Player messages = light green */
 .msg-player {
     -fx-fill: #b6f7c1;
 }
 
-/* System messages = gulaktig */
+/* System messages = yellowish */
 .msg-system {
     -fx-fill: #f5dd77;
     -fx-font-style: italic;
@@ -67,7 +67,7 @@
 
 /* Make buttons expand to fill column */
 .grid-button {
-    -fx-max-width: 1.7976931348623157E308; /* infinity */
+    -fx-max-width: Infinity;
 }
 
 /* Directional colors */
