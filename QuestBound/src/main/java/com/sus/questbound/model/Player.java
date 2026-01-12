@@ -40,8 +40,8 @@ public class Player {
         return Collections.unmodifiableList(inventory);
     }
 
-    public void addItem(Item  item) {
-        inventory.add(item);
+    public boolean addItem(Item  item) {
+        return inventory.add(item);
     }
 
     public boolean removeItem(Item  item) {
@@ -50,5 +50,12 @@ public class Player {
 
     public boolean hasItem(Item  item) {
         return inventory.contains(item);
+    }
+
+    public Item getItemByName(String name) {
+        return inventory.stream()
+                .filter(item -> item.getName().equalsIgnoreCase(name))
+                .findFirst()
+                .orElse(null);
     }
 }

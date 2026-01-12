@@ -7,12 +7,15 @@ import com.sus.questbound.util.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class MainController {
@@ -25,17 +28,14 @@ public class MainController {
     private ScrollPane outputScroll;
 
     private Game game;
-    private Player player;
 
     @FXML
     public void initialize() {
-        player = new Player("Hero");
-        player.addItem(Item.MAP);
-        player.addItem(Item.TORCH);
+        game = new Game(new Player("Hero"));
+        game.getPlayer().addItem(Item.MAP);
+        game.getPlayer().addItem(Item.TORCH);
 
-        game = new Game(player);
-
-        printlnGM("Welcome, " + player.getName() + "!");
+        printlnGM("Welcome, " + game.getPlayer().getName() + "!");
         enterRoom(game.getCurrentRoom());
         printlnSystem("You hear distant sounds echoing around you.\nMaybe look around to explore your surroundings.");
     }
@@ -83,6 +83,8 @@ public class MainController {
             case "inventory" -> handleInventory();
             case "go" -> handleGo(arg);
             case "hint" -> showExitsHint();
+            case "pickup" -> handlePickup(arg);
+            case "drop" -> handleDrop(arg);
             default -> handleUnknownCommand();
         }
     }
@@ -118,7 +120,7 @@ public class MainController {
     }
 
     private void handleInventory() {
-        List<Item> inv = player.getInventory();
+        List<Item> inv = game.getPlayer().getInventory();
         if (inv.isEmpty()) {
             printlnSystem("Your inventory is empty.");
         } else if (inv.size() == 1) {
@@ -132,18 +134,20 @@ public class MainController {
 
     private void handleGo(String direction) {
         String fullDirection = CommandAliasHelper.normalizeDirection(direction);
-        MoveResult result = game.move(fullDirection);
+        MoveResult moveResult = game.move(fullDirection);
 
-        if (result.success()) {
+        if (moveResult.success()) {
             printlnSystem("You move " + fullDirection + "...");
             enterRoom(game.getCurrentRoom());
+            return;
+        }
+
+        var availableExits = moveResult.availableExits();
+
+        if (availableExits.isEmpty()) {
+            printlnGM(GMHelper.deadEndMessage(fullDirection));
         } else {
-            var exits = result.availableExits();
-            if (exits.isEmpty()) {
-                printlnGM("You try to go " + fullDirection + " but hit a dead end. It's quiet here—maybe look around or head back.");
-            } else {
-                handleDeadEnd();
-            }
+            handleDeadEnd();
         }
     }
 
@@ -154,6 +158,36 @@ public class MainController {
     private void handleDeadEnd() {
         String exits = String.join(", ", game.getCurrentRoom().getAvailableExits());
         printlnGM(GMHelper.randomDeadEndHint(exits));
+    }
+
+    private void handlePickup(String rawInput) {
+        if (rawInput == null || rawInput.isEmpty()) {
+            printlnSystem("Which item do you want to pick up?");
+            return;
+        }
+
+        Item item = game.getCurrentRoom().getItemByName(rawInput);
+        if (item == null || !game.pickupItem(rawInput)) {
+            printlnGM("There is no '" + rawInput + "' here to pick up.");
+            return;
+        }
+
+        printlnGM(GMHelper.randomPickupHint(item));
+    }
+
+    private void handleDrop(String rawInput) {
+        if (rawInput == null || rawInput.isEmpty()) {
+            printlnSystem("Which item do you want to drop?");
+            return;
+        }
+
+        Item item = game.getPlayer().getItemByName(rawInput);
+        if (item == null || !game.dropItem(rawInput)) {
+            printlnGM("You don't have '" + rawInput + "' in your inventory.");
+            return;
+        }
+
+        printlnGM(GMHelper.randomDropHint(item));
     }
 
     // ---------- Hint for available exits ----------
@@ -180,11 +214,59 @@ public class MainController {
     @FXML private void onLook()  { executeCommand("look"); }
     @FXML private void onInventory() { executeCommand("inventory"); }
     @FXML private void onHint() { executeCommand("hint"); }
+    @FXML
+    private void onPickup() {
+        List<Item> itemsInRoom = game.getCurrentRoom().getItems();
+
+        if (itemsInRoom.isEmpty()) {
+            printlnSystem("You reach out, but grab nothing. The air feels heavier for it.");
+            return;
+        }
+
+        List<String> itemNames = itemsInRoom.stream()
+                .map(Item::getName)
+                .collect(Collectors.toList());
+
+        ChoiceDialog<String> dialog = new ChoiceDialog<>(itemNames.get(0), itemNames);
+        dialog.setTitle("Pick up item");
+        dialog.setHeaderText("Choose an item to pick up:");
+        dialog.setContentText("Available items:");
+
+        DialogPane pane = dialog.getDialogPane();
+        pane.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/sus/questbound/style.css")).toExternalForm());
+
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(this::handlePickup);
+    }
+
+    @FXML
+    private void onDrop() {
+        List<Item> inventory = game.getPlayer().getInventory();
+
+        if (inventory.isEmpty()) {
+            printlnSystem("You look into your empty pockets. Nothing to drop here!");
+            return;
+        }
+
+        List<String> itemNames = inventory.stream()
+                .map(Item::getName)
+                .collect(Collectors.toList());
+
+        ChoiceDialog<String> dialog = new ChoiceDialog<>(itemNames.get(0), itemNames);
+        dialog.setTitle("Drop item");
+        dialog.setHeaderText("Choose an item to drop:");
+        dialog.setContentText("Your inventory:");
+
+        DialogPane pane = dialog.getDialogPane();
+        pane.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/sus/questbound/style.css")).toExternalForm());
+
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(this::handleDrop);
+    }
+
 
     //TODO implement
-    @FXML private void onPickup(ActionEvent actionEvent) { }
     @FXML private void onQuest(ActionEvent actionEvent) { }
-    @FXML private void onDrop(ActionEvent actionEvent) { }
     @FXML private void onStatus(ActionEvent actionEvent) { }
     @FXML private void onUse(ActionEvent actionEvent) { }
     @FXML private void onMap(ActionEvent actionEvent) { }

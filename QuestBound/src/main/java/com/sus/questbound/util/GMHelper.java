@@ -1,5 +1,7 @@
 package com.sus.questbound.util;
 
+import com.sus.questbound.model.Item;
+
 import java.util.List;
 import java.util.Random;
 
@@ -68,6 +70,11 @@ public class GMHelper {
         );
     }
 
+    public static String deadEndMessage(String direction) {
+        return "You try to go " + direction + " but hit a dead end. " +
+                "It's quiet here—maybe look around or head back.";
+    }
+
     public static String randomHintAttempt() {
         return randomHint(
                 "Let me see... maybe the exits are nearby.",
@@ -78,6 +85,28 @@ public class GMHelper {
         );
     }
 
+    // ---------- Messages for items ----------
+    public static String randomPickupHint(Item item) {
+        if (item == null) return randomHint("You try to pick something up, but nothing happens.");
+        return randomHint(
+                "Ah, I see you've found " + item.getName() + ". Picking it up seems wise.",
+                "Carefully lifting the " + item.getName() + "... Excellent choice!",
+                "You reach for the " + item.getName() + " and add it to your belongings.",
+                "The " + item.getName() + " is now in your inventory. Well done!",
+                "You pick up the " + item.getName() + ". It might come in handy."
+        );
+    }
+
+    public static String randomDropHint(Item item) {
+        if (item == null) return randomHint("You try to drop something, but you hold nothing.");
+        return randomHint(
+                "You gently set down the " + item.getName() + ". It rests where you leave it.",
+                "Dropping the " + item.getName() + "... hope you won't need it soon!",
+                "The " + item.getName() + " is no longer in your inventory. Handle with care!",
+                "You let go of the " + item.getName() + ". Perhaps someone else will find it.",
+                "You drop the " + item.getName() + ". It hits the ground with a soft thud."
+        );
+    }
 
     /* TODO add more categories if needed, e.g., randomItemHint(), randomEnemyEncounter(), etc. */
 }

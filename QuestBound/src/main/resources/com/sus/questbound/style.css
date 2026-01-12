@@ -95,3 +95,53 @@
     -fx-prompt-text-fill: #888888;
     -fx-background-radius: 5;
 }
+
+/* ====== Dialog ====== */
+/* Background for the dialog */
+.dialog-pane {
+    -fx-background-color: #F9E4C8;
+    -fx-font-size: 14px;
+    -fx-text-fill: #c29c77;
+}
+
+/* Header text */
+.dialog-pane .header-panel .label {
+    -fx-text-fill: #4B3621;
+    -fx-font-weight: bold;
+}
+
+/* Header panel background (behind header text) */
+.dialog-pane .header-panel {
+    -fx-background-color: #dac2ac;
+}
+
+/* Content text */
+.dialog-pane .content {
+    -fx-text-fill: #4B3621;
+}
+.dialog-pane .content-label {
+    -fx-text-fill: #4B3621;
+}
+
+/* Buttons */
+.dialog-pane .button {
+    -fx-background-color: #C69C6D;
+    -fx-text-fill: #F9E4C8;
+    -fx-font-weight: bold;
+}
+.dialog-pane .button:hover {
+    -fx-background-color: #A67850;
+}
+
+/* ComboBox / dropdown list */
+.dialog-pane .combo-box-base,
+.dialog-pane .combo-box-base .list-cell {
+    -fx-background-color: #5A3E21;
+    -fx-text-fill: #ffffff;
+}
+
+/* Hover for dropdown items */
+.dialog-pane .combo-box-base .list-cell:hover {
+    -fx-background-color: #F4D8B0;
+    -fx-text-fill: #4B3621;
+}

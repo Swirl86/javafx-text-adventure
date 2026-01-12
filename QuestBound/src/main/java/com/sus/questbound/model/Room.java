@@ -39,8 +39,8 @@ public class Room {
         return Collections.unmodifiableList(items);
     }
 
-    public void addItem(Item item) {
-        items.add(item);
+    public boolean addItem(Item item) {
+        return items.add(item);
     }
 
     public boolean removeItem(Item item) {
@@ -49,5 +49,12 @@ public class Room {
 
     public boolean hasItem(Item item) {
         return items.contains(item);
+    }
+
+    public Item getItemByName(String name) {
+        return items.stream()
+                .filter(item -> item.getName().equalsIgnoreCase(name))
+                .findFirst()
+                .orElse(null);
     }
 }

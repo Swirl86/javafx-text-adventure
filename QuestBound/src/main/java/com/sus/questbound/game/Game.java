@@ -16,7 +16,7 @@ public class Game {
     }
 
     private void setupWorld() {
-
+        // TODO impl random generated setup
         Room entrance = new Room("Entrance Hall",
                 "A large entry hall with cold stone walls.");
         Room corridor = new Room("Corridor",
@@ -66,5 +66,15 @@ public class Game {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public boolean pickupItem(String itemName) {
+        Item item = currentRoom.getItemByName(itemName);
+        return item != null && player.addItem(item) && currentRoom.removeItem(item);
+    }
+
+    public boolean dropItem(String itemName) {
+        Item item = player.getItemByName(itemName);
+        return item != null && player.removeItem(item) && currentRoom.addItem(item);
     }
 }
