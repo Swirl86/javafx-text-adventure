@@ -35,9 +35,8 @@ public class MainController {
         game.getPlayer().addItem(Item.MAP);
         game.getPlayer().addItem(Item.TORCH);
 
-        printlnGM("Welcome, " + game.getPlayer().getName() + "!");
+        printlnSystem(SystemMsgHelper.randomWelcome(game.getPlayer()));
         enterRoom(game.getCurrentRoom());
-        printlnSystem("You hear distant sounds echoing around you.\nMaybe look around to explore your surroundings.");
     }
 
     // ---------- printing helpers ----------
@@ -99,8 +98,7 @@ public class MainController {
 
     // ---------- Called when entering a new room ----------
     private void enterRoom(Room currentRoom) {
-        printlnSystem("You are in: " + currentRoom.getName());
-        printlnSystem(currentRoom.getDescription());
+        printlnSystem(SystemMsgHelper.enterRoomMessage(currentRoom));
     }
 
     // ---------- game actions ----------
@@ -109,26 +107,26 @@ public class MainController {
 
         List<Item> items = currentRoom.getItems();
         if (items.isEmpty()) {
-            printlnSystem("You see nothing of interest.");
+            printlnSystem(SystemMsgHelper.nothingToSee());
         } else if (items.size() == 1) {
             Item item = items.get(0);
-            printlnSystem("You see one item: " + item.getName() + " — " + item.getDescription());
+            printlnSystem(SystemMsgHelper.singleItemInRoom(item.getName(), item.getDescription()));
         } else {
             String itemList = items.stream().map(Item::getName).collect(Collectors.joining(", "));
-            printlnSystem("You see some items: " + itemList);
+            printlnSystem(SystemMsgHelper.multipleItemsInRoom(itemList));
         }
     }
 
     private void handleInventory() {
         List<Item> inv = game.getPlayer().getInventory();
         if (inv.isEmpty()) {
-            printlnSystem("Your inventory is empty.");
+            printlnSystem(SystemMsgHelper.inventoryEmpty());
         } else if (inv.size() == 1) {
             Item it = inv.get(0);
-            printlnSystem("You have one item: " + it.getName() + " — " + it.getDescription());
+            printlnSystem(SystemMsgHelper.singleItemInInventory(it.getName(), it.getDescription()));
         } else {
             String names = inv.stream().map(Item::getName).collect(Collectors.joining(", "));
-            printlnSystem("You have some items: " + names);
+            printlnSystem(SystemMsgHelper.multipleItemsInInventory(names));
         }
     }
 
@@ -137,7 +135,7 @@ public class MainController {
         MoveResult moveResult = game.move(fullDirection);
 
         if (moveResult.success()) {
-            printlnSystem("You move " + fullDirection + "...");
+            printlnSystem(SystemMsgHelper.moveMessage(fullDirection));
             enterRoom(game.getCurrentRoom());
             return;
         }
@@ -162,13 +160,13 @@ public class MainController {
 
     private void handlePickup(String rawInput) {
         if (rawInput == null || rawInput.isEmpty()) {
-            printlnSystem("Which item do you want to pick up?");
+            printlnSystem(SystemMsgHelper.askWhichItemToPickup());
             return;
         }
 
         Item item = game.getCurrentRoom().getItemByName(rawInput);
         if (item == null || !game.pickupItem(rawInput)) {
-            printlnGM("There is no '" + rawInput + "' here to pick up.");
+            printlnSystem(SystemMsgHelper.itemNotHere(rawInput));
             return;
         }
 
@@ -177,13 +175,13 @@ public class MainController {
 
     private void handleDrop(String rawInput) {
         if (rawInput == null || rawInput.isEmpty()) {
-            printlnSystem("Which item do you want to drop?");
+            printlnSystem(SystemMsgHelper.askWhichItemToDrop());
             return;
         }
 
         Item item = game.getPlayer().getItemByName(rawInput);
         if (item == null || !game.dropItem(rawInput)) {
-            printlnGM("You don't have '" + rawInput + "' in your inventory.");
+            printlnSystem(SystemMsgHelper.itemNotInInventory(rawInput));
             return;
         }
 
@@ -197,12 +195,12 @@ public class MainController {
         var exits = currentRoom.getAvailableExits();
 
         if (exits.isEmpty()) {
-            printlnSystem("There are no visible exits here.");
+            printlnSystem(SystemMsgHelper.noVisibleExits());
         } else if (exits.size() == 1) {
-            printlnSystem("There is one visible exit: " + exits.iterator().next());
+            printlnSystem(SystemMsgHelper.singleVisibleExit(exits.iterator().next()));
         } else {
             String exitList = String.join(", ", exits);
-            printlnSystem("There are several visible exits: " + exitList);
+            printlnSystem(SystemMsgHelper.multipleVisibleExits(exitList));
         }
     }
 
