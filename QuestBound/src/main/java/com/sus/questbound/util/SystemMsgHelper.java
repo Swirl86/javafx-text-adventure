@@ -89,4 +89,32 @@ public class SystemMsgHelper {
     public static String multipleVisibleExits(String exitList) {
         return "There are several visible exits: " + exitList;
     }
+
+    public static String nothingToPickup() {
+        return "You reach out, but grab nothing.";
+    }
+
+    public static String pickupDialogTitle() {
+        return "Pick up item";
+    }
+
+    public static String pickupDialogHeader() {
+        return "Choose an item to pick up:";
+    }
+
+    public static String pickupDialogContent() {
+        return "Available items:";
+    }
+
+    public static String dropDialogTitle() {
+        return "Drop item";
+    }
+
+    public static String dropDialogHeader() {
+        return "Choose an item to drop:";
+    }
+
+    public static String dropDialogContent() {
+        return "Your inventory:";
+    }
 }
