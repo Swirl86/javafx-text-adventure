@@ -1,0 +1,182 @@
+[
+  {
+    "type": "entrance",
+    "names": ["Entrance Hall", "Main Entrance"],
+    "descriptions": [
+      "A large hall with cold stone walls.",
+      "A grand entrance echoing with silence."
+    ],
+    "tags": ["start"]
+  },
+  {
+    "type": "corridor",
+    "names": ["Corridor", "Stone Corridor"],
+    "descriptions": [
+      "A narrow corridor lit by flickering torches.",
+      "A long stone passageway."
+    ],
+    "tags": ["path"]
+  },
+  {
+    "type": "armory",
+    "names": ["Armory", "Abandoned Armory"],
+    "descriptions": [
+      "Broken weapons lie scattered across the floor.",
+      "An armory long since looted."
+    ],
+    "tags": ["loot"]
+  },
+  {
+    "type": "library",
+    "names": ["Library", "Ancient Library"],
+    "descriptions": [
+      "Dusty books line the walls.",
+      "Shelves filled with ancient tomes."
+    ],
+    "tags": ["lore"]
+  },
+  {
+    "type": "shrine",
+    "names": ["Shrine", "Forgotten Shrine"],
+    "descriptions": [
+      "A quiet shrine glowing faintly.",
+      "An altar stands at the center of the room."
+    ],
+    "tags": ["holy"]
+  },
+  {
+    "type": "cellar",
+    "names": ["Cellar", "Dark Cellar"],
+    "descriptions": [
+      "A damp cellar with a low ceiling.",
+      "The smell of mold fills the air."
+    ],
+    "tags": ["dark"]
+  },
+  {
+    "type": "crypt",
+    "names": ["Crypt", "Ancient Crypt"],
+    "descriptions": [
+      "Stone coffins line the walls.",
+      "A cold silence fills the crypt."
+    ],
+    "tags": ["undead"]
+  },
+  {
+    "type": "hall",
+    "names": ["Great Hall", "Banquet Hall"],
+    "descriptions": [
+      "A wide hall with a collapsed roof.",
+      "Long tables stand covered in dust."
+    ],
+    "tags": ["large"]
+  },
+  {
+    "type": "storage",
+    "names": ["Storage Room", "Supply Room"],
+    "descriptions": [
+      "Crates and barrels fill the room.",
+      "A room once used for storing supplies."
+    ],
+    "tags": ["loot"]
+  },
+  {
+    "type": "prison",
+    "names": ["Prison Cell", "Dungeon Cell"],
+    "descriptions": [
+      "Rusty bars block the exits.",
+      "A cold cell with chains on the walls."
+    ],
+    "tags": ["danger"]
+  },
+  {
+    "type": "tower",
+    "names": ["Tower Room", "Upper Tower"],
+    "descriptions": [
+      "A circular room high above the ground.",
+      "Wind whistles through broken windows."
+    ],
+    "tags": ["high"]
+  },
+  {
+    "type": "garden",
+    "names": ["Overgrown Garden", "Hidden Garden"],
+    "descriptions": [
+      "Plants have reclaimed this space.",
+      "A silent garden bathed in moonlight."
+    ],
+    "tags": ["nature"]
+  },
+  {
+    "type": "workshop",
+    "names": ["Workshop", "Abandoned Workshop"],
+    "descriptions": [
+      "Tools lie scattered on old tables.",
+      "A workshop left in haste."
+    ],
+    "tags": ["craft"]
+  },
+  {
+    "type": "chamber",
+    "names": ["Inner Chamber", "Hidden Chamber"],
+    "descriptions": [
+      "A secluded chamber hidden from sight.",
+      "The walls here are carved with symbols."
+    ],
+    "tags": ["secret"]
+  },
+  {
+    "type": "cave",
+    "names": ["Cave", "Dark Cave"],
+    "descriptions": [
+      "Rough stone walls surround you.",
+      "Water drips from the ceiling."
+    ],
+    "tags": ["natural"]
+  },
+  {
+    "type": "bridge",
+    "names": ["Stone Bridge", "Broken Bridge"],
+    "descriptions": [
+      "A narrow bridge spans a deep chasm.",
+      "Parts of the bridge have collapsed."
+    ],
+    "tags": ["danger"]
+  },
+  {
+    "type": "vault",
+    "names": ["Vault", "Sealed Vault"],
+    "descriptions": [
+      "A heavy door guards this room.",
+      "The air feels heavy with secrets."
+    ],
+    "tags": ["treasure"]
+  },
+  {
+    "type": "sanctum",
+    "names": ["Sanctum", "Inner Sanctum"],
+    "descriptions": [
+      "A powerful presence can be felt here.",
+      "The room hums with energy."
+    ],
+    "tags": ["magic"]
+  },
+  {
+    "type": "hallway",
+    "names": ["Hallway", "Side Hallway"],
+    "descriptions": [
+      "A short hallway branching off.",
+      "Footsteps echo softly here."
+    ],
+    "tags": ["path"]
+  },
+  {
+    "type": "throne",
+    "names": ["Throne Room", "Ruined Throne Room"],
+    "descriptions": [
+      "A shattered throne stands at the far end.",
+      "Once a place of power, now in ruin."
+    ],
+    "tags": ["boss"]
+  }
+]

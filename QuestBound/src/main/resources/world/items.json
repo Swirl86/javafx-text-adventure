@@ -1,0 +1,225 @@
+[
+  {
+    "id": "lantern",
+    "names": ["Lantern", "Old Lantern", "Brass Lantern"],
+    "descriptions": [
+      "A small lantern that casts a warm glow.",
+      "An old lantern with scratched glass.",
+      "A brass lantern still smelling faintly of oil."
+    ],
+    "tags": ["light", "utility"],
+    "durability": 20,
+    "damage": null
+  },
+  {
+    "id": "torch",
+    "names": ["Torch", "Wooden Torch"],
+    "descriptions": [
+      "A wooden torch wrapped in cloth.",
+      "A simple torch, ready to be lit."
+    ],
+    "tags": ["light", "consumable"],
+    "durability": 5,
+    "damage": 1
+  },
+  {
+    "id": "sword",
+    "names": ["Sword", "Iron Sword", "Rusty Sword"],
+    "descriptions": [
+      "A sturdy iron sword.",
+      "A sword with a worn leather hilt.",
+      "A rusty sword that has seen many battles."
+    ],
+    "tags": ["weapon", "melee"],
+    "durability": 40,
+    "damage": 6
+  },
+  {
+    "id": "dagger",
+    "names": ["Dagger", "Small Dagger", "Sharp Dagger"],
+    "descriptions": [
+      "A small but sharp dagger.",
+      "A dagger suitable for quick strikes.",
+      "A well-balanced dagger."
+    ],
+    "tags": ["weapon", "melee"],
+    "durability": 25,
+    "damage": 4
+  },
+  {
+    "id": "shield",
+    "names": ["Shield", "Wooden Shield"],
+    "descriptions": [
+      "A wooden shield reinforced with iron.",
+      "A battered shield bearing old marks."
+    ],
+    "tags": ["armor"],
+    "durability": 30,
+    "damage": null
+  },
+  {
+    "id": "helmet",
+    "names": ["Helmet", "Iron Helmet"],
+    "descriptions": [
+      "An iron helmet offering basic protection.",
+      "A helmet with dents from old battles."
+    ],
+    "tags": ["armor"],
+    "durability": 20,
+    "damage": null
+  },
+  {
+    "id": "old_book",
+    "names": ["Old Book", "Dusty Tome"],
+    "descriptions": [
+      "An ancient book filled with unreadable text.",
+      "A dusty tome with brittle pages."
+    ],
+    "tags": ["lore"],
+    "durability": null,
+    "damage": null
+  },
+  {
+    "id": "scroll",
+    "names": ["Scroll", "Magic Scroll"],
+    "descriptions": [
+      "A rolled parchment sealed with wax.",
+      "A scroll covered in strange symbols."
+    ],
+    "tags": ["magic", "consumable"],
+    "durability": 1,
+    "damage": null
+  },
+  {
+    "id": "key",
+    "names": ["Key", "Iron Key", "Old Key"],
+    "descriptions": [
+      "A small iron key.",
+      "A key worn smooth by time."
+    ],
+    "tags": ["quest"],
+    "durability": null,
+    "damage": null
+  },
+  {
+    "id": "ring",
+    "names": ["Ring", "Silver Ring"],
+    "descriptions": [
+      "A silver ring engraved with symbols.",
+      "A ring that feels slightly warm to the touch."
+    ],
+    "tags": ["accessory"],
+    "durability": null,
+    "damage": null
+  },
+  {
+    "id": "coin_pouch",
+    "names": ["Coin Pouch", "Leather Pouch"],
+    "descriptions": [
+      "A small pouch containing a few coins.",
+      "A leather pouch tied with a string."
+    ],
+    "tags": ["currency"],
+    "durability": null,
+    "damage": null
+  },
+  {
+    "id": "map",
+    "names": ["Map", "Old Map"],
+    "descriptions": [
+      "A map showing unfamiliar locations.",
+      "An old map with faded markings."
+    ],
+    "tags": ["quest", "navigation"],
+    "durability": null,
+    "damage": null
+  },
+  {
+    "id": "amulet",
+    "names": ["Amulet", "Ancient Amulet"],
+    "descriptions": [
+      "An amulet carved with ancient runes.",
+      "A heavy amulet humming with faint energy."
+    ],
+    "tags": ["magic", "quest"],
+    "durability": null,
+    "damage": null
+  },
+  {
+    "id": "rope",
+    "names": ["Rope", "Coiled Rope"],
+    "descriptions": [
+      "A sturdy rope, several meters long.",
+      "A coiled rope made of rough fibers."
+    ],
+    "tags": ["utility"],
+    "durability": 15,
+    "damage": null
+  },
+  {
+    "id": "pickaxe",
+    "names": ["Pickaxe", "Mining Pick"],
+    "descriptions": [
+      "A heavy pickaxe used for mining.",
+      "A pickaxe with a worn handle."
+    ],
+    "tags": ["tool"],
+    "durability": 35,
+    "damage": 2
+  },
+  {
+    "id": "apple",
+    "names": ["Apple", "Red Apple"],
+    "descriptions": [
+      "A fresh red apple.",
+      "An apple that looks surprisingly fresh."
+    ],
+    "tags": ["food", "consumable"],
+    "durability": 1,
+    "damage": null
+  },
+  {
+    "id": "bread",
+    "names": ["Bread", "Loaf of Bread"],
+    "descriptions": [
+      "A loaf of dry bread.",
+      "Simple bread, still edible."
+    ],
+    "tags": ["food", "consumable"],
+    "durability": 1,
+    "damage": null
+  },
+  {
+    "id": "bottle",
+    "names": ["Bottle", "Glass Bottle"],
+    "descriptions": [
+      "An empty glass bottle.",
+      "A bottle that once held something important."
+    ],
+    "tags": ["container"],
+    "durability": null,
+    "damage": null
+  },
+  {
+    "id": "gem",
+    "names": ["Gemstone", "Shiny Gem"],
+    "descriptions": [
+      "A small gemstone reflecting light.",
+      "A polished gem of unknown value."
+    ],
+    "tags": ["valuable"],
+    "durability": null,
+    "damage": null
+  },
+  {
+    "id": "feather",
+    "names": ["Feather", "Black Feather"],
+    "descriptions": [
+      "A black feather, unusually large.",
+      "A feather that feels oddly heavy."
+    ],
+    "tags": ["mysterious"],
+    "durability": null,
+    "damage": null
+  }
+]
