@@ -53,7 +53,7 @@ public class Room {
 
     public Item getItemByName(String name) {
         return items.stream()
-                .filter(item -> item.getName().equalsIgnoreCase(name))
+                .filter(item -> item.name().equalsIgnoreCase(name))
                 .findFirst()
                 .orElse(null);
     }

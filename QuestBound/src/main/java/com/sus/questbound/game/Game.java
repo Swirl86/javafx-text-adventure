@@ -1,7 +1,11 @@
 package com.sus.questbound.game;
 
+import com.sus.questbound.game.world.World;
+import com.sus.questbound.game.world.WorldGenerator;
+import com.sus.questbound.model.Item;
+import com.sus.questbound.model.Player;
+import com.sus.questbound.model.Room;
 import com.sus.questbound.util.CommandAliasHelper;
-import com.sus.questbound.model.*;
 
 import java.util.List;
 
@@ -10,42 +14,10 @@ public class Game {
     private final Player player;
     private Room currentRoom;
 
-    public Game(Player player) {
+    public Game(Player player, WorldGenerator generator) {
         this.player = player;
-        setupWorld();
-    }
-
-    private void setupWorld() {
-        // TODO impl random generated setup
-        Room entrance = new Room("Entrance Hall",
-                "A large entry hall with cold stone walls.");
-        Room corridor = new Room("Corridor",
-                "A narrow corridor with flickering torches.");
-        Room armory = new Room("Armory",
-                "A dusty armory with broken weapons.");
-        Room library = new Room("Library",
-                "Ancient books line the walls. The air smells of dust.");
-        Room shrine = new Room("Shrine",
-                "A quiet shrine with a glowing altar.");
-
-        // Items
-        entrance.addItem(Item.LANTERN);
-        armory.addItem(Item.SWORD);
-        library.addItem(Item.OLD_BOOK);
-
-        // Exits
-        connectRooms(entrance, "north", corridor, "south");
-        connectRooms(corridor, "east", armory, "west");
-        connectRooms(corridor, "west", library, "east");
-        connectRooms(library, "north", shrine, "south");
-
-        // Starting room
-        currentRoom = entrance;
-    }
-
-    private void connectRooms(Room room1, String dir1to2, Room room2, String dir2to1) {
-        room1.setExit(dir1to2, room2);
-        room2.setExit(dir2to1, room1);
+        World world = generator.generate();
+        this.currentRoom = world.startRoom();
     }
 
     public Room getCurrentRoom() {

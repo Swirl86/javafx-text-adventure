@@ -1,5 +1,6 @@
 package com.sus.questbound.ui;
 
+import com.sus.questbound.model.MsgType;
 import javafx.application.Platform;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.text.Text;
@@ -7,18 +8,26 @@ import javafx.scene.text.TextFlow;
 
 public record OutputController(TextFlow outputFlow, ScrollPane scrollPane) {
 
+    public void println(String msg, MsgType type) {
+        switch(type) {
+            case SYSTEM -> printlnSystem(msg);
+            case GM -> printlnGM(msg);
+            case PLAYER -> printlnPlayer(msg);
+        }
+    }
+
     // ---------- System messages ----------
-    public void printlnSystem(String msg) {
+    private void printlnSystem(String msg) {
         appendStyled("[" + msg + "]", "msg-system");
     }
 
     // ---------- GM messages ----------
-    public void printlnGM(String msg) {
+    private void printlnGM(String msg) {
         appendStyled("GM " + msg, "msg-gm");
     }
 
     // ---------- Player messages ----------
-    public void printlnPlayer(String msg) {
+    private void printlnPlayer(String msg) {
         appendStyled("> " + msg, "msg-player");
     }
 

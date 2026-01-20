@@ -2,6 +2,7 @@ package com.sus.questbound.ui;
 
 import com.sus.questbound.logic.GameLogicController;
 import com.sus.questbound.model.Item;
+import com.sus.questbound.model.MsgType;
 import com.sus.questbound.util.GMHelper;
 import com.sus.questbound.util.SystemMsgHelper;
 import javafx.scene.control.ChoiceDialog;
@@ -14,7 +15,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 
-public record ActionController(GameLogicController gameLogic, Consumer<String> executeCommand, Consumer<String> printlnSystem) {
+public record ActionController(GameLogicController gameLogic, Consumer<String> executeCommand, OutputController output) {
 
     // ---------- simple commands ----------
     public void north() { executeCommand.accept("north"); }
@@ -30,12 +31,12 @@ public record ActionController(GameLogicController gameLogic, Consumer<String> e
         List<Item> items = gameLogic.getCurrentRoom().getItems();
 
         if (items.isEmpty()) {
-            printlnSystem.accept(SystemMsgHelper.nothingToPickup());
+            output().println(SystemMsgHelper.nothingToPickup(), MsgType.SYSTEM);
             return;
         }
 
         List<String> itemNames = items.stream()
-                .map(Item::getName)
+                .map(Item::name)
                 .collect(Collectors.toList());
 
         showDialog(
@@ -46,9 +47,9 @@ public record ActionController(GameLogicController gameLogic, Consumer<String> e
                 itemName -> {
                     Item it = gameLogic.pickupItem(itemName);
                     if (it != null) {
-                        printlnSystem.accept(GMHelper.randomPickupHint(it));
+                        output().println(GMHelper.randomPickupHint(it), MsgType.GM);
                     } else {
-                        printlnSystem.accept(SystemMsgHelper.itemNotHere(itemName));
+                        output().println(SystemMsgHelper.itemNotHere(itemName), MsgType.SYSTEM);
                     }
                 }
         );
@@ -60,12 +61,12 @@ public record ActionController(GameLogicController gameLogic, Consumer<String> e
         List<Item> inventory = gameLogic.getPlayerInventory();
 
         if (inventory.isEmpty()) {
-            printlnSystem.accept(SystemMsgHelper.inventoryEmpty());
+            output().println(SystemMsgHelper.inventoryEmpty(), MsgType.SYSTEM);
             return;
         }
 
         List<String> itemNames = inventory.stream()
-                .map(Item::getName)
+                .map(Item::name)
                 .collect(Collectors.toList());
 
         showDialog(
@@ -76,9 +77,9 @@ public record ActionController(GameLogicController gameLogic, Consumer<String> e
                 itemName -> {
                     Item it = gameLogic.dropItem(itemName);
                     if (it != null) {
-                        printlnSystem.accept(GMHelper.randomDropHint(it));
+                        output().println(GMHelper.randomDropHint(it), MsgType.GM);
                     } else {
-                        printlnSystem.accept(SystemMsgHelper.itemNotInInventory(itemName));
+                        output().println(SystemMsgHelper.itemNotInInventory(itemName), MsgType.SYSTEM);
                     }
                 }
         );

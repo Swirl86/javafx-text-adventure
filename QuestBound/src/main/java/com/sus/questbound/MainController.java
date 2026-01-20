@@ -1,15 +1,22 @@
 package com.sus.questbound;
 
 import com.sus.questbound.game.Game;
+import com.sus.questbound.game.MoveResult;
+import com.sus.questbound.game.command.CommandParser;
+import com.sus.questbound.game.library.ItemLibrary;
+import com.sus.questbound.game.world.FixedWorldGenerator;
+import com.sus.questbound.game.world.RandomWorldGenerator;
 import com.sus.questbound.logic.GameLogicController;
 import com.sus.questbound.model.Item;
+import com.sus.questbound.model.MsgType;
 import com.sus.questbound.model.Player;
 import com.sus.questbound.model.Room;
 import com.sus.questbound.ui.ActionController;
 import com.sus.questbound.ui.OutputController;
-import com.sus.questbound.util.*;
-import com.sus.questbound.game.MoveResult;
-import com.sus.questbound.game.command.CommandParser;
+import com.sus.questbound.util.CommandAliasHelper;
+import com.sus.questbound.util.GMHelper;
+import com.sus.questbound.util.PlayerMsgHelper;
+import com.sus.questbound.util.SystemMsgHelper;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -33,10 +40,14 @@ public class MainController {
     @FXML
     public void initialize() {
         Player player = new Player("Hero");
-        player.addItem(Item.MAP);
-        player.addItem(Item.TORCH);
+        player.addItem(ItemLibrary.createItemWithTag("navigation"));
+        player.addItem(ItemLibrary.createItemWithTag("light"));
 
-        Game game = new Game(player);
+        // Fixed world for testing
+        Game game1 = new Game(player, new FixedWorldGenerator());
+        // Random world
+        Game game = new Game(player, new RandomWorldGenerator());
+
         gameLogic = new GameLogicController(game);
 
         outputController = new OutputController(outputFlow, outputScroll);
@@ -44,10 +55,10 @@ public class MainController {
         actions = new ActionController(
                 gameLogic,
                 this::executeCommand,
-                outputController::printlnSystem
+                outputController
         );
 
-        outputController.printlnSystem(SystemMsgHelper.randomWelcome(gameLogic.getPlayer()));
+        outputController.println(SystemMsgHelper.randomWelcome(gameLogic.getPlayer()), MsgType.SYSTEM);
         enterRoom(gameLogic.getCurrentRoom());
     }
 
@@ -63,7 +74,7 @@ public class MainController {
     private void executeCommand(String raw) {
         if (raw == null || raw.isBlank()) return;
 
-        outputController.printlnPlayer(raw);
+        outputController.println(raw.toUpperCase(), MsgType.PLAYER);
 
         var cmd = CommandParser.parse(raw);
         String action = cmd.action();
@@ -87,20 +98,20 @@ public class MainController {
 
     // ---------- game gameLogic ----------
     private void enterRoom(Room room) {
-        outputController.printlnSystem(SystemMsgHelper.enterRoomMessage(room));
+        outputController.println(SystemMsgHelper.enterRoomMessage(room), MsgType.SYSTEM);
     }
 
     private void handleLook() {
         List<Item> items = gameLogic.getCurrentRoom().getItems();
 
         if (items.isEmpty()) {
-            outputController.printlnSystem(SystemMsgHelper.nothingToSee());
+            outputController.println(SystemMsgHelper.nothingToSee(), MsgType.SYSTEM);
         } else if (items.size() == 1) {
             Item it = items.get(0);
-            outputController.printlnSystem(SystemMsgHelper.singleItemInRoom(it.getName(), it.getDescription()));
+            outputController.println(SystemMsgHelper.singleItemInRoom(it.name(), it.description()), MsgType.SYSTEM);
         } else {
-            String names = items.stream().map(Item::getName).collect(Collectors.joining(", "));
-            outputController.printlnSystem(SystemMsgHelper.multipleItemsInRoom(names));
+            String names = items.stream().map(Item::name).collect(Collectors.joining(", "));
+            outputController.println(SystemMsgHelper.multipleItemsInRoom(names), MsgType.SYSTEM);
         }
     }
 
@@ -108,13 +119,13 @@ public class MainController {
         List<Item> inv = gameLogic.getPlayerInventory();
 
         if (inv.isEmpty()) {
-            outputController.printlnSystem(SystemMsgHelper.inventoryEmpty());
+            outputController.println(SystemMsgHelper.inventoryEmpty(), MsgType.SYSTEM);
         } else if (inv.size() == 1) {
             Item it = inv.get(0);
-            outputController.printlnSystem(SystemMsgHelper.singleItemInInventory(it.getName(), it.getDescription()));
+            outputController.println(SystemMsgHelper.singleItemInInventory(it.name(), it.description()), MsgType.SYSTEM);
         } else {
-            String names = inv.stream().map(Item::getName).collect(Collectors.joining(", "));
-            outputController.printlnSystem(SystemMsgHelper.multipleItemsInInventory(names));
+            String names = inv.stream().map(Item::name).collect(Collectors.joining(", "));
+            outputController.println(SystemMsgHelper.multipleItemsInInventory(names), MsgType.SYSTEM);
         }
     }
 
@@ -123,14 +134,14 @@ public class MainController {
         MoveResult result = gameLogic.move(full);
 
         if (result.success()) {
-            outputController.printlnSystem(SystemMsgHelper.moveMessage(full));
+            outputController.println(SystemMsgHelper.moveMessage(full), MsgType.SYSTEM);
             enterRoom(gameLogic.getCurrentRoom());
             return;
         }
 
         List<String> exits = result.availableExits();
         if (exits.isEmpty()) {
-            outputController.printlnGM(GMHelper.deadEndMessage(full));
+            outputController.println(GMHelper.deadEndMessage(full), MsgType.GM);
         } else {
             handleDeadEnd();
         }
@@ -138,52 +149,52 @@ public class MainController {
 
     private void handlePickup(String itemName) {
         if (itemName == null || itemName.isBlank()) {
-            outputController.printlnSystem(SystemMsgHelper.askWhichItemToPickup());
+            outputController.println(SystemMsgHelper.askWhichItemToPickup(), MsgType.SYSTEM);
             return;
         }
 
         Item it = gameLogic.pickupItem(itemName);
         if (it == null) {
-            outputController.printlnSystem(SystemMsgHelper.itemNotHere(itemName));
+            outputController.println(SystemMsgHelper.itemNotHere(itemName), MsgType.SYSTEM);
         } else {
-            outputController.printlnGM(GMHelper.randomPickupHint(it));
+            outputController.println(GMHelper.randomPickupHint(it), MsgType.GM);
         }
     }
 
     private void handleDrop(String itemName) {
         if (itemName == null || itemName.isBlank()) {
-            outputController.printlnSystem(SystemMsgHelper.askWhichItemToDrop());
+            outputController.println(SystemMsgHelper.askWhichItemToDrop(), MsgType.SYSTEM);
             return;
         }
 
         Item it = gameLogic.dropItem(itemName);
         if (it == null) {
-            outputController.printlnSystem(SystemMsgHelper.itemNotInInventory(itemName));
+            outputController.println(SystemMsgHelper.itemNotInInventory(itemName), MsgType.SYSTEM);
         } else {
-            outputController.printlnGM(GMHelper.randomDropHint(it));
+            outputController.println(GMHelper.randomDropHint(it), MsgType.GM);
         }
     }
 
     private void showExitsHint() {
-        outputController.printlnGM(GMHelper.randomHintAttempt());
+        outputController.println(GMHelper.randomHintAttempt(), MsgType.GM);
 
         Set<String> exits = gameLogic.getAvailableExits();
         if (exits.isEmpty()) {
-            outputController.printlnSystem(SystemMsgHelper.noVisibleExits());
+            outputController.println(SystemMsgHelper.noVisibleExits(), MsgType.SYSTEM);
         } else if (exits.size() == 1) {
-            outputController.printlnSystem(SystemMsgHelper.singleVisibleExit(exits.iterator().next()));
+            outputController.println(SystemMsgHelper.singleVisibleExit(exits.iterator().next()), MsgType.SYSTEM);
         } else {
-            outputController.printlnSystem(SystemMsgHelper.multipleVisibleExits(String.join(", ", exits)));
+            outputController.println(SystemMsgHelper.multipleVisibleExits(String.join(", ", exits)), MsgType.SYSTEM);
         }
     }
 
     private void handleDeadEnd() {
         String exits = String.join(", ", gameLogic.getAvailableExits());
-        outputController.printlnGM(GMHelper.randomDeadEndHint(exits));
+        outputController.println(GMHelper.randomDeadEndHint(exits), MsgType.GM);
     }
 
     private void handleUnknownCommand() {
-        outputController.printlnGM(GMHelper.randomUnknownCommandHint());
+        outputController.println(GMHelper.randomUnknownCommandHint(), MsgType.GM);
     }
 
     // ---------- button delegates ----------
