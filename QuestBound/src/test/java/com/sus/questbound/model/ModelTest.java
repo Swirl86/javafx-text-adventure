@@ -1,41 +1,90 @@
 package com.sus.questbound.model;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class ModelTest {
 
     @Test
-    void testPlayerAndRoomWithItems() {
-        // Arrange
+    void playerHasNameAndEmptyInventoryOnCreation() {
         Player player = new Player("Hero");
-        Room startingRoom = new Room("Entrance Hall", "A grand hall with high ceilings.");
-        startingRoom.addItem(Item.KEY);
-        startingRoom.addItem(Item.LANTERN);
 
-        player.addItem(Item.MAP);
-        player.addItem(Item.TORCH);
+        assertEquals("Hero", player.getName());
+        assertTrue(player.getInventory().isEmpty(), "Inventory should be empty at start");
+    }
 
-        // Act
-        String playerName = player.getName();
-        List<Item> playerInventory = player.getInventory();
-        String roomName = startingRoom.getName();
-        String roomDesc = startingRoom.getDescription();
-        List<Item> roomItems = startingRoom.getItems();
+    @Test
+    void playerCanAddAndRemoveItemFromInventory() {
+        Player player = new Player("Hero");
+        Item key = new Item(
+                "key_01",
+                "Key",
+                "A small rusty key",
+                true,
+                null,
+                null,
+                Set.of("key")
+        );
 
-        // Assert
-        assertEquals("Hero", playerName, "Player name should match");
-        assertEquals("Entrance Hall", roomName, "Room name should match");
-        assertEquals("A grand hall with high ceilings.", roomDesc, "Room description should match");
+        player.addItem(key);
+        assertEquals(1, player.getInventory().size());
+        assertTrue(player.getInventory().contains(key));
 
-        assertEquals(2, roomItems.size(), "Room should have 2 items");
-        assertTrue(roomItems.contains(Item.KEY), "Room should contain the Key");
-        assertTrue(roomItems.contains(Item.LANTERN), "Room should contain the Lantern");
+        player.removeItem(key);
+        assertTrue(player.getInventory().isEmpty());
+    }
 
-        assertEquals(2, playerInventory.size(), "Player should have 2 items");
-        assertTrue(playerInventory.contains(Item.MAP), "Player should have the Map");
-        assertTrue(playerInventory.contains(Item.TORCH), "Player should have the Torch");
+    @Test
+    void roomHasNameDescriptionAndNoItemsInitially() {
+        Room room = new Room(
+                "Entrance Hall",
+                "A grand hall with high ceilings."
+        );
+
+        assertEquals("Entrance Hall", room.getName());
+        assertEquals("A grand hall with high ceilings.", room.getDescription());
+        assertTrue(room.getItems().isEmpty());
+    }
+
+    @Test
+    void roomCanAddAndRemoveItems() {
+        Room room = new Room("Armory", "Old weapons line the walls");
+
+        Item sword = new Item(
+                "sword_01",
+                "Sword",
+                "A sharp blade",
+                true,
+                null,
+                5,
+                Set.of("weapon")
+        );
+
+        room.addItem(sword);
+        assertEquals(List.of(sword), room.getItems());
+
+        room.removeItem(sword);
+        assertTrue(room.getItems().isEmpty());
+    }
+
+    @Test
+    void itemHasTagsAndCanCheckForSpecificTag() {
+        Item lantern = new Item(
+                "lantern_01",
+                "Lantern",
+                "An old lantern",
+                true,
+                null,
+                null,
+                Set.of("light", "tool")
+        );
+
+        assertTrue(lantern.hasTag("light"));
+        assertTrue(lantern.hasTag("tool"));
+        assertFalse(lantern.hasTag("weapon"));
     }
 }
