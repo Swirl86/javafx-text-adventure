@@ -141,7 +141,7 @@ public class MainController {
 
         List<String> exits = result.availableExits();
         if (exits.isEmpty()) {
-            outputController.println(GMMsgHelper.deadEndMessage(full), MsgType.GM);
+            outputController.println(GMMsgHelper.deadEndDirectional(full), MsgType.GM);
         } else {
             handleDeadEnd();
         }
@@ -157,7 +157,7 @@ public class MainController {
         if (it == null) {
             outputController.println(SystemMsgHelper.itemNotHere(itemName), MsgType.SYSTEM);
         } else {
-            outputController.println(GMMsgHelper.randomPickupHint(it), MsgType.GM);
+            outputController.println(GMMsgHelper.pickup(it), MsgType.GM);
         }
     }
 
@@ -171,12 +171,12 @@ public class MainController {
         if (it == null) {
             outputController.println(SystemMsgHelper.itemNotInInventory(itemName), MsgType.SYSTEM);
         } else {
-            outputController.println(GMMsgHelper.randomDropHint(it), MsgType.GM);
+            outputController.println(GMMsgHelper.drop(it), MsgType.GM);
         }
     }
 
     private void showExitsHint() {
-        outputController.println(GMMsgHelper.randomHintAttempt(), MsgType.GM);
+        outputController.println(GMMsgHelper.hintAttempt(), MsgType.GM);
 
         Set<String> exits = gameLogic.getAvailableExits();
         if (exits.isEmpty()) {
@@ -190,11 +190,11 @@ public class MainController {
 
     private void handleDeadEnd() {
         String exits = String.join(", ", gameLogic.getAvailableExits());
-        outputController.println(GMMsgHelper.randomDeadEndHint(exits), MsgType.GM);
+        outputController.println(GMMsgHelper.deadEnd(exits), MsgType.GM);
     }
 
     private void handleUnknownCommand() {
-        outputController.println(GMMsgHelper.randomUnknownCommandHint(), MsgType.GM);
+        outputController.println(GMMsgHelper.unknownCommand(), MsgType.GM);
     }
 
     // ---------- button delegates ----------

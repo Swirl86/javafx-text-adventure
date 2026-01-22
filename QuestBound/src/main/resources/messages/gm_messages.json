@@ -1,0 +1,97 @@
+{
+  "attitudes": [
+    "whispers",
+    "chuckles",
+    "says",
+    "smirks",
+    "remarks",
+    "murmurs",
+    "giggles",
+    "grumbles",
+    "exclaims",
+    "notes",
+    "comments",
+    "observes",
+    "snickers",
+    "hints",
+    "sighs",
+    "laughs quietly",
+    "leans closer and says",
+    "raises an eyebrow and says",
+    "clears their throat",
+    "tilts their head and murmurs"
+  ],
+
+  "unknownCommand": [
+    "Hmm, that was a bit unusual.\nTry 'look' to see around or 'inventory' to check your items.",
+    "That command seems odd!\nMaybe you meant to look around or check your inventory?",
+    "Oops, I don't understand that.\nType 'look' to explore or 'inventory' to see what you have.",
+    "Interesting choice... but try 'look' or 'inventory' instead.",
+    "That doesn't quite work.\nPerhaps try looking around or checking your inventory.",
+    "You wave your hands mysteriously, but nothing happens.",
+    "You try something bold and experimental. Sadly, the world remains unimpressed.",
+    "The air stares back at you in confusion.",
+    "That action exists only in legends. Or maybe another game.",
+    "You feel like that should have worked... but it did not."
+  ],
+
+  "deadEnd": {
+    "generic": [
+      "Oops, no door that way! Available exits: {exits}",
+      "That direction seems blocked. You could try: {exits}",
+      "Hmm, nothing but walls that way. Your options: {exits}",
+      "You press forward, only to find solid resistance. Exits: {exits}",
+      "Your path is cut short by an unyielding barrier. Maybe try: {exits}",
+      "Adventure calls, but not in that direction. Possible ways: {exits}"
+    ],
+    "directional": "You try to go {direction} but hit a dead end. It's quiet here—maybe look around or head back."
+  },
+
+  "hintAttempt": [
+    "Let me see... maybe the exits are nearby.",
+    "Summoning the knowledge of the room...",
+    "Hmm, I think there are ways out here.",
+    "Consulting the mystical map...",
+    "Let me whisper some guidance about the exits.",
+    "You pause and sense the shape of the room.",
+    "You listen closely, hoping the walls reveal their secrets.",
+    "A moment of reflection might reveal a way forward.",
+    "Your instincts tingle. There must be an exit somewhere.",
+    "You take a breath and survey the surroundings carefully."
+  ],
+
+  "pickup": {
+    "success": [
+      "Ah, I see you've found {item}. Picking it up seems wise.",
+      "Carefully lifting the {item}... Excellent choice!",
+      "You reach for the {item} and add it to your belongings.",
+      "The {item} is now in your inventory. Well done!",
+      "You pick up the {item}. It might come in handy.",
+      "You secure the {item}, feeling slightly more prepared.",
+      "The {item} joins your collection of worldly possessions.",
+      "With a satisfied nod, you take the {item}."
+    ],
+    "nothing": [
+      "You try to pick something up, but nothing happens.",
+      "Your hands grasp at empty air.",
+      "There is nothing here that can be picked up."
+    ]
+  },
+
+  "drop": {
+    "success": [
+      "You gently set down the {item}. It rests where you leave it.",
+      "Dropping the {item}... hope you won't need it soon!",
+      "The {item} is no longer in your inventory. Handle with care!",
+      "You let go of the {item}. Perhaps someone else will find it.",
+      "You drop the {item}. It hits the ground with a soft thud.",
+      "You place the {item} down deliberately.",
+      "Reluctantly, you part ways with the {item}."
+    ],
+    "nothing": [
+      "You try to drop something, but you hold nothing.",
+      "You fumble for an item that isn't there.",
+      "There is nothing in your hands to drop."
+    ]
+  }
+}

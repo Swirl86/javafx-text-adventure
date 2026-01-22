@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 
 public record ActionController(GameLogicController gameLogic, Consumer<String> executeCommand, OutputController output) {
 
-    // ---------- simple commands ----------
     public void north() { executeCommand.accept("north"); }
     public void south() { executeCommand.accept("south"); }
     public void east() { executeCommand.accept("east"); }
@@ -26,12 +25,12 @@ public record ActionController(GameLogicController gameLogic, Consumer<String> e
     public void inventory() { executeCommand.accept("inventory"); }
     public void hint() { executeCommand.accept("hint"); }
 
-    // ---------- pickup ----------
     public void pickup() {
         List<Item> items = gameLogic.getCurrentRoom().getItems();
 
         if (items.isEmpty()) {
-            output().println(SystemMsgHelper.nothingToPickup(), MsgType.SYSTEM);
+            output().println(SystemMsgHelper.nothingToPickup(), MsgType.SYSTEM); // TODO better msg to note there are no items in this room
+            output().println(GMMsgHelper.pickup(null), MsgType.GM);
             return;
         }
 
@@ -47,7 +46,7 @@ public record ActionController(GameLogicController gameLogic, Consumer<String> e
                 itemName -> {
                     Item it = gameLogic.pickupItem(itemName);
                     if (it != null) {
-                        output().println(GMMsgHelper.randomPickupHint(it), MsgType.GM);
+                        output().println(GMMsgHelper.pickup(it), MsgType.GM);
                     } else {
                         output().println(SystemMsgHelper.itemNotHere(itemName), MsgType.SYSTEM);
                     }
@@ -55,13 +54,12 @@ public record ActionController(GameLogicController gameLogic, Consumer<String> e
         );
     }
 
-
-    // ---------- drop ----------
     public void drop() {
         List<Item> inventory = gameLogic.getPlayerInventory();
 
         if (inventory.isEmpty()) {
             output().println(SystemMsgHelper.inventoryEmpty(), MsgType.SYSTEM);
+            output().println(GMMsgHelper.drop(null), MsgType.GM);
             return;
         }
 
@@ -77,7 +75,7 @@ public record ActionController(GameLogicController gameLogic, Consumer<String> e
                 itemName -> {
                     Item it = gameLogic.dropItem(itemName);
                     if (it != null) {
-                        output().println(GMMsgHelper.randomDropHint(it), MsgType.GM);
+                        output().println(GMMsgHelper.drop(it), MsgType.GM);
                     } else {
                         output().println(SystemMsgHelper.itemNotInInventory(itemName), MsgType.SYSTEM);
                     }
@@ -85,7 +83,6 @@ public record ActionController(GameLogicController gameLogic, Consumer<String> e
         );
     }
 
-    // ---------- Shared dialog helper ----------
     private void showDialog(
             String title,
             String header,
