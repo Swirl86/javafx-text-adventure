@@ -3,7 +3,7 @@ package com.sus.questbound.ui;
 import com.sus.questbound.logic.GameLogicController;
 import com.sus.questbound.model.Item;
 import com.sus.questbound.model.MsgType;
-import com.sus.questbound.util.GMHelper;
+import com.sus.questbound.util.GMMsgHelper;
 import com.sus.questbound.util.SystemMsgHelper;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.DialogPane;
@@ -47,7 +47,7 @@ public record ActionController(GameLogicController gameLogic, Consumer<String> e
                 itemName -> {
                     Item it = gameLogic.pickupItem(itemName);
                     if (it != null) {
-                        output().println(GMHelper.randomPickupHint(it), MsgType.GM);
+                        output().println(GMMsgHelper.randomPickupHint(it), MsgType.GM);
                     } else {
                         output().println(SystemMsgHelper.itemNotHere(itemName), MsgType.SYSTEM);
                     }
@@ -77,7 +77,7 @@ public record ActionController(GameLogicController gameLogic, Consumer<String> e
                 itemName -> {
                     Item it = gameLogic.dropItem(itemName);
                     if (it != null) {
-                        output().println(GMHelper.randomDropHint(it), MsgType.GM);
+                        output().println(GMMsgHelper.randomDropHint(it), MsgType.GM);
                     } else {
                         output().println(SystemMsgHelper.itemNotInInventory(itemName), MsgType.SYSTEM);
                     }

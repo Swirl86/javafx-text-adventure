@@ -5,7 +5,7 @@ import com.sus.questbound.model.Item;
 import java.util.List;
 import java.util.Random;
 
-public class GMHelper {
+public class GMMsgHelper {
 
     private static final List<String> ATTITUDES = List.of(
             "whispers",

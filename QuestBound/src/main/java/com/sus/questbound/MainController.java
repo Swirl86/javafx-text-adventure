@@ -14,7 +14,7 @@ import com.sus.questbound.model.Room;
 import com.sus.questbound.ui.ActionController;
 import com.sus.questbound.ui.OutputController;
 import com.sus.questbound.util.CommandAliasHelper;
-import com.sus.questbound.util.GMHelper;
+import com.sus.questbound.util.GMMsgHelper;
 import com.sus.questbound.util.PlayerMsgHelper;
 import com.sus.questbound.util.SystemMsgHelper;
 import javafx.fxml.FXML;
@@ -141,7 +141,7 @@ public class MainController {
 
         List<String> exits = result.availableExits();
         if (exits.isEmpty()) {
-            outputController.println(GMHelper.deadEndMessage(full), MsgType.GM);
+            outputController.println(GMMsgHelper.deadEndMessage(full), MsgType.GM);
         } else {
             handleDeadEnd();
         }
@@ -157,7 +157,7 @@ public class MainController {
         if (it == null) {
             outputController.println(SystemMsgHelper.itemNotHere(itemName), MsgType.SYSTEM);
         } else {
-            outputController.println(GMHelper.randomPickupHint(it), MsgType.GM);
+            outputController.println(GMMsgHelper.randomPickupHint(it), MsgType.GM);
         }
     }
 
@@ -171,12 +171,12 @@ public class MainController {
         if (it == null) {
             outputController.println(SystemMsgHelper.itemNotInInventory(itemName), MsgType.SYSTEM);
         } else {
-            outputController.println(GMHelper.randomDropHint(it), MsgType.GM);
+            outputController.println(GMMsgHelper.randomDropHint(it), MsgType.GM);
         }
     }
 
     private void showExitsHint() {
-        outputController.println(GMHelper.randomHintAttempt(), MsgType.GM);
+        outputController.println(GMMsgHelper.randomHintAttempt(), MsgType.GM);
 
         Set<String> exits = gameLogic.getAvailableExits();
         if (exits.isEmpty()) {
@@ -190,11 +190,11 @@ public class MainController {
 
     private void handleDeadEnd() {
         String exits = String.join(", ", gameLogic.getAvailableExits());
-        outputController.println(GMHelper.randomDeadEndHint(exits), MsgType.GM);
+        outputController.println(GMMsgHelper.randomDeadEndHint(exits), MsgType.GM);
     }
 
     private void handleUnknownCommand() {
-        outputController.println(GMHelper.randomUnknownCommandHint(), MsgType.GM);
+        outputController.println(GMMsgHelper.randomUnknownCommandHint(), MsgType.GM);
     }
 
     // ---------- button delegates ----------
