@@ -98,7 +98,7 @@ public class MainController {
 
     // ---------- game gameLogic ----------
     private void enterRoom(Room room) {
-        outputController.println(SystemMsgHelper.enterRoomMessage(room), MsgType.SYSTEM);
+        outputController.println(SystemMsgHelper.enterRoom(room), MsgType.SYSTEM);
     }
 
     private void handleLook() {

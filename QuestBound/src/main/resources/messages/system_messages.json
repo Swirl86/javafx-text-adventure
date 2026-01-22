@@ -1,0 +1,92 @@
+{
+  "welcome": {
+    "welcome": [
+      "Welcome, {player}!",
+      "Greetings, {player}!",
+      "Ah, {player}, you have arrived!",
+      "Hello, {player}! Ready for an adventure?",
+      "Well met, {player}! Your journey begins now.",
+      "Hail, {player}! The realm awaits your courage."
+    ],
+    "ambient": [
+      "You hear distant sounds echoing around you.\nMaybe look around to explore your surroundings.",
+      "The air is still, but you sense something nearby.",
+      "Shadows flicker across the walls as you stand ready.",
+      "You feel the weight of the silence before your next move.",
+      "A faint breeze whispers through the room, carrying secrets.",
+      "The floor creaks underfoot, as if alive with anticipation."
+    ]
+  },
+
+  "movement": {
+    "move": "You move {direction}...",
+    "enterRoom": "You are in: {room} - {description}"
+  },
+
+  "room": {
+    "nothingToSee": "You see nothing of interest.",
+    "singleItem": "You see one item: {item} — {description}",
+    "multipleItems": "You see some items: {items}",
+    "noExits": "There are no visible exits here.",
+    "singleExit": "There is one visible exit: {exit}",
+    "multipleExits": "There are several visible exits: {exits}",
+    "creepyFeeling": "A chill runs down your spine as you look around.",
+    "mysteriousShadows": "Shadows dance eerily along the walls."
+  },
+
+  "inventory": {
+    "empty": "Your inventory is empty.",
+    "singleItem": "You have one item: {item} — {description}",
+    "multipleItems": "You have some items: {items}",
+    "itemNotInInventory": "You don't have '{item}' in your inventory.",
+    "inventoryFull": "Your inventory feels full. Perhaps you should drop something first."
+  },
+
+  "pickup": {
+    "askWhich": "Which item do you want to pick up?",
+    "nothing": "You reach out, but grab nothing.",
+    "itemNotHere": "There is no '{item}' here to pick up.",
+    "pickupSuccess": "You pick up the {item}.",
+    "pickupFailed": "You can't pick up the {item} right now.",
+    "dialog": {
+      "title": "Pick up item",
+      "header": "Choose an item to pick up:",
+      "content": "Available items:"
+    }
+  },
+
+  "drop": {
+    "askWhich": "Which item do you want to drop?",
+    "dropSuccess": "You drop the {item} safely.",
+    "dropFailed": "You can't drop {item} here.",
+    "dialog": {
+      "title": "Drop item",
+      "header": "Choose an item to drop:",
+      "content": "Your inventory:"
+    }
+  },
+
+  "enemyHints": {
+    "feelingWatched": "You have the unsettling feeling of being watched.",
+    "shadowsInDistance": "You notice fleeting shadows in the distance.",
+    "uneasySilence": "The air grows tense; silence feels heavier than before.",
+    "footstepsNearby": "You think you hear faint footsteps echoing somewhere nearby.",
+    "strangeRustle": "A strange rustle comes from the darkness."
+  },
+
+  "hpHints": {
+    "fullEnergy": "You feel full of energy and ready for action.",
+    "slightlyTired": "Your muscles ache slightly, but you can continue.",
+    "tired": "You begin to feel the weight of exhaustion; movement is slower.",
+    "veryTired": "Your body protests with every step; you must rest soon.",
+    "critical": "Your vision blurs and fatigue overwhelms you; you feel dangerously weak."
+  },
+
+  "durabilityHints": {
+    "excellent": "It feels strong and well-crafted.",
+    "good": "It shows minor signs of wear, but is reliable.",
+    "worn": "It has seen better days; you notice scratches and dents.",
+    "damaged": "It creaks and groans; you worry it might break soon.",
+    "broken": "It is badly damaged and barely usable."
+  }
+}
