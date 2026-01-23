@@ -1,0 +1,76 @@
+{
+  "directions": {
+    "north": [
+      "You head north, alert to every sound.",
+      "You move north with measured steps.",
+      "You set off north, watching the shadows."
+    ],
+    "south": [
+      "You turn south, keeping your guard up.",
+      "You move south, eyes scanning the way ahead.",
+      "You head south, listening for any movement."
+    ],
+    "east": [
+      "You step east, curiosity pulling you forward.",
+      "You move east, steady and focused.",
+      "You head east, senses sharpened."
+    ],
+    "west": [
+      "You head west, moving cautiously.",
+      "You step west, watching where you place your feet.",
+      "You move west, wary of what might await."
+    ],
+    "up": [
+      "You look upward and begin to climb.",
+      "You move up carefully, testing each step.",
+      "You ascend, mindful of what lies above."
+    ],
+    "down": [
+      "You peer downward and begin to descend.",
+      "You move down slowly, careful not to slip.",
+      "You descend carefully, alert to every creak and sound."
+    ]
+  },
+  "look": [
+    "You take a careful look around.",
+    "You pause to observe your surroundings.",
+    "You scan the area, noting every detail.",
+    "You study the room in silence.",
+    "You let your eyes adjust as you look around."
+  ],
+  "inventory": [
+    "You check your belongings.",
+    "You take stock of what you are carrying.",
+    "You review your gear, one item at a time.",
+    "You quickly go through your possessions."
+  ],
+  "go": [
+    "You prepare to move.",
+    "You gather yourself and set off.",
+    "You take a breath and move forward."
+  ],
+  "hint": [
+    "You pause, hoping for guidance.",
+    "You quietly seek a hint from beyond.",
+    "You hesitate, waiting for a sign.",
+    "You listen closely, hoping something reveals itself."
+  ],
+  "pickup": [
+    "You reach out, attempting to pick something up…",
+    "You bend down, hoping to grab something useful.",
+    "You carefully reach forward."
+  ],
+  "drop": [
+    "You prepare to let something go.",
+    "You loosen your grip, ready to drop an item.",
+    "You consider leaving something behind."
+  ],
+  "defaultMessages": [
+    "You hesitate.",
+    "You pause in silence.",
+    "You fumble, unsure what to do.",
+    "You frown, uncertain of your next move.",
+    "You mutter something unintelligible.",
+    "You try something, but nothing happens."
+  ]
+}

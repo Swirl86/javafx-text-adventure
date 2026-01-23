@@ -4,6 +4,7 @@ import com.sus.questbound.logic.GameLogicController;
 import com.sus.questbound.model.Item;
 import com.sus.questbound.model.MsgType;
 import com.sus.questbound.util.GMMsgHelper;
+import com.sus.questbound.util.PlayerMsgHelper;
 import com.sus.questbound.util.SystemMsgHelper;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.DialogPane;
@@ -26,6 +27,7 @@ public record ActionController(GameLogicController gameLogic, Consumer<String> e
     public void hint() { executeCommand.accept("hint"); }
 
     public void pickup() {
+        output().println(PlayerMsgHelper.getPlayerMsg("pickup"), MsgType.PLAYER);
         List<Item> items = gameLogic.getCurrentRoom().getItems();
 
         if (items.isEmpty()) {
@@ -33,6 +35,8 @@ public record ActionController(GameLogicController gameLogic, Consumer<String> e
             output().println(GMMsgHelper.pickup(null), MsgType.GM);
             return;
         }
+
+        output().println(SystemMsgHelper.askWhichItemToPickup(), MsgType.SYSTEM);
 
         List<String> itemNames = items.stream()
                 .map(Item::name)
@@ -55,6 +59,7 @@ public record ActionController(GameLogicController gameLogic, Consumer<String> e
     }
 
     public void drop() {
+        output().println(PlayerMsgHelper.getPlayerMsg("drop"), MsgType.PLAYER);
         List<Item> inventory = gameLogic.getPlayerInventory();
 
         if (inventory.isEmpty()) {
@@ -62,6 +67,8 @@ public record ActionController(GameLogicController gameLogic, Consumer<String> e
             output().println(GMMsgHelper.drop(null), MsgType.GM);
             return;
         }
+
+        output().println(SystemMsgHelper.askWhichItemToDrop(), MsgType.SYSTEM);
 
         List<String> itemNames = inventory.stream()
                 .map(Item::name)

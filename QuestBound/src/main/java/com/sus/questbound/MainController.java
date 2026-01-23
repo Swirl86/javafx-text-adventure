@@ -72,9 +72,12 @@ public class MainController {
 
     // ---------- command execution ----------
     private void executeCommand(String raw) {
-        if (raw == null || raw.isBlank()) return;
+        if (raw == null || raw.isBlank()) {
+            outputController.println(PlayerMsgHelper.getDefaultMessage(), MsgType.PLAYER);
+            return;
+        }
 
-        outputController.println(raw.toUpperCase(), MsgType.PLAYER);
+        outputController.println(PlayerMsgHelper.getPlayerMsg(raw), MsgType.PLAYER);
 
         var cmd = CommandParser.parse(raw);
         String action = cmd.action();
