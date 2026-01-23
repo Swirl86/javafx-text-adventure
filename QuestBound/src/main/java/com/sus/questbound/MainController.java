@@ -3,7 +3,7 @@ package com.sus.questbound;
 import com.sus.questbound.game.Game;
 import com.sus.questbound.game.MoveResult;
 import com.sus.questbound.game.command.CommandParser;
-import com.sus.questbound.game.library.ItemLibrary;
+import com.sus.questbound.game.library.item.ItemLibrary;
 import com.sus.questbound.game.world.FixedWorldGenerator;
 import com.sus.questbound.game.world.RandomWorldGenerator;
 import com.sus.questbound.logic.GameLogicController;

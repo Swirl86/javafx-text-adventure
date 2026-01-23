@@ -1,6 +1,6 @@
 package com.sus.questbound.game.world;
 
-import com.sus.questbound.game.library.ItemLibrary;
+import com.sus.questbound.game.library.item.ItemLibrary;
 import com.sus.questbound.model.Room;
 
 /**

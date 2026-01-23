@@ -1,4 +1,4 @@
-package com.sus.questbound.game.library;
+package com.sus.questbound.game.library.system;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

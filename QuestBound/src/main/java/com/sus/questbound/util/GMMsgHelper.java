@@ -1,7 +1,7 @@
 package com.sus.questbound.util;
 
-import com.sus.questbound.game.library.GMMessageLibrary;
-import com.sus.questbound.game.library.GMMessageDefinition;
+import com.sus.questbound.game.library.gm.GMMessageLibrary;
+import com.sus.questbound.game.library.gm.GMMessageDefinition;
 import com.sus.questbound.model.Item;
 
 import java.util.List;

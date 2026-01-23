@@ -1,4 +1,4 @@
-package com.sus.questbound.game.library;
+package com.sus.questbound.game.library.item;
 
 import java.util.List;
 import java.util.Set;

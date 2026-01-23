@@ -1,4 +1,4 @@
-package com.sus.questbound.game.library;
+package com.sus.questbound.game.library.gm;
 
 import java.util.List;
 

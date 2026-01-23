@@ -1,7 +1,7 @@
 package com.sus.questbound.util;
 
-import com.sus.questbound.game.library.SystemMessageDefinition;
-import com.sus.questbound.game.library.SystemMessageLibrary;
+import com.sus.questbound.game.library.system.SystemMessageDefinition;
+import com.sus.questbound.game.library.system.SystemMessageLibrary;
 import com.sus.questbound.model.Player;
 import com.sus.questbound.model.Room;
 

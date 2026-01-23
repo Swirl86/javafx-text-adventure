@@ -1,7 +1,7 @@
 package com.sus.questbound.game.world;
 
-import com.sus.questbound.game.library.ItemLibrary;
-import com.sus.questbound.game.library.RoomLibrary;
+import com.sus.questbound.game.library.item.ItemLibrary;
+import com.sus.questbound.game.library.room.RoomLibrary;
 import com.sus.questbound.model.Room;
 
 import java.util.ArrayList;

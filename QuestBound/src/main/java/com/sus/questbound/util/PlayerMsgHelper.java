@@ -1,7 +1,7 @@
 package com.sus.questbound.util;
 
-import com.sus.questbound.game.library.PlayerMessageLibrary;
-import com.sus.questbound.game.library.PlayerMessageDefinition;
+import com.sus.questbound.game.library.player.PlayerMessageLibrary;
+import com.sus.questbound.game.library.player.PlayerMessageDefinition;
 
 import java.util.List;
 import java.util.Random;
