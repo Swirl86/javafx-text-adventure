@@ -2,24 +2,18 @@ package com.sus.questbound;
 
 import com.sus.questbound.game.Game;
 import com.sus.questbound.game.MoveResult;
-import com.sus.questbound.game.command.CommandParser;
 import com.sus.questbound.game.library.item.ItemLibrary;
 import com.sus.questbound.game.world.FixedWorldGenerator;
 import com.sus.questbound.game.world.RandomWorldGenerator;
 import com.sus.questbound.logic.GameLogicController;
-import com.sus.questbound.model.Item;
-import com.sus.questbound.model.MsgType;
-import com.sus.questbound.model.Player;
-import com.sus.questbound.model.Room;
+import com.sus.questbound.model.*;
 import com.sus.questbound.ui.ActionController;
 import com.sus.questbound.ui.OutputController;
-import com.sus.questbound.util.CommandAliasHelper;
 import com.sus.questbound.util.GMMsgHelper;
 import com.sus.questbound.util.PlayerMsgHelper;
 import com.sus.questbound.util.SystemMsgHelper;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
 import javafx.scene.text.TextFlow;
 
 import java.util.List;
@@ -29,7 +23,6 @@ import java.util.stream.Collectors;
 public class MainController {
 
     @FXML private TextFlow outputFlow;
-    @FXML private TextField inputField;
     @FXML private ScrollPane outputScroll;
 
     private GameLogicController gameLogic;
@@ -54,7 +47,7 @@ public class MainController {
 
         actions = new ActionController(
                 gameLogic,
-                this::executeCommand,
+                this::executeAction,
                 outputController
         );
 
@@ -62,40 +55,20 @@ public class MainController {
         enterRoom(gameLogic.getCurrentRoom());
     }
 
-    // ---------- input ----------
-    @FXML
-    private void handleInput() {
-        String raw = inputField.getText().trim();
-        inputField.clear();
-        executeCommand(raw);
-    }
+    private void executeAction(Action action, Direction direction) {
 
-    // ---------- command execution ----------
-    private void executeCommand(String raw) {
-        if (raw == null || raw.isBlank()) {
-            outputController.println(PlayerMsgHelper.getDefaultMessage(), MsgType.PLAYER);
-            return;
-        }
-
-        outputController.println(PlayerMsgHelper.getPlayerMsg(raw), MsgType.PLAYER);
-
-        var cmd = CommandParser.parse(raw);
-        String action = cmd.action();
-        String arg = cmd.argument();
-
-        if (PlayerMsgHelper.isDirection(raw)) {
-            handleGo(raw);
-            return;
-        }
+        outputController.println(PlayerMsgHelper.getPlayerMsg(action, direction), MsgType.PLAYER);
 
         switch (action) {
-            case "look" -> handleLook();
-            case "inventory" -> handleInventory();
-            case "go" -> handleGo(arg);
-            case "hint" -> showExitsHint();
-            case "pickup" -> handlePickup(arg);
-            case "drop" -> handleDrop(arg);
-            default -> handleUnknownCommand();
+            case LOOK -> handleLook();
+            case INVENTORY -> handleInventory();
+            case HINT -> showExitsHint();
+            case GO -> {
+                if (direction != null) {
+                    handleGo(direction);
+                }
+            }
+            default -> outputController.println(PlayerMsgHelper.getDefaultMessage(), MsgType.PLAYER);
         }
     }
 
@@ -132,49 +105,20 @@ public class MainController {
         }
     }
 
-    private void handleGo(String direction) {
-        String full = CommandAliasHelper.normalizeDirection(direction);
-        MoveResult result = gameLogic.move(full);
+    private void handleGo(Direction direction) {
+        String arg = direction.toString();
+        MoveResult result = gameLogic.move(arg);
 
         if (result.success()) {
-            outputController.println(SystemMsgHelper.moveMessage(full), MsgType.SYSTEM);
+            outputController.println(SystemMsgHelper.moveMessage(arg), MsgType.SYSTEM );
             enterRoom(gameLogic.getCurrentRoom());
             return;
         }
 
-        List<String> exits = result.availableExits();
-        if (exits.isEmpty()) {
-            outputController.println(GMMsgHelper.deadEndDirectional(full), MsgType.GM);
+        if (result.availableExits().isEmpty()) {
+            outputController.println(GMMsgHelper.deadEndDirectional(arg), MsgType.GM);
         } else {
             handleDeadEnd();
-        }
-    }
-
-    private void handlePickup(String itemName) {
-        if (itemName == null || itemName.isBlank()) {
-            outputController.println(SystemMsgHelper.askWhichItemToPickup(), MsgType.SYSTEM);
-            return;
-        }
-
-        Item it = gameLogic.pickupItem(itemName);
-        if (it == null) {
-            outputController.println(SystemMsgHelper.itemNotHere(itemName), MsgType.SYSTEM);
-        } else {
-            outputController.println(GMMsgHelper.pickup(it), MsgType.GM);
-        }
-    }
-
-    private void handleDrop(String itemName) {
-        if (itemName == null || itemName.isBlank()) {
-            outputController.println(SystemMsgHelper.askWhichItemToDrop(), MsgType.SYSTEM);
-            return;
-        }
-
-        Item it = gameLogic.dropItem(itemName);
-        if (it == null) {
-            outputController.println(SystemMsgHelper.itemNotInInventory(itemName), MsgType.SYSTEM);
-        } else {
-            outputController.println(GMMsgHelper.drop(it), MsgType.GM);
         }
     }
 
@@ -196,22 +140,17 @@ public class MainController {
         outputController.println(GMMsgHelper.deadEnd(exits), MsgType.GM);
     }
 
-    private void handleUnknownCommand() {
-        outputController.println(GMMsgHelper.unknownCommand(), MsgType.GM);
-    }
-
     // ---------- button delegates ----------
-    @FXML private void onNorth() { actions.north(); }
-    @FXML private void onSouth() { actions.south(); }
-    @FXML private void onEast()  { actions.east(); }
-    @FXML private void onWest()  { actions.west(); }
+    @FXML private void onNorth() { executeAction(Action.GO, Direction.NORTH); }
+    @FXML private void onSouth() { executeAction(Action.GO, Direction.SOUTH); }
+    @FXML private void onEast()  { executeAction(Action.GO, Direction.EAST); }
+    @FXML private void onWest()  { executeAction(Action.GO, Direction.WEST); }
 
-    @FXML private void onLook() { actions.look(); }
-    @FXML private void onInventory() { actions.inventory(); }
-    @FXML private void onHint() { actions.hint(); }
-
+    @FXML private void onLook() { executeAction(Action.LOOK, null); }
+    @FXML private void onInventory() { executeAction(Action.INVENTORY, null); }
+    @FXML private void onHint() { executeAction(Action.HINT, null); }
     @FXML private void onPickup() { actions.pickup(); }
-    @FXML private void onDrop() { actions.drop(); }
+    @FXML private void onDrop()   { actions.drop(); }
 
     // TODO implement
     @FXML private void onQuest() { }

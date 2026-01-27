@@ -5,7 +5,6 @@ import com.sus.questbound.game.world.WorldGenerator;
 import com.sus.questbound.model.Item;
 import com.sus.questbound.model.Player;
 import com.sus.questbound.model.Room;
-import com.sus.questbound.util.CommandAliasHelper;
 
 import java.util.List;
 
@@ -25,7 +24,6 @@ public class Game {
     }
 
     public MoveResult move(String direction) {
-        direction = CommandAliasHelper.normalizeDirection(direction);
         Room nextRoom = currentRoom.getExit(direction);
 
         if (nextRoom != null) {

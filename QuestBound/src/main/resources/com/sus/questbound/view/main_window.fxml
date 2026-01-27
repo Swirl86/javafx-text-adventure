@@ -53,11 +53,4 @@
         <Button text="Hint" onAction="#onHint" GridPane.columnIndex="6" GridPane.rowIndex="2"
                 GridPane.hgrow="ALWAYS" GridPane.halignment="CENTER" styleClass="grid-button"/>
     </GridPane>
-
-
-    <!-- Input row for custom commands -->
-    <HBox spacing="5" alignment="CENTER">
-        <TextField fx:id="inputField" HBox.hgrow="ALWAYS" promptText="Type a command (e.g. look, go north or [n,s,e,w])"/>
-        <Button text="Enter" onAction="#handleInput" defaultButton="true"/>
-    </HBox>
 </VBox>
