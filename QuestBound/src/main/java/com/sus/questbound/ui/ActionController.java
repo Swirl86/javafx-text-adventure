@@ -114,7 +114,18 @@ public record ActionController(
                 ).toExternalForm()
         );
 
-        Optional<String> result = dialog.showAndWait();
-        result.ifPresent(onSelect);
+        if (options.size() == 1) {
+            pane.lookupAll(".combo-box").forEach(box -> {
+                box.setDisable(true);
+                box.setOpacity(1.0);
+
+                box.lookupAll(".arrow-button").forEach(arrow -> {
+                    arrow.setVisible(false);
+                    arrow.setManaged(false);
+                });
+            });
+        }
+
+        dialog.showAndWait().ifPresent(onSelect);
     }
 }

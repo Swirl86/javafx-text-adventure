@@ -145,3 +145,14 @@
     -fx-background-color: #F4D8B0;
     -fx-text-fill: #4B3621;
 }
+
+/* Hide dropdown arrow when disabled */
+.dialog-pane .combo-box:disabled .arrow-button {
+    -fx-padding: 0;
+    -fx-opacity: 0;
+}
+
+.dialog-pane .combo-box:disabled .list-cell {
+    -fx-text-fill: #ffffff;
+    -fx-opacity: 1.0;
+}
