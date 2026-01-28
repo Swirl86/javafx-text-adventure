@@ -2,12 +2,10 @@ package com.sus.questbound.game.world;
 
 import com.sus.questbound.game.library.item.ItemLibrary;
 import com.sus.questbound.game.library.room.RoomLibrary;
+import com.sus.questbound.model.Direction;
 import com.sus.questbound.model.Room;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class RandomWorldGenerator implements WorldGenerator {
 
@@ -17,77 +15,66 @@ public class RandomWorldGenerator implements WorldGenerator {
     @Override
     public World generate() {
 
-        List<Room> rooms = createRooms();
+        Map<String, Room> map = new HashMap<>();
 
-        connectRoomsRandomly(rooms);
-        placeItemsRandomly(rooms);
+        Room startRoom = RoomLibrary.createStartRoom(0, 0);
+        map.put(key(0, 0), startRoom);
 
-        Room startRoom = rooms.get(0);
+        Room current = startRoom;
+
+        for (int i = 1; i < ROOM_COUNT; i++) {
+
+            List<Direction> dirs = new ArrayList<>(
+                    Arrays.stream(Direction.values())
+                            .filter(Direction::isPlanar)
+                            .toList()
+            );
+            Collections.shuffle(dirs);
+
+            boolean placed = false;
+
+            for (Direction dir : dirs) {
+                int nx = current.getX() + dir.dx;
+                int ny = current.getY() + dir.dy;
+
+                if (map.containsKey(key(nx, ny))) {
+                    continue;
+                }
+
+                Room next = RoomLibrary.createRandomRoom(nx, ny);
+
+                current.setExit(dir, next);
+                next.setExit(dir.opposite(), current);
+
+                map.put(key(nx, ny), next);
+
+                current = next;
+                placed = true;
+                break;
+            }
+
+            if (!placed) {
+                current = new ArrayList<>(map.values())
+                        .get(RANDOM.nextInt(map.size()));
+                i--;
+            }
+        }
+
+        placeItemsRandomly(map.values());
         return new World(startRoom);
     }
 
-    // ---------- rooms ----------
-
-    private List<Room> createRooms() {
-        List<Room> rooms = new ArrayList<>();
-
-        // explicit start room
-        Room startRoom = RoomLibrary.createStartRoom();
-        rooms.add(startRoom);
-
-        // remaining rooms
-        for (int i = 1; i < ROOM_COUNT; i++) {
-            rooms.add(RoomLibrary.createRandomRoom());
-        }
-
-        // shuffle but keep start room at index 0
-        Collections.shuffle(rooms.subList(1, rooms.size()));
-
-        return rooms;
-    }
-
-    // ---------- exits ----------
-    private void connectRoomsRandomly(List<Room> rooms) {
-        List<String> directions = List.of("north", "south", "east", "west");
-
-        for (int i = 0; i < rooms.size() - 1; i++) {
-            Room current = rooms.get(i);
-            Room next = rooms.get(i + 1);
-
-            String dir = randomFreeDirection(current, directions);
-            String opposite = opposite(dir);
-
-            current.setExit(dir, next);
-            next.setExit(opposite, current);
-        }
-    }
-
-    private String randomFreeDirection(Room room, List<String> dirs) {
-        List<String> free = dirs.stream()
-                .filter(d -> room.getExit(d) == null)
-                .toList();
-
-        return free.get(RANDOM.nextInt(free.size()));
-    }
-
-    private String opposite(String dir) {
-        return switch (dir) {
-            case "north" -> "south";
-            case "south" -> "north";
-            case "east" -> "west";
-            case "west" -> "east";
-            default -> throw new IllegalArgumentException(dir);
-        };
-    }
-
-    // ---------- items ----------
-    private void placeItemsRandomly(List<Room> rooms) {
-
+    private void placeItemsRandomly(Collection<Room> rooms) {
         int itemCount = RANDOM.nextInt(rooms.size()) + 3;
+        List<Room> list = new ArrayList<>(rooms);
 
         for (int i = 0; i < itemCount; i++) {
-            Room room = rooms.get(RANDOM.nextInt(rooms.size()));
-            room.addItem(ItemLibrary.createRandomItem());
+            list.get(RANDOM.nextInt(list.size()))
+                    .addItem(ItemLibrary.createRandomItem());
         }
+    }
+
+    private String key(int x, int y) {
+        return x + "," + y;
     }
 }

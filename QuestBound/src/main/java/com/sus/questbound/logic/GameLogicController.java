@@ -2,6 +2,7 @@ package com.sus.questbound.logic;
 
 import com.sus.questbound.game.Game;
 import com.sus.questbound.game.MoveResult;
+import com.sus.questbound.model.Direction;
 import com.sus.questbound.model.Item;
 import com.sus.questbound.model.Player;
 import com.sus.questbound.model.Room;
@@ -26,12 +27,12 @@ public record GameLogicController(Game game) {
         return game.getCurrentRoom();
     }
 
-    public Set<String> getAvailableExits() {
+    public Set<Direction> getAvailableExits() {
         return game.getCurrentRoom().getAvailableExits();
     }
 
     // ---------- Movement ----------
-    public MoveResult move(String direction) {
+    public MoveResult move(Direction direction) {
         return game.move(direction);
     }
 

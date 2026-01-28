@@ -1,6 +1,7 @@
 package com.sus.questbound.game.world;
 
 import com.sus.questbound.game.library.item.ItemLibrary;
+import com.sus.questbound.model.Direction;
 import com.sus.questbound.model.Room;
 
 /**
@@ -11,30 +12,37 @@ public class FixedWorldGenerator implements WorldGenerator {
     @Override
     public World generate() {
 
-        Room entrance = new Room("Entrance Hall", "A large entry hall with cold stone walls.");
-        Room corridor = new Room("Corridor", "A narrow corridor with flickering torches.");
-        Room armory = new Room("Armory", "A dusty armory with broken weapons.");
-        Room library = new Room("Library", "Ancient books line the walls. The air smells of dust.");
-        Room shrine = new Room("Shrine", "A quiet shrine with a glowing altar.");
+        /*
+            (0,2)  Shrine
+                    |
+         (-1,1) Library -- (0,1) Corridor -- (1,1) Armory
+                    |
+            (0,0) Entrance
 
+         */
+        Room entrance = new Room("Entrance Hall", "A large entry hall with cold stone walls.", 0, 0);
+        Room corridor = new Room("Corridor", "A narrow corridor with flickering torches.", 0, 1);
+        Room armory = new Room("Armory", "A dusty armory with broken weapons.", 1, 1);
+        Room library = new Room("Library", "Ancient books line the walls. The air smells of dust.", -1, 1);
+        Room shrine = new Room("Shrine", "A quiet shrine with a glowing altar.", 0, 2);
 
+        // ---------- items ----------
         entrance.addItem(ItemLibrary.createItemWithTag("light"));
         armory.addItem(ItemLibrary.createItemWithTag("weapon"));
         library.addItem(ItemLibrary.createItemWithTag("lore"));
         shrine.addItem(ItemLibrary.createItemWithTag("quest"));
 
-
-        connectRooms(entrance, "north", corridor, "south");
-        connectRooms(corridor, "east", armory, "west");
-        connectRooms(corridor, "west", library, "east");
-        connectRooms(library, "north", shrine, "south");
-
+        // ---------- exits ----------
+        connect(entrance, Direction.NORTH, corridor);
+        connect(corridor, Direction.EAST, armory);
+        connect(corridor, Direction.WEST, library);
+        connect(library, Direction.NORTH, shrine);
 
         return new World(entrance);
     }
 
-    private void connectRooms(Room room1, String dir1to2, Room room2, String dir2to1) {
-        room1.setExit(dir1to2, room2);
-        room2.setExit(dir2to1, room1);
+    private void connect(Room from, Direction dir, Room to) {
+        from.setExit(dir, to);
+        to.setExit(dir.opposite(), from);
     }
 }

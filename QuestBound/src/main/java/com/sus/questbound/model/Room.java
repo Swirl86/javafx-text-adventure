@@ -6,12 +6,17 @@ public class Room {
 
     private final String name;
     private final String description;
-    private final List<Item> items;
-    private final Map<String, Room> exits = new HashMap<>();
+    private final int x;
+    private final int y;
 
-    public Room(String name, String description) {
+    private final List<Item> items;
+    private final Map<Direction, Room> exits = new EnumMap<>(Direction.class);
+
+    public Room(String name, String description, int x, int y) {
         this.name = name;
         this.description = description;
+        this.x = x;
+        this.y = y;
         this.items = new ArrayList<>();
     }
 
@@ -23,20 +28,39 @@ public class Room {
         return description;
     }
 
-    public void setExit(String direction, Room room) {
-        exits.put(direction.toLowerCase(), room);
+    public int getX() {
+        return x;
     }
 
-    public Room getExit(String direction) {
-        return exits.get(direction.toLowerCase());
+    public int getY() {
+        return y;
     }
 
-    public Set<String> getAvailableExits() {
+    public void setExit(Direction direction, Room room) {
+        exits.put(direction, room);
+    }
+
+    public Room getExit(Direction direction) {
+        return exits.get(direction);
+    }
+
+    public Set<Direction> getAvailableExits() {
         return exits.keySet();
+    }
+
+    public boolean hasItem(Item item) {
+        return items.contains(item);
     }
 
     public List<Item> getItems() {
         return Collections.unmodifiableList(items);
+    }
+
+    public Item getItemByName(String name) {
+        return items.stream()
+                .filter(item -> item.name().equalsIgnoreCase(name))
+                .findFirst()
+                .orElse(null);
     }
 
     public boolean addItem(Item item) {
@@ -45,16 +69,5 @@ public class Room {
 
     public boolean removeItem(Item item) {
         return items.remove(item);
-    }
-
-    public boolean hasItem(Item item) {
-        return items.contains(item);
-    }
-
-    public Item getItemByName(String name) {
-        return items.stream()
-                .filter(item -> item.name().equalsIgnoreCase(name))
-                .findFirst()
-                .orElse(null);
     }
 }

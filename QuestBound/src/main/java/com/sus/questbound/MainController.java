@@ -106,8 +106,8 @@ public class MainController {
     }
 
     private void handleGo(Direction direction) {
-        String arg = direction.toString();
-        MoveResult result = gameLogic.move(arg);
+        MoveResult result = gameLogic.move(direction);
+        String arg = direction.label();
 
         if (result.success()) {
             outputController.println(SystemMsgHelper.moveMessage(arg), MsgType.SYSTEM );
@@ -125,18 +125,25 @@ public class MainController {
     private void showExitsHint() {
         outputController.println(GMMsgHelper.hintAttempt(), MsgType.GM);
 
-        Set<String> exits = gameLogic.getAvailableExits();
+        Set<Direction> exits = gameLogic.getAvailableExits();
         if (exits.isEmpty()) {
             outputController.println(SystemMsgHelper.noVisibleExits(), MsgType.SYSTEM);
         } else if (exits.size() == 1) {
-            outputController.println(SystemMsgHelper.singleVisibleExit(exits.iterator().next()), MsgType.SYSTEM);
+            Direction dir = exits.iterator().next();
+            outputController.println(SystemMsgHelper.singleVisibleExit(dir.label()), MsgType.SYSTEM);
         } else {
-            outputController.println(SystemMsgHelper.multipleVisibleExits(String.join(", ", exits)), MsgType.SYSTEM);
+            String exitNames = exits.stream()
+                    .map(Direction::label)
+                    .collect(Collectors.joining(", "));
+            outputController.println(SystemMsgHelper.multipleVisibleExits(exitNames), MsgType.SYSTEM);
         }
     }
 
     private void handleDeadEnd() {
-        String exits = String.join(", ", gameLogic.getAvailableExits());
+        String exits = gameLogic.getAvailableExits().stream()
+                .map(Direction::label)
+                .collect(Collectors.joining(", "));
+
         outputController.println(GMMsgHelper.deadEnd(exits), MsgType.GM);
     }
 

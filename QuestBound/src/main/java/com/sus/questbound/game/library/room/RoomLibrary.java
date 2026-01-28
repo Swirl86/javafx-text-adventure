@@ -30,26 +30,28 @@ public class RoomLibrary {
     }
 
     // ---------- public API ----------
-    public static Room createStartRoom() {
+
+    public static Room createStartRoom(int x, int y) {
         RoomDefinition def = DEFINITIONS.stream()
                 .filter(d -> d.getTags() != null && d.getTags().contains("start"))
                 .findFirst()
                 .orElseThrow(() ->
                         new IllegalStateException("No room with tag 'start' found"));
 
-        return createRoom(def);
+        return createRoom(def, x, y);
     }
 
-    public static Room createRandomRoom() {
+    public static Room createRandomRoom(int x, int y) {
         RoomDefinition def = DEFINITIONS.get(RANDOM.nextInt(DEFINITIONS.size()));
-        return createRoom(def);
+        return createRoom(def, x, y);
     }
 
     // ---------- internal ----------
-    private static Room createRoom(RoomDefinition def) {
+
+    private static Room createRoom(RoomDefinition def, int x, int y) {
         String name = random(def.getNames());
         String description = random(def.getDescriptions());
-        return new Room(name, description);
+        return new Room(name, description, x, y);
     }
 
     private static String random(List<String> list) {
