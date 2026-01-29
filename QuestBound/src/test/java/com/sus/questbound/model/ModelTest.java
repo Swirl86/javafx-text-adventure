@@ -40,10 +40,7 @@ class ModelTest {
 
     @Test
     void roomHasNameDescriptionAndNoItemsInitially() {
-        Room room = new Room(
-                "Entrance Hall",
-                "A grand hall with high ceilings."
-        );
+        Room room = new Room("Entrance Hall", "A grand hall with high ceilings.", 0, 0);
 
         assertEquals("Entrance Hall", room.getName());
         assertEquals("A grand hall with high ceilings.", room.getDescription());
@@ -52,7 +49,7 @@ class ModelTest {
 
     @Test
     void roomCanAddAndRemoveItems() {
-        Room room = new Room("Armory", "Old weapons line the walls");
+        Room room = new Room("Armory", "Old weapons line the walls", 1, 0);
 
         Item sword = new Item(
                 "sword_01",

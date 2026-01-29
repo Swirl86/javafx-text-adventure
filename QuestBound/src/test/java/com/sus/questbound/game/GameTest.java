@@ -2,6 +2,7 @@ package com.sus.questbound.game;
 
 import com.sus.questbound.game.world.FixedWorldGenerator;
 import com.sus.questbound.logic.GameLogicController;
+import com.sus.questbound.model.Direction;
 import com.sus.questbound.model.Item;
 import com.sus.questbound.model.Player;
 import com.sus.questbound.model.Room;
@@ -29,28 +30,24 @@ class GameTest {
     @Test
     void playerStartsInEntranceHall() {
         Room start = game.getCurrentRoom();
-
         assertEquals("Entrance Hall", start.getName());
     }
 
     @Test
     void movingNorthFromEntranceLeadsToCorridor() {
-        // Act
-        MoveResult result = game.move("north");
-
-        // Assert
+        MoveResult result = gameLogic.move(Direction.NORTH);
         assertTrue(result.success(), "Move north should succeed");
         assertEquals("Corridor", game.getCurrentRoom().getName());
-        assertTrue(result.availableExits().contains("south"));
+        assertTrue(result.availableExits().contains(Direction.SOUTH));
     }
 
     @Test
     void movementAliasesWorkCorrectly() {
-        MoveResult north = game.move("n");
+        MoveResult north = gameLogic.move(Direction.NORTH);
         assertTrue(north.success());
         assertEquals("Corridor", game.getCurrentRoom().getName());
 
-        MoveResult east = game.move("e");
+        MoveResult east = gameLogic.move(Direction.EAST);
         assertTrue(east.success());
         assertEquals("Armory", game.getCurrentRoom().getName());
     }
@@ -59,33 +56,32 @@ class GameTest {
     void invalidDirectionDoesNotChangeRoom() {
         Room start = game.getCurrentRoom();
 
-        MoveResult result = game.move("west");
+        MoveResult result = gameLogic.move(Direction.WEST);
 
         assertFalse(result.success(), "Move west should fail");
         assertSame(start, game.getCurrentRoom(), "Player should remain in same room");
-        assertTrue(result.availableExits().contains("north"));
+        assertTrue(result.availableExits().contains(Direction.NORTH));
     }
 
     @Test
     void playerCanMoveBackAndForthBetweenRooms() {
-        game.move("north");
+        gameLogic.move(Direction.NORTH);
         assertEquals("Corridor", game.getCurrentRoom().getName());
 
-        MoveResult back = game.move("south");
+        MoveResult back = gameLogic.move(Direction.SOUTH);
         assertTrue(back.success());
         assertEquals("Entrance Hall", game.getCurrentRoom().getName());
     }
 
     @Test
     void corridorHasExpectedExits() {
-        MoveResult result = game.move("north");
+        MoveResult result = gameLogic.move(Direction.NORTH);
         Room corridor = result.newRoom();
 
-        Set<String> exits = corridor.getAvailableExits();
-
-        assertTrue(exits.contains("south"));
-        assertTrue(exits.contains("east"));
-        assertTrue(exits.contains("west"));
+        Set<Direction> exits = corridor.getAvailableExits();
+        assertTrue(exits.contains(Direction.SOUTH));
+        assertTrue(exits.contains(Direction.EAST));
+        assertTrue(exits.contains(Direction.WEST));
     }
 
     // ---------- Items & inventory ----------
