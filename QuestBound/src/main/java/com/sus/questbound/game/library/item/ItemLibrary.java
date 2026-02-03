@@ -3,6 +3,7 @@ package com.sus.questbound.game.library.item;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sus.questbound.model.Item;
+import com.sus.questbound.model.ItemTags;
 
 import java.io.InputStream;
 import java.util.List;
@@ -13,6 +14,9 @@ public class ItemLibrary {
 
     private static final Random RANDOM = new Random();
     private static final List<ItemDefinition> DEFINITIONS = load();
+    private static final List<ItemDefinition> DEFINITIONS_WITHOUT_FINAL_KEY = DEFINITIONS.stream()
+            .filter(d -> d.getTags() == null || !d.getTags().contains(ItemTags.FINAL_KEY.id()))
+            .toList();
 
     private static List<ItemDefinition> load() {
         try {
@@ -32,7 +36,7 @@ public class ItemLibrary {
 
     // ---------- public API ----------
     public static Item createRandomItem() {
-        ItemDefinition def = DEFINITIONS.get(RANDOM.nextInt(DEFINITIONS.size()));
+        ItemDefinition def = DEFINITIONS_WITHOUT_FINAL_KEY.get(RANDOM.nextInt(DEFINITIONS_WITHOUT_FINAL_KEY.size()));
         return createItem(def);
     }
 
@@ -48,20 +52,16 @@ public class ItemLibrary {
         return createItem(filtered.get(RANDOM.nextInt(filtered.size())));
     }
 
+    public static Item createDungeonExitKey() {
+        return createItemWithTag(ItemTags.FINAL_KEY.id());
+    }
+
     // ---------- internal ----------
     private static boolean determinePickupable(ItemDefinition def) {
-        if (Boolean.FALSE.equals(def.isPickupable())) {
-            return false;
-        }
-
         Set<String> tags = def.getTags();
-        if (tags == null) return false;
+        if (tags == null || tags.isEmpty()) return false;
 
-        List<String> pickupTags = List.of(
-                "weapon", "consumable", "tool", "quest", "accessory", "food", "light"
-        );
-
-        return tags.stream().anyMatch(pickupTags::contains);
+        return !tags.contains(ItemTags.BIG_DECORATION.id());
     }
 
     private static Item createItem(ItemDefinition def) {

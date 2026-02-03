@@ -52,6 +52,11 @@ public class Player {
         return inventory.contains(item);
     }
 
+    public boolean hasItemWithTag(String tag) {
+        return inventory.stream()
+                .anyMatch(item -> item.hasTag(tag));
+    }
+
     public Item getItemByName(String name) {
         return inventory.stream()
                 .filter(item -> item.name().equalsIgnoreCase(name))

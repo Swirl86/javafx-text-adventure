@@ -6,6 +6,7 @@ import com.sus.questbound.model.Direction;
 import com.sus.questbound.model.Room;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 public class RandomWorldGenerator implements WorldGenerator {
 
@@ -61,7 +62,13 @@ public class RandomWorldGenerator implements WorldGenerator {
         }
 
         placeItemsRandomly(map.values());
+        placeDungeonExit(map.values());
+        placeExitKey(map.values());
         return new World(startRoom);
+    }
+
+    private String key(int x, int y) {
+        return x + "," + y;
     }
 
     private void placeItemsRandomly(Collection<Room> rooms) {
@@ -74,7 +81,29 @@ public class RandomWorldGenerator implements WorldGenerator {
         }
     }
 
-    private String key(int x, int y) {
-        return x + "," + y;
+    private void placeDungeonExit(Collection<Room> rooms) {
+        Room exitRoom = pickRandomRoom(rooms, room -> true);
+        exitRoom.setDungeonExit(true);
+    }
+
+    private void placeExitKey(Collection<Room> rooms) {
+        Room keyRoom = pickRandomRoom(
+                rooms,
+                room -> !room.isDungeonExit()
+        );
+
+        keyRoom.addItem(ItemLibrary.createDungeonExitKey());
+    }
+
+    private Room pickRandomRoom(Collection<Room> rooms, Predicate<Room> filter) {
+        List<Room> validRooms = rooms.stream()
+                .filter(filter)
+                .toList();
+
+        if (validRooms.isEmpty()) {
+            throw new IllegalStateException("No valid rooms found for selection");
+        }
+
+        return validRooms.get(RANDOM.nextInt(validRooms.size()));
     }
 }

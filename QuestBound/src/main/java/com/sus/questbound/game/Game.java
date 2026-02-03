@@ -2,10 +2,7 @@ package com.sus.questbound.game;
 
 import com.sus.questbound.game.world.World;
 import com.sus.questbound.game.world.WorldGenerator;
-import com.sus.questbound.model.Item;
-import com.sus.questbound.model.Player;
-import com.sus.questbound.model.Room;
-import com.sus.questbound.model.Direction;
+import com.sus.questbound.model.*;
 
 import java.util.List;
 

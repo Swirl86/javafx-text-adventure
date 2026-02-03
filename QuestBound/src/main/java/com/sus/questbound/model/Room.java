@@ -12,6 +12,8 @@ public class Room {
     private final List<Item> items;
     private final Map<Direction, Room> exits = new EnumMap<>(Direction.class);
 
+    private boolean dungeonExit;
+
     public Room(String name, String description, int x, int y) {
         this.name = name;
         this.description = description;
@@ -36,6 +38,14 @@ public class Room {
         return y;
     }
 
+    public boolean isDungeonExit() {
+        return dungeonExit;
+    }
+
+    public void setDungeonExit(boolean dungeonExit) {
+        this.dungeonExit = dungeonExit;
+    }
+
     public void setExit(Direction direction, Room room) {
         exits.put(direction, room);
     }
@@ -50,6 +60,11 @@ public class Room {
 
     public boolean hasItem(Item item) {
         return items.contains(item);
+    }
+
+    public boolean containsItemWithTag(String tag) {
+        return items.stream()
+                .anyMatch(item -> item.hasTag(tag));
     }
 
     public List<Item> getItems() {

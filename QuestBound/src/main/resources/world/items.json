@@ -1,5 +1,23 @@
 [
   {
+    "id": "exit_key",
+    "names": [
+      "Mystic Key",
+      "Ancient Silver Key",
+      "Key of the Forgotten Gate",
+      "Glowing Exit Key"
+    ],
+    "descriptions": [
+      "A shimmering key needed to unlock the exit.",
+      "This key pulses with a faint, otherworldly light.",
+      "Engraved with runes, it hums softly when held.",
+      "A key that seems to whisper 'freedom' when you pick it up."
+    ],
+    "tags": ["exit", "final-key"],
+    "durability": null,
+    "damage": null
+  },
+  {
     "id": "lantern",
     "names": ["Lantern", "Old Lantern", "Brass Lantern"],
     "descriptions": [
@@ -219,6 +237,61 @@
       "A feather that feels oddly heavy."
     ],
     "tags": ["mysterious"],
+    "durability": null,
+    "damage": null
+  },
+  {
+    "id": "statue",
+    "names": ["Stone Statue", "Hero Statue"],
+    "descriptions": [
+      "A cold stone statue of an ancient hero.",
+      "An intricately carved statue standing tall in the hall."
+    ],
+    "tags": ["big-decoration"],
+    "durability": null,
+    "damage": null
+  },
+  {
+    "id": "altar",
+    "names": ["Altar"],
+    "descriptions": [
+      "A sacred altar glowing with faint energy.",
+      "An altar carved from marble."
+    ],
+    "tags": ["big-decoration"],
+    "durability": null,
+    "damage": null
+  },
+  {
+    "id": "fountain",
+    "names": ["Fountain", "Ancient Fountain"],
+    "descriptions": [
+      "A large fountain trickling water, covered in moss.",
+      "The fountain seems ancient and grand, dominating the courtyard."
+    ],
+    "tags": ["big-decoration"],
+    "durability": null,
+    "damage": null
+  },
+  {
+    "id": "chandelier",
+    "names": ["Grand Chandelier", "Ornate Chandelier"],
+    "descriptions": [
+      "A magnificent chandelier hanging from the ceiling, sparkling with crystals.",
+      "An ornate chandelier that dominates the room with its grandeur."
+    ],
+    "tags": ["big-decoration"],
+    "durability": null,
+    "damage": null
+  },
+  {
+    "id": "tapestry",
+    "names": ["Royal Tapestry", "Ancient Tapestry"],
+    "descriptions": [
+      "A huge tapestry depicting a historical battle, covering the wall.",
+      "An ancient tapestry with intricate patterns, worn by time."
+    ],
+    "tags": ["big-decoration"],
     "durability": null,
     "damage": null
   }

@@ -107,16 +107,40 @@ public class MainController {
 
     private void handleGo(Direction direction) {
         MoveResult result = gameLogic.move(direction);
-        String arg = direction.label();
+        String dirName = direction.label();
 
         if (result.success()) {
-            outputController.println(SystemMsgHelper.moveMessage(arg), MsgType.SYSTEM );
-            enterRoom(gameLogic.getCurrentRoom());
+            Room newRoom = gameLogic.getCurrentRoom();
+            outputController.println(SystemMsgHelper.moveMessage(dirName), MsgType.SYSTEM );
+            enterRoom(newRoom);
+            if (newRoom.isDungeonExit()) {
+                if (gameLogic.getPlayer().hasItemWithTag(ItemTags.FINAL_KEY.id())) {
+                    outputController.println(
+                            "As you enter the room, the Mystic Key glows brightly and reacts to the room's energy. " +
+                                    "✦ In a flash of light, you are teleported out to safety ✦.\nWell done, and see you on your next adventure!",
+                            MsgType.GM
+                    );
+                    // TODO: implement more end game
+                } else {
+                    outputController.println(
+                            "The room radiates an unusual, mystical energy. A vision appears before you, showing that " +
+                                    "only the Mystic Key can unlock the way forward.\n✦ You must find this legendary item to escape! ✦",
+                            MsgType.GM
+                    );
+                }
+            } else if (gameLogic.getCurrentRoom().containsItemWithTag(ItemTags.FINAL_KEY.id())) {
+                outputController.println(
+                        "You feel an invisible pull towards something important in the room. " +
+                                "The air hums with a mysterious energy, hinting that something here is vital for your journey.\n" +
+                                "✦ Maybe you should look around carefully. ✦",
+                        MsgType.GM
+                );
+            }
             return;
         }
 
         if (result.availableExits().isEmpty()) {
-            outputController.println(GMMsgHelper.deadEndDirectional(arg), MsgType.GM);
+            outputController.println(GMMsgHelper.deadEndDirectional(dirName), MsgType.GM);
         } else {
             handleDeadEnd();
         }
