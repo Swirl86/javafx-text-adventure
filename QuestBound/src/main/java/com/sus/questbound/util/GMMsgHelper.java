@@ -62,4 +62,16 @@ public class GMMsgHelper {
                         .replace("{item}", item.name())
         );
     }
+
+    public static String dungeonExitWithKey() {
+        return withAttitude(randomFrom(M.dungeonExit.withKey));
+    }
+
+    public static String dungeonExitWithoutKey() {
+        return withAttitude(randomFrom(M.dungeonExit.withoutKey));
+    }
+
+    public static String finalKeyPresenceHint() {
+        return withAttitude(randomFrom(M.dungeonExit.keyPresenceHint));
+    }
 }

@@ -93,5 +93,30 @@
       "You fumble for an item that isn't there.",
       "There is nothing in your hands to drop."
     ]
+  },
+  "dungeonExit": {
+    "withKey": [
+      "As you enter the room, the Mystic Key glows brightly and reacts to the room's energy.\n✦ In a flash of light, you are teleported out to safety ✦.\nWell done, and see you on your next adventure!",
+      "The room hums with power as the Mystic Key awakens.\nLight bends, reality shimmers, and suddenly you are free.\n✦ Your journey ends, but another awaits ✦",
+      "The Mystic Key vibrates violently in your hand. The room answers its call.\nA blinding light surrounds you, and the world fades away.\n✦ You have escaped ✦",
+      "Symbols on the walls ignite as the Mystic Key responds.\nSpace twists for a moment, then everything goes silent.\n✦ You are safe at last ✦",
+      "The room accepts the Mystic Key. A surge of magic lifts you off the ground.\nIn the blink of an eye, you are gone.\n✦ Freedom is yours ✦"
+    ],
+
+    "withoutKey": [
+      "The room radiates an unusual, mystical energy. A vision appears before you, showing that only the Mystic Key can unlock the way forward.\n✦ You must find this legendary item to escape! ✦",
+      "A powerful force bars your path. The room itself seems to whisper:\n✦ Only the Mystic Key may open the way ✦",
+      "You feel close to freedom, yet something is missing.\nThe room rejects you, demanding the Mystic Key.",
+      "The air grows heavy as you step inside. A silent message presses into your mind.\n✦ Return when you hold the Mystic Key ✦",
+      "The room watches you. Judging. Waiting.\nWithout the Mystic Key, nothing happens."
+    ],
+
+    "keyPresenceHint": [
+      "You feel an invisible pull towards something important in the room. The air hums with a mysterious energy.\n✦ Something here is vital for your success ✦",
+      "An unseen force tugs at your senses. Whatever it is, it feels important.\n✦ You should probably look around ✦",
+      "The hairs on your arms rise. Something in this room feels different.\nImportant. Powerful.",
+      "A quiet vibration echoes through the room, almost like a heartbeat.\nYour instincts tell you not to ignore it.",
+      "You feel drawn to a specific spot, as if the room itself is guiding you.\n✦ There is something here you need ✦"
+    ]
   }
 }

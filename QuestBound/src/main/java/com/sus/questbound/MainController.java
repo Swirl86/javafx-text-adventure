@@ -115,26 +115,13 @@ public class MainController {
             enterRoom(newRoom);
             if (newRoom.isDungeonExit()) {
                 if (gameLogic.getPlayer().hasItemWithTag(ItemTags.FINAL_KEY.id())) {
-                    outputController.println(
-                            "As you enter the room, the Mystic Key glows brightly and reacts to the room's energy. " +
-                                    "✦ In a flash of light, you are teleported out to safety ✦.\nWell done, and see you on your next adventure!",
-                            MsgType.GM
-                    );
-                    // TODO: implement more end game
+                    outputController.println(GMMsgHelper.dungeonExitWithKey(), MsgType.GM);
+                    // TODO: expand endgame
                 } else {
-                    outputController.println(
-                            "The room radiates an unusual, mystical energy. A vision appears before you, showing that " +
-                                    "only the Mystic Key can unlock the way forward.\n✦ You must find this legendary item to escape! ✦",
-                            MsgType.GM
-                    );
+                    outputController.println(GMMsgHelper.dungeonExitWithoutKey(), MsgType.GM);
                 }
-            } else if (gameLogic.getCurrentRoom().containsItemWithTag(ItemTags.FINAL_KEY.id())) {
-                outputController.println(
-                        "You feel an invisible pull towards something important in the room. " +
-                                "The air hums with a mysterious energy, hinting that something here is vital for your journey.\n" +
-                                "✦ Maybe you should look around carefully. ✦",
-                        MsgType.GM
-                );
+            } else if (newRoom.containsItemWithTag(ItemTags.FINAL_KEY.id())) {
+                outputController.println(GMMsgHelper.finalKeyPresenceHint(), MsgType.GM);
             }
             return;
         }
