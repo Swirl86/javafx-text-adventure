@@ -19,8 +19,8 @@
   },
 
   "movement": {
-    "move": "You move {direction}...",
-    "enterRoom": "You are in: {room} - {description}"
+    "move": "You move {direction}.",
+    "enterRoom": "You arrive at {room}. ✦ {description} ✦"
   },
 
   "room": {

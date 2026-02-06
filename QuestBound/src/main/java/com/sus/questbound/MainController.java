@@ -33,8 +33,8 @@ public class MainController {
     @FXML
     public void initialize() {
         Player player = new Player("Hero");
-        player.addItem(ItemLibrary.createItemWithTag("navigation"));
-        player.addItem(ItemLibrary.createItemWithTag("light"));
+        player.addItem(ItemLibrary.createItemWithTag(ItemTags.NAVIGATION.id()));
+        player.addItem(ItemLibrary.createItemWithTag(ItemTags.LIGHT.id()));
 
         // Fixed world for testing
         Game game1 = new Game(player, new FixedWorldGenerator());
@@ -111,8 +111,15 @@ public class MainController {
 
         if (result.success()) {
             Room newRoom = gameLogic.getCurrentRoom();
-            outputController.println(SystemMsgHelper.moveMessage(dirName), MsgType.SYSTEM );
-            enterRoom(newRoom);
+
+            String message = String.format(
+                    "%s %s",
+                    SystemMsgHelper.moveMessage(dirName),
+                    SystemMsgHelper.enterRoom(newRoom)
+            );
+
+            outputController.println(message, MsgType.SYSTEM);
+
             if (newRoom.isDungeonExit()) {
                 if (gameLogic.getPlayer().hasItemWithTag(ItemTags.FINAL_KEY.id())) {
                     outputController.println(GMMsgHelper.dungeonExitWithKey(), MsgType.GM);
