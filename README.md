@@ -6,6 +6,23 @@ The primary goal of this project is to deepen my understanding of Java, with a s
 
 It also serves as a modern continuation of a text-based game I built during my education, [The Game](https://github.com/Swirl86/AvancJava-Kurs/tree/main/Project%20-%20The%20Game). I found the assignment both fun and challenging, which inspired me to challenge myself further by creating a larger and more structured version of the original idea.
 
+---
+
+## 🎮 Gameplay Overview
+
+The game is played by entering text commands or using available UI controls.  
+The player can:
+
+- Move between rooms
+- Inspect the environment
+- Pick up and drop items
+- View inventory and player state
+- Receive system and ambient messages that enhance immersion
+
+The game logic is separated from the UI to make future expansion and refactoring easier.
+
+---
+
 ## 🚀 Features (current / planned)
 
 ### **Implemented**
@@ -16,20 +33,31 @@ It also serves as a modern continuation of a text-based game I built during my e
 - Player state management (inventory)
 - Centralized command parsing and validation
 - Dynamic system and ambient messages for improved immersion
-- JavaFX-based GUI with input field and output log
 - Modular game structure designed for future expansion
+- Expanded game world featuring multiple interconnected rooms, alternative paths, and non-linear navigation
 
 ### **Planned / Future Enhancements**
-
-- Expanded world with additional rooms and branching paths
 - Quest system with objectives and rewards
 - NPC interactions and dialogue
-- Basic combat mechanics- 
-- Player state management (health, mana, stamina)
+- Basic combat mechanics
+- Extended player state (health, stamina, etc.)
 - Save and load game state
-- Improved UI/UX (styling, layout polish)
-- Optional enhancements using ControlsFX / BootstrapFX
-- Refactoring towards clearer separation of game logic and UI
+- Improved UI and visual polish
+- Optional UI enhancements using ControlsFX or BootstrapFX
+- Additional refactoring to further separate game logic from UI
+
+---
+
+## 🧱 Architecture Overview
+
+The project follows an MVC-inspired and layered structure:
+
+- **Game logic** is handled independently from the UI
+- **Command parsing** is centralized to ensure consistent behavior
+- **Rooms, items, and player state** are modeled using OOP principles
+- **JavaFX** acts as the presentation layer only
+
+This structure is designed to support future features without large rewrites.
 
 ---
 
