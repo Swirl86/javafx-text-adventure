@@ -5,11 +5,13 @@ import com.sus.questbound.game.MoveResult;
 import com.sus.questbound.game.library.item.ItemLibrary;
 import com.sus.questbound.game.world.FixedWorldGenerator;
 import com.sus.questbound.game.world.RandomWorldGenerator;
+import com.sus.questbound.logic.GameEventService;
 import com.sus.questbound.logic.GameLogicController;
 import com.sus.questbound.model.*;
 import com.sus.questbound.ui.ActionController;
 import com.sus.questbound.ui.OutputController;
 import com.sus.questbound.util.GMMsgHelper;
+import com.sus.questbound.util.OutputFormatHelper;
 import com.sus.questbound.util.PlayerMsgHelper;
 import com.sus.questbound.util.SystemMsgHelper;
 import javafx.fxml.FXML;
@@ -26,6 +28,7 @@ public class MainController {
     @FXML private ScrollPane outputScroll;
 
     private GameLogicController gameLogic;
+    private GameEventService gameEventService;
     private ActionController actions;
     private OutputController outputController;
 
@@ -42,6 +45,7 @@ public class MainController {
         Game game = new Game(player, new RandomWorldGenerator());
 
         gameLogic = new GameLogicController(game);
+        gameEventService = new GameEventService();
 
         outputController = new OutputController(outputFlow, outputScroll);
 
@@ -52,7 +56,7 @@ public class MainController {
         );
 
         outputController.println(SystemMsgHelper.randomWelcome(gameLogic.getPlayer()), MsgType.SYSTEM);
-        enterRoom(gameLogic.getCurrentRoom());
+        outputController.println(SystemMsgHelper.enterRoom(gameLogic.getCurrentRoom()), MsgType.SYSTEM);
     }
 
     private void executeAction(Action action, Direction direction) {
@@ -73,36 +77,28 @@ public class MainController {
     }
 
     // ---------- game gameLogic ----------
-    private void enterRoom(Room room) {
-        outputController.println(SystemMsgHelper.enterRoom(room), MsgType.SYSTEM);
-    }
-
     private void handleLook() {
-        List<Item> items = gameLogic.getCurrentRoom().getItems();
-
-        if (items.isEmpty()) {
-            outputController.println(SystemMsgHelper.nothingToSee(), MsgType.SYSTEM);
-        } else if (items.size() == 1) {
-            Item it = items.get(0);
-            outputController.println(SystemMsgHelper.singleItemInRoom(it.name(), it.description()), MsgType.SYSTEM);
-        } else {
-            String names = items.stream().map(Item::name).collect(Collectors.joining(", "));
-            outputController.println(SystemMsgHelper.multipleItemsInRoom(names), MsgType.SYSTEM);
-        }
+        OutputFormatHelper.printCollectionWithDetails(
+                outputController,
+                gameLogic.getCurrentRoom().getItems(),
+                MsgType.SYSTEM,
+                SystemMsgHelper::nothingToSee,
+                it -> SystemMsgHelper.singleItemInRoom(it.name(), it.description()),
+                SystemMsgHelper::multipleItemsInRoom,
+                Item::name
+        );
     }
 
     private void handleInventory() {
-        List<Item> inv = gameLogic.getPlayerInventory();
-
-        if (inv.isEmpty()) {
-            outputController.println(SystemMsgHelper.inventoryEmpty(), MsgType.SYSTEM);
-        } else if (inv.size() == 1) {
-            Item it = inv.get(0);
-            outputController.println(SystemMsgHelper.singleItemInInventory(it.name(), it.description()), MsgType.SYSTEM);
-        } else {
-            String names = inv.stream().map(Item::name).collect(Collectors.joining(", "));
-            outputController.println(SystemMsgHelper.multipleItemsInInventory(names), MsgType.SYSTEM);
-        }
+        OutputFormatHelper.printCollectionWithDetails(
+                outputController,
+                gameLogic.getPlayerInventory(),
+                MsgType.SYSTEM,
+                SystemMsgHelper::inventoryEmpty,
+                it -> SystemMsgHelper.singleItemInInventory(it.name(), it.description()),
+                SystemMsgHelper::multipleItemsInInventory,
+                Item::name
+        );
     }
 
     private void handleGo(Direction direction) {
@@ -120,49 +116,43 @@ public class MainController {
 
             outputController.println(message, MsgType.SYSTEM);
 
-            if (newRoom.isDungeonExit()) {
-                if (gameLogic.getPlayer().hasItemWithTag(ItemTags.FINAL_KEY.id())) {
-                    outputController.println(GMMsgHelper.dungeonExitWithKey(), MsgType.GM);
-                    // TODO: expand endgame
-                } else {
-                    outputController.println(GMMsgHelper.dungeonExitWithoutKey(), MsgType.GM);
-                }
-            } else if (newRoom.containsItemWithTag(ItemTags.FINAL_KEY.id())) {
-                outputController.println(GMMsgHelper.finalKeyPresenceHint(), MsgType.GM);
-            }
+            gameEventService
+                    .onEnterRoom(newRoom, gameLogic.getPlayer())
+                    .ifPresent(msg ->
+                            outputController.println(msg, MsgType.GM)
+                    );
             return;
         }
 
-        if (result.availableExits().isEmpty()) {
+        List<Direction> exits = result.availableExits();
+
+        if (exits.isEmpty()) {
             outputController.println(GMMsgHelper.deadEndDirectional(dirName), MsgType.GM);
         } else {
-            handleDeadEnd();
+            printDeadEnd(exits);
         }
     }
 
     private void showExitsHint() {
         outputController.println(GMMsgHelper.hintAttempt(), MsgType.GM);
 
-        Set<Direction> exits = gameLogic.getAvailableExits();
-        if (exits.isEmpty()) {
-            outputController.println(SystemMsgHelper.noVisibleExits(), MsgType.SYSTEM);
-        } else if (exits.size() == 1) {
-            Direction dir = exits.iterator().next();
-            outputController.println(SystemMsgHelper.singleVisibleExit(dir.label()), MsgType.SYSTEM);
-        } else {
-            String exitNames = exits.stream()
-                    .map(Direction::label)
-                    .collect(Collectors.joining(", "));
-            outputController.println(SystemMsgHelper.multipleVisibleExits(exitNames), MsgType.SYSTEM);
-        }
+        OutputFormatHelper.printCollectionWithDetails(
+                outputController,
+                List.copyOf(gameLogic.getAvailableExits()),
+                MsgType.SYSTEM,
+                SystemMsgHelper::noVisibleExits,
+                dir -> SystemMsgHelper.singleVisibleExit(dir.label()),
+                SystemMsgHelper::multipleVisibleExits,
+                Direction::label
+        );
     }
 
-    private void handleDeadEnd() {
-        String exits = gameLogic.getAvailableExits().stream()
+    private void printDeadEnd(List<Direction> exits) {
+        String exitNames = exits.stream()
                 .map(Direction::label)
                 .collect(Collectors.joining(", "));
 
-        outputController.println(GMMsgHelper.deadEnd(exits), MsgType.GM);
+        outputController.println(GMMsgHelper.deadEnd(exitNames), MsgType.GM);
     }
 
     // ---------- button delegates ----------
