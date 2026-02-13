@@ -32,9 +32,9 @@ public record ActionController(
     public void pickup() {
         output.println(PlayerMsgHelper.getPlayerMsg(Action.PICKUP, null), MsgType.PLAYER);
 
-        List<Item> items = gameLogic.getCurrentRoom().getItems();
+        List<Item> pickupableItems = gameLogic.getPickupableItemsInCurrentRoom();
 
-        if (items.isEmpty()) {
+        if (pickupableItems.isEmpty()) {
             output.println(SystemMsgHelper.nothingToPickup(), MsgType.SYSTEM);
             output.println(GMMsgHelper.pickup(null), MsgType.GM);
             return;
@@ -42,7 +42,7 @@ public record ActionController(
 
         output.println(SystemMsgHelper.askWhichItemToPickup(), MsgType.SYSTEM);
 
-        List<String> itemNames = items.stream()
+        List<String> itemNames = pickupableItems.stream()
                 .map(Item::name)
                 .collect(Collectors.toList());
 

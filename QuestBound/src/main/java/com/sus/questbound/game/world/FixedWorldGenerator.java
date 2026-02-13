@@ -2,6 +2,7 @@ package com.sus.questbound.game.world;
 
 import com.sus.questbound.game.library.item.ItemLibrary;
 import com.sus.questbound.model.Direction;
+import com.sus.questbound.model.ItemTags;
 import com.sus.questbound.model.Room;
 
 /**
@@ -28,11 +29,12 @@ public class FixedWorldGenerator implements WorldGenerator {
         Room shrine = new Room("Shrine", "A quiet shrine with a glowing altar.", 0, 2);
 
         // ---------- items ----------
-        entrance.addItem(ItemLibrary.createItemWithTag("light"));
+        entrance.addItem(ItemLibrary.createItemWithTag(ItemTags.LIGHT.id()));
+        entrance.addItem(ItemLibrary.createItemWithTag(ItemTags.BIG_DECORATION.id()));
         corridor.addItem(ItemLibrary.createDungeonExitKey());
-        armory.addItem(ItemLibrary.createItemWithTag("weapon"));
-        library.addItem(ItemLibrary.createItemWithTag("lore"));
-        shrine.addItem(ItemLibrary.createItemWithTag("quest"));
+        armory.addItem(ItemLibrary.createItemWithTag(ItemTags.WEAPON.id()));
+        library.addItem(ItemLibrary.createItemWithTag(ItemTags.LORE.id()));
+        shrine.addItem(ItemLibrary.createItemWithTag(ItemTags.QUEST.id()));
 
         // ---------- connect rooms ----------
         connect(entrance, Direction.NORTH, corridor);

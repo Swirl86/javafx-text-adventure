@@ -27,6 +27,12 @@ public record GameLogicController(Game game) {
         return game.getCurrentRoom();
     }
 
+    public List<Item> getPickupableItemsInCurrentRoom() {
+        return game.getCurrentRoom().getItems().stream()
+                .filter(Item::pickupable)
+                .toList();
+    }
+
     public Set<Direction> getAvailableExits() {
         return game.getCurrentRoom().getAvailableExits();
     }
