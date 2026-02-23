@@ -5,13 +5,15 @@
       "Mystic Key",
       "Ancient Silver Key",
       "Key of the Forgotten Gate",
-      "Glowing Exit Key"
+      "Glowing Exit Key",
+      "Runed Exit Key"
     ],
     "descriptions": [
       "A shimmering key needed to unlock the exit.",
       "This key pulses with a faint, otherworldly light.",
       "Engraved with runes, it hums softly when held.",
-      "A key that seems to whisper 'freedom' when you pick it up."
+      "A key that seems to whisper 'freedom' when you pick it up.",
+      "Cold to the touch, yet glowing faintly in the dark."
     ],
     "tags": ["exit", "final-key"],
     "durability": null,
@@ -19,11 +21,27 @@
   },
   {
     "id": "lantern",
-    "names": ["Lantern", "Old Lantern", "Brass Lantern"],
+    "names": [
+      "Lantern",
+      "Old Lantern",
+      "Brass Lantern",
+      "Travel Lantern",
+      "Storm Lantern",
+      "Copper Lantern",
+      "Flickering Lantern",
+      "Oil Lantern"
+    ],
     "descriptions": [
       "A small lantern that casts a warm glow.",
       "An old lantern with scratched glass.",
-      "A brass lantern still smelling faintly of oil."
+      "A brass lantern still smelling faintly of oil.",
+      "A travel lantern built to endure long journeys.",
+      "A storm lantern with thick glass protecting the flame.",
+      "A copper lantern polished to a dull shine.",
+      "The flame inside flickers softly with every movement.",
+      "A lantern filled with oil, ready to burn for hours.",
+      "The light reveals more than it should in the darkness.",
+      "It casts long, uneasy shadows on the walls."
     ],
     "tags": ["light", "utility"],
     "durability": 20,
@@ -31,10 +49,25 @@
   },
   {
     "id": "torch",
-    "names": ["Torch", "Wooden Torch"],
+    "names": [
+      "Torch",
+      "Wooden Torch",
+      "Burning Torch",
+      "Half-Burned Torch",
+      "Pitch Torch",
+      "Guard's Torch",
+      "Smoldering Torch"
+    ],
     "descriptions": [
       "A wooden torch wrapped in cloth.",
-      "A simple torch, ready to be lit."
+      "A simple torch, ready to be lit.",
+      "A torch already burning brightly.",
+      "A half-burned torch close to burning out.",
+      "A torch coated in pitch for a stronger flame.",
+      "A guard's torch, stained with soot.",
+      "The torch smolders, sending sparks into the air.",
+      "The flame crackles loudly in the silence.",
+      "It burns hot and uneven, dripping sparks."
     ],
     "tags": ["light", "consumable"],
     "durability": 5,
@@ -42,11 +75,17 @@
   },
   {
     "id": "sword",
-    "names": ["Sword", "Iron Sword", "Rusty Sword"],
+    "names": [
+      "Sword",
+      "Iron Sword",
+      "Rusty Sword",
+      "Battle Sword"
+    ],
     "descriptions": [
       "A sturdy iron sword.",
       "A sword with a worn leather hilt.",
-      "A rusty sword that has seen many battles."
+      "A rusty sword that has seen many battles.",
+      "A balanced blade suited for combat."
     ],
     "tags": ["weapon", "melee"],
     "durability": 40,
@@ -54,11 +93,17 @@
   },
   {
     "id": "dagger",
-    "names": ["Dagger", "Small Dagger", "Sharp Dagger"],
+    "names": [
+      "Dagger",
+      "Small Dagger",
+      "Sharp Dagger",
+      "Steel Dagger"
+    ],
     "descriptions": [
       "A small but sharp dagger.",
       "A dagger suitable for quick strikes.",
-      "A well-balanced dagger."
+      "A well-balanced dagger.",
+      "A slim blade made for swift attacks."
     ],
     "tags": ["weapon", "melee"],
     "durability": 25,
@@ -66,10 +111,15 @@
   },
   {
     "id": "shield",
-    "names": ["Shield", "Wooden Shield"],
+    "names": [
+      "Shield",
+      "Wooden Shield",
+      "Round Shield"
+    ],
     "descriptions": [
       "A wooden shield reinforced with iron.",
-      "A battered shield bearing old marks."
+      "A battered shield bearing old marks.",
+      "A round shield scarred from battle."
     ],
     "tags": ["armor"],
     "durability": 30,
@@ -77,10 +127,15 @@
   },
   {
     "id": "helmet",
-    "names": ["Helmet", "Iron Helmet"],
+    "names": [
+      "Helmet",
+      "Iron Helmet",
+      "Steel Helm"
+    ],
     "descriptions": [
       "An iron helmet offering basic protection.",
-      "A helmet with dents from old battles."
+      "A helmet with dents from old battles.",
+      "A steel helm that covers most of the head."
     ],
     "tags": ["armor"],
     "durability": 20,
@@ -88,10 +143,15 @@
   },
   {
     "id": "old_book",
-    "names": ["Old Book", "Dusty Tome"],
+    "names": [
+      "Old Book",
+      "Dusty Tome",
+      "Forgotten Grimoire"
+    ],
     "descriptions": [
       "An ancient book filled with unreadable text.",
-      "A dusty tome with brittle pages."
+      "A dusty tome with brittle pages.",
+      "A thick book bound in cracked leather."
     ],
     "tags": ["lore"],
     "durability": null,
@@ -99,10 +159,15 @@
   },
   {
     "id": "scroll",
-    "names": ["Scroll", "Magic Scroll"],
+    "names": [
+      "Scroll",
+      "Magic Scroll",
+      "Arcane Scroll"
+    ],
     "descriptions": [
       "A rolled parchment sealed with wax.",
-      "A scroll covered in strange symbols."
+      "A scroll covered in strange symbols.",
+      "The parchment glows faintly when unrolled."
     ],
     "tags": ["magic", "consumable"],
     "durability": 1,
@@ -110,10 +175,16 @@
   },
   {
     "id": "key",
-    "names": ["Key", "Iron Key", "Old Key"],
+    "names": [
+      "Key",
+      "Iron Key",
+      "Old Key",
+      "Bent Iron Key"
+    ],
     "descriptions": [
       "A small iron key.",
-      "A key worn smooth by time."
+      "A key worn smooth by time.",
+      "An old key with scratches along its shaft."
     ],
     "tags": ["quest"],
     "durability": null,
@@ -143,10 +214,15 @@
   },
   {
     "id": "map",
-    "names": ["Map", "Old Map"],
+    "names": [
+      "Map",
+      "Old Map",
+      "Worn Map Fragment"
+    ],
     "descriptions": [
       "A map showing unfamiliar locations.",
-      "An old map with faded markings."
+      "An old map with faded markings.",
+      "A partially torn map with hand-drawn symbols."
     ],
     "tags": ["quest", "navigation"],
     "durability": null,
@@ -154,10 +230,15 @@
   },
   {
     "id": "amulet",
-    "names": ["Amulet", "Ancient Amulet"],
+    "names": [
+      "Amulet",
+      "Ancient Amulet",
+      "Runed Amulet"
+    ],
     "descriptions": [
       "An amulet carved with ancient runes.",
-      "A heavy amulet humming with faint energy."
+      "A heavy amulet humming with faint energy.",
+      "A pendant that vibrates slightly in your hand."
     ],
     "tags": ["magic", "quest"],
     "durability": null,
@@ -187,10 +268,15 @@
   },
   {
     "id": "apple",
-    "names": ["Apple", "Red Apple"],
+    "names": [
+      "Apple",
+      "Red Apple",
+      "Fresh Orchard Apple"
+    ],
     "descriptions": [
       "A fresh red apple.",
-      "An apple that looks surprisingly fresh."
+      "An apple that looks surprisingly fresh.",
+      "Crisp and sweet, ready to eat."
     ],
     "tags": ["food", "consumable"],
     "durability": 1,
@@ -198,10 +284,15 @@
   },
   {
     "id": "bread",
-    "names": ["Bread", "Loaf of Bread"],
+    "names": [
+      "Bread",
+      "Loaf of Bread",
+      "Stale Bread"
+    ],
     "descriptions": [
       "A loaf of dry bread.",
-      "Simple bread, still edible."
+      "Simple bread, still edible.",
+      "Hard on the outside but filling."
     ],
     "tags": ["food", "consumable"],
     "durability": 1,
@@ -292,6 +383,102 @@
       "An ancient tapestry with intricate patterns, worn by time."
     ],
     "tags": ["big-decoration"],
+    "durability": null,
+    "damage": null
+  },
+  {
+    "id": "warhammer",
+    "names": ["Warhammer", "Iron Warhammer", "Heavy Hammer"],
+    "descriptions": [
+      "A massive hammer built for crushing blows.",
+      "An iron warhammer with a reinforced handle.",
+      "A heavy weapon that requires strength to wield."
+    ],
+    "tags": ["weapon", "melee"],
+    "durability": 50,
+    "damage": 8
+  },
+  {
+    "id": "bow",
+    "names": ["Bow", "Longbow", "Hunter's Bow"],
+    "descriptions": [
+      "A flexible wooden bow.",
+      "A longbow crafted for precision shots.",
+      "A hunter's bow with a smooth grip."
+    ],
+    "tags": ["weapon", "ranged"],
+    "durability": 30,
+    "damage": 5
+  },
+  {
+    "id": "arrow",
+    "names": ["Arrow", "Wooden Arrow", "Iron-Tipped Arrow"],
+    "descriptions": [
+      "A simple wooden arrow.",
+      "An arrow with a sharp iron tip.",
+      "Lightweight ammunition for a bow."
+    ],
+    "tags": ["ammo", "consumable"],
+    "durability": 1,
+    "damage": 3
+  },
+  {
+    "id": "cloak",
+    "names": ["Cloak", "Dark Cloak", "Traveler's Cloak"],
+    "descriptions": [
+      "A dark cloak that blends into shadows.",
+      "A travel-worn cloak offering light protection.",
+      "A cloak that rustles softly when you move."
+    ],
+    "tags": ["armor", "stealth"],
+    "durability": 20,
+    "damage": null
+  },
+  {
+    "id": "boots",
+    "names": ["Boots", "Leather Boots", "Traveler's Boots"],
+    "descriptions": [
+      "Sturdy leather boots.",
+      "Boots designed for long journeys.",
+      "A pair of boots reinforced at the toes."
+    ],
+    "tags": ["armor"],
+    "durability": 25,
+    "damage": null
+  },
+  {
+    "id": "health_potion",
+    "names": ["Health Potion", "Red Potion", "Minor Healing Potion"],
+    "descriptions": [
+      "A small vial filled with red liquid.",
+      "A potion that restores a bit of vitality.",
+      "A glass bottle containing a glowing crimson brew."
+    ],
+    "tags": ["consumable", "healing"],
+    "durability": 1,
+    "damage": null
+  },
+  {
+    "id": "mana_potion",
+    "names": ["Mana Potion", "Blue Potion", "Arcane Elixir"],
+    "descriptions": [
+      "A blue potion swirling with magical energy.",
+      "A vial that restores magical power.",
+      "A shimmering drink favored by spellcasters."
+    ],
+    "tags": ["consumable", "magic"],
+    "durability": 1,
+    "damage": null
+  },
+  {
+    "id": "crystal",
+    "names": ["Magic Crystal", "Blue Crystal", "Arcane Shard"],
+    "descriptions": [
+      "A crystal glowing with inner light.",
+      "A mysterious crystal humming with arcane energy.",
+      "Light bends strangely around its surface."
+    ],
+    "tags": ["magic", "valuable"],
     "durability": null,
     "damage": null
   }
