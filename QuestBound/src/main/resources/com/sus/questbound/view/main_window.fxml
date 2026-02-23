@@ -15,8 +15,9 @@
     </padding>
 
     <!-- Output area: scrollable TextFlow so we can style GM vs Player messages -->
-    <ScrollPane fx:id="outputScroll" fitToWidth="true" prefHeight="320">
-        <TextFlow fx:id="outputFlow" prefWidth="480" styleClass="output-flow"/>
+    <ScrollPane fx:id="outputScroll" fitToWidth="true" prefHeight="500" prefWidth="600" VBox.vgrow="ALWAYS"
+                style="-fx-background: #2b2b2b; -fx-background-insets: 0;">
+        <TextFlow fx:id="outputFlow" prefWidth="580" styleClass="output-flow"/>
     </ScrollPane>
 
     <!-- Buttons row: navigation + actions -->
