@@ -5,6 +5,7 @@ import com.sus.questbound.model.Action;
 import com.sus.questbound.model.Direction;
 import com.sus.questbound.model.Item;
 import com.sus.questbound.model.MsgType;
+import com.sus.questbound.util.CollectionUtil;
 import com.sus.questbound.util.GMMsgHelper;
 import com.sus.questbound.util.PlayerMsgHelper;
 import com.sus.questbound.util.SystemMsgHelper;
@@ -13,10 +14,8 @@ import javafx.scene.control.DialogPane;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 public record ActionController(
         GameLogicController gameLogic,
@@ -32,7 +31,7 @@ public record ActionController(
     public void pickup() {
         output.println(PlayerMsgHelper.getPlayerMsg(Action.PICKUP, null), MsgType.PLAYER);
 
-        List<Item> pickupableItems = gameLogic.getPickupableItemsInCurrentRoom();
+        List<Item> pickupableItems = gameLogic.getPickupableItems();
 
         if (pickupableItems.isEmpty()) {
             output.println(SystemMsgHelper.nothingToPickup(), MsgType.SYSTEM);
@@ -42,23 +41,19 @@ public record ActionController(
 
         output.println(SystemMsgHelper.askWhichItemToPickup(), MsgType.SYSTEM);
 
-        List<String> itemNames = pickupableItems.stream()
-                .map(Item::name)
-                .collect(Collectors.toList());
+        List<String> itemNames = CollectionUtil.mapToList(pickupableItems, Item::name);
 
         showDialog(
                 SystemMsgHelper.pickupDialogTitle(),
                 SystemMsgHelper.pickupDialogHeader(),
                 SystemMsgHelper.pickupDialogContent(),
                 itemNames,
-                itemName -> {
-                    Item it = gameLogic.pickupItem(itemName);
-                    if (it != null) {
-                        output.println(GMMsgHelper.pickup(it), MsgType.GM);
-                    } else {
-                        output.println(SystemMsgHelper.itemNotHere(itemName), MsgType.SYSTEM);
-                    }
-                }
+                itemName -> gameLogic.pickupItem(itemName)
+                        .ifPresentOrElse(
+                                it -> output.println(GMMsgHelper.pickup(it), MsgType.GM),
+                                () -> output.println(SystemMsgHelper.itemNotHere(itemName), MsgType.SYSTEM)
+                        )
+
         );
     }
 
@@ -75,23 +70,18 @@ public record ActionController(
 
         output.println(SystemMsgHelper.askWhichItemToDrop(), MsgType.SYSTEM);
 
-        List<String> itemNames = inventory.stream()
-                .map(Item::name)
-                .collect(Collectors.toList());
+        List<String> itemNames = CollectionUtil.mapToList(inventory, Item::name);
 
         showDialog(
                 SystemMsgHelper.dropDialogTitle(),
                 SystemMsgHelper.dropDialogHeader(),
                 SystemMsgHelper.dropDialogContent(),
                 itemNames,
-                itemName -> {
-                    Item it = gameLogic.dropItem(itemName);
-                    if (it != null) {
-                        output.println(GMMsgHelper.drop(it), MsgType.GM);
-                    } else {
-                        output.println(SystemMsgHelper.itemNotInInventory(itemName), MsgType.SYSTEM);
-                    }
-                }
+                itemName -> gameLogic.dropItem(itemName)
+                        .ifPresentOrElse(
+                                it -> output.println(GMMsgHelper.drop(it), MsgType.GM),
+                                () -> output.println(SystemMsgHelper.itemNotInInventory(itemName), MsgType.SYSTEM)
+                        )
         );
     }
 

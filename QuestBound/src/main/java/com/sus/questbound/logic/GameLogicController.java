@@ -6,10 +6,8 @@ import com.sus.questbound.model.Direction;
 import com.sus.questbound.model.Item;
 import com.sus.questbound.model.Player;
 import com.sus.questbound.model.Room;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 
 public record GameLogicController(Game game) {
 
@@ -19,7 +17,7 @@ public record GameLogicController(Game game) {
     }
 
     public List<Item> getPlayerInventory() {
-        return new ArrayList<>(game.getPlayer().getInventory());
+        return List.copyOf(game.getPlayer().getInventory());
     }
 
     // ---------- Room ----------
@@ -27,14 +25,18 @@ public record GameLogicController(Game game) {
         return game.getCurrentRoom();
     }
 
-    public List<Item> getPickupableItemsInCurrentRoom() {
+    public List<Item> getRoomItems() {
+        return List.copyOf(game.getCurrentRoom().getItems());
+    }
+
+    public List<Item> getPickupableItems() {
         return game.getCurrentRoom().getItems().stream()
                 .filter(Item::pickupable)
                 .toList();
     }
 
-    public Set<Direction> getAvailableExits() {
-        return game.getCurrentRoom().getAvailableExits();
+    public List<Direction> getAvailableExits() {
+        return List.copyOf(game.getCurrentRoom().getAvailableExits());
     }
 
     // ---------- Movement ----------
@@ -45,26 +47,36 @@ public record GameLogicController(Game game) {
     // ---------- Pickup / Drop ----------
 
     /**
-     * Picks up an item from the room.
-     * Returns item if successful, null otherwise.
+     * Attempts to pick up an item from the current room.
+     *
+     * @param itemName the name of the item to pick up
+     * @return an Optional containing the picked-up Item if successful,
+     *         or an empty Optional if the item does not exist or cannot be picked up
      */
-    public Item pickupItem(String itemName) {
+    public Optional<Item> pickupItem(String itemName) {
         Item item = game.getCurrentRoom().getItemByName(itemName);
+
         if (item != null && game.pickupItem(itemName)) {
-            return item;
+            return Optional.of(item);
         }
-        return null;
+
+        return Optional.empty();
     }
 
     /**
-     * Drops an item from the player's inventory.
-     * Returns item if successful, otherwise null.
+     * Attempts to drop an item from the player's inventory.
+     *
+     * @param itemName the name of the item to drop
+     * @return an Optional containing the dropped Item if successful,
+     *         or an empty Optional if the item does not exist in the inventory
      */
-    public Item dropItem(String itemName) {
+    public Optional<Item> dropItem(String itemName) {
         Item item = game.getPlayer().getItemByName(itemName);
+
         if (item != null && game.dropItem(itemName)) {
-            return item;
+            return Optional.of(item);
         }
-        return null;
+
+        return Optional.empty();
     }
 }

@@ -80,7 +80,7 @@ public class MainController {
     private void handleLook() {
         OutputFormatHelper.printCollectionWithDetails(
                 outputController,
-                gameLogic.getCurrentRoom().getItems(),
+                gameLogic.getRoomItems(),
                 MsgType.SYSTEM,
                 SystemMsgHelper::nothingToSee,
                 it -> SystemMsgHelper.singleItemInRoom(it.name(), it.description()),
@@ -138,7 +138,7 @@ public class MainController {
 
         OutputFormatHelper.printCollectionWithDetails(
                 outputController,
-                List.copyOf(gameLogic.getAvailableExits()),
+                gameLogic.getAvailableExits(),
                 MsgType.SYSTEM,
                 SystemMsgHelper::noVisibleExits,
                 dir -> SystemMsgHelper.singleVisibleExit(dir.label()),
