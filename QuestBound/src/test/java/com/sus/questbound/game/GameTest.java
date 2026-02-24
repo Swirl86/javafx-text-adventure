@@ -95,22 +95,20 @@ class GameTest {
                 .orElseThrow(() -> new AssertionError("Starting room should contain at least one item"));
 
         // Act – pick up
-        Item pickedUpItem = gameLogic.pickupItem(item.name());
+        Item pickedUpItem = gameLogic.pickupItem(item.name())
+                .orElseThrow(() -> new AssertionError("pickupItem should have returned an item"));
 
         // Assert – pickup
-        assertNotNull(pickedUpItem, "pickupItem should return the picked up item");
         assertEquals(item, pickedUpItem, "Picked up item should be the expected item");
-
         assertTrue(player.getInventory().contains(item), "Player inventory should contain the item");
         assertFalse(startingRoom.getItems().contains(item), "Room should no longer contain the item");
 
         // Act – drop
-        Item droppedItem = gameLogic.dropItem(item.name());
+        Item droppedItem = gameLogic.dropItem(item.name())
+                .orElseThrow(() -> new AssertionError("dropItem should have returned an item"));
 
         // Assert – drop
-        assertNotNull(droppedItem, "dropItem should return the dropped item");
         assertEquals(item, droppedItem, "Dropped item should be the same item");
-
         assertFalse(player.getInventory().contains(item), "Item should be removed from player inventory");
         assertTrue(startingRoom.getItems().contains(item), "Item should be added back to the room");
     }
