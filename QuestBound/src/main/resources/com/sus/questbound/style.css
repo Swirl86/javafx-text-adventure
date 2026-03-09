@@ -156,3 +156,13 @@
     -fx-text-fill: #ffffff;
     -fx-opacity: 1.0;
 }
+
+/* ===== MapDialog Background ===== */
+.map-root {
+    -fx-background: #F9E4C8;
+    -fx-background-color: #F9E4C8;
+}
+
+.map-pane {
+    -fx-background-color: #F4D8B0;
+}

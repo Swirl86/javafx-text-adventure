@@ -62,7 +62,7 @@ public class RandomWorldGenerator implements WorldGenerator {
         }
 
         placeItemsRandomly(map.values());
-        placeDungeonExit(map.values());
+        placeDungeonExit(map.values(), startRoom);
         placeExitKey(map.values());
         return new World(startRoom);
     }
@@ -81,8 +81,12 @@ public class RandomWorldGenerator implements WorldGenerator {
         }
     }
 
-    private void placeDungeonExit(Collection<Room> rooms) {
-        Room exitRoom = pickRandomRoom(rooms, room -> true);
+    private void placeDungeonExit(Collection<Room> rooms, Room startRoom) {
+        // Pick any room EXCEPT the start room
+        Room exitRoom = pickRandomRoom(
+                rooms,
+                room -> room != startRoom
+        );
         exitRoom.setDungeonExit(true);
     }
 
