@@ -4,6 +4,7 @@ import com.sus.questbound.logic.GameLogicController;
 import com.sus.questbound.model.Item;
 import com.sus.questbound.model.ItemTags;
 import com.sus.questbound.model.Room;
+import com.sus.questbound.util.Css;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
@@ -35,7 +36,7 @@ public class MapDialog {
         dialog.setTitle("Map");
 
         Pane pane = new Pane();
-        pane.getStyleClass().add("map-pane");
+        pane.getStyleClass().add(Css.MAP_PANE);
 
         double paneWidth = 600;
         double paneHeight = 400;
@@ -179,7 +180,7 @@ public class MapDialog {
         // Scrollable map container
         ScrollPane scrollPane = new ScrollPane(pane);
         scrollPane.setPannable(true);
-        scrollPane.getStyleClass().add("map-root");
+        scrollPane.getStyleClass().add(Css.MAP_ROOT);
 
         // Apply CSS stylesheet
         scrollPane.getStylesheets().add(

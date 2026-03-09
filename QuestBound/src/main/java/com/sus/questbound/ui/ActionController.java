@@ -5,10 +5,7 @@ import com.sus.questbound.model.Action;
 import com.sus.questbound.model.Direction;
 import com.sus.questbound.model.Item;
 import com.sus.questbound.model.MsgType;
-import com.sus.questbound.util.CollectionUtil;
-import com.sus.questbound.util.GMMsgHelper;
-import com.sus.questbound.util.PlayerMsgHelper;
-import com.sus.questbound.util.SystemMsgHelper;
+import com.sus.questbound.util.*;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.DialogPane;
 
@@ -105,11 +102,11 @@ public record ActionController(
         );
 
         if (options.size() == 1) {
-            pane.lookupAll(".combo-box").forEach(box -> {
+            pane.lookupAll("." + Css.COMBO).forEach(box -> {
                 box.setDisable(true);
                 box.setOpacity(1.0);
 
-                box.lookupAll(".arrow-button").forEach(arrow -> {
+                box.lookupAll("." + Css.ARROW_BUTTON).forEach(arrow -> {
                     arrow.setVisible(false);
                     arrow.setManaged(false);
                 });
