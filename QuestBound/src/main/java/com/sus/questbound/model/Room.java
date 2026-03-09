@@ -13,6 +13,7 @@ public class Room {
     private final Map<Direction, Room> exits = new EnumMap<>(Direction.class);
 
     private boolean dungeonExit;
+    private boolean visited = false;
 
     public Room(String name, String description, int x, int y) {
         this.name = name;
@@ -21,6 +22,10 @@ public class Room {
         this.y = y;
         this.items = new ArrayList<>();
     }
+
+    // -------------------------
+    // Getters
+    // -------------------------
 
     public String getName() {
         return name;
@@ -38,6 +43,18 @@ public class Room {
         return y;
     }
 
+    // -------------------------
+    // Room logic
+    // -------------------------
+
+    public boolean isVisited() {
+        return visited;
+    }
+
+    public void setVisited(boolean visited) {
+        this.visited = visited;
+    }
+
     public boolean isDungeonExit() {
         return dungeonExit;
     }
@@ -52,6 +69,10 @@ public class Room {
 
     public Room getExit(Direction direction) {
         return exits.get(direction);
+    }
+
+    public Map<Direction, Room> getExits() {
+        return Collections.unmodifiableMap(exits);
     }
 
     public Set<Direction> getAvailableExits() {

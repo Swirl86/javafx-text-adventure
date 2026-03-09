@@ -9,6 +9,7 @@ import com.sus.questbound.logic.GameEventService;
 import com.sus.questbound.logic.GameLogicController;
 import com.sus.questbound.model.*;
 import com.sus.questbound.ui.ActionController;
+import com.sus.questbound.ui.MapDialog;
 import com.sus.questbound.ui.OutputController;
 import com.sus.questbound.util.GMMsgHelper;
 import com.sus.questbound.util.OutputFormatHelper;
@@ -166,10 +167,12 @@ public class MainController {
     @FXML private void onHint() { executeAction(Action.HINT, null); }
     @FXML private void onPickup() { actions.pickup(); }
     @FXML private void onDrop()   { actions.drop(); }
+    @FXML private void onMap() {
+        MapDialog.show(gameLogic, gameLogic.getCurrentRoom());
+    }
 
     // TODO implement
     @FXML private void onQuest() { }
     @FXML private void onStatus() { }
     @FXML private void onUse() { }
-    @FXML private void onMap() { }
 }

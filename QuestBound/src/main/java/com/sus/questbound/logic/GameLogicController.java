@@ -8,6 +8,7 @@ import com.sus.questbound.model.Player;
 import com.sus.questbound.model.Room;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public record GameLogicController(Game game) {
 
@@ -31,12 +32,16 @@ public record GameLogicController(Game game) {
 
     public List<Item> getPickupableItems() {
         return game.getCurrentRoom().getItems().stream()
-                .filter(Item::pickupable)
+                .filter(Item::isPickupable)
                 .toList();
     }
 
     public List<Direction> getAvailableExits() {
         return List.copyOf(game.getCurrentRoom().getAvailableExits());
+    }
+
+    public Set<Room> getAllRooms() {
+        return game.getWorld().getAllRooms();
     }
 
     // ---------- Movement ----------

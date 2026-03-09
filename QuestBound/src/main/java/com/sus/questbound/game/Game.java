@@ -10,11 +10,17 @@ public class Game {
 
     private final Player player;
     private Room currentRoom;
+    private final World world;
 
     public Game(Player player, WorldGenerator generator) {
         this.player = player;
-        World world = generator.generate();
-        this.currentRoom = world.startRoom();
+        world = generator.generate();
+        this.currentRoom = world.getStartRoom();
+        this.currentRoom.setVisited(true);
+    }
+
+    public World getWorld() {
+        return world;
     }
 
     public Room getCurrentRoom() {
@@ -26,6 +32,8 @@ public class Game {
 
         if (nextRoom != null) {
             currentRoom = nextRoom;
+            currentRoom.setVisited(true);
+
             return new MoveResult(true, currentRoom, List.copyOf(currentRoom.getAvailableExits()));
         } else {
             return new MoveResult(false, currentRoom, List.copyOf(currentRoom.getAvailableExits()));
