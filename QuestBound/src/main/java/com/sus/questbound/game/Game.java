@@ -31,13 +31,17 @@ public class Game {
         Room nextRoom = currentRoom.getExit(direction);
 
         if (nextRoom != null) {
-            currentRoom = nextRoom;
-            currentRoom.setVisited(true);
+            enterRoom(nextRoom);
 
             return new MoveResult(true, currentRoom, List.copyOf(currentRoom.getAvailableExits()));
         } else {
             return new MoveResult(false, currentRoom, List.copyOf(currentRoom.getAvailableExits()));
         }
+    }
+
+    private void enterRoom(Room room) {
+        currentRoom = room;
+        currentRoom.setVisited(true);
     }
 
     public Player getPlayer() {
