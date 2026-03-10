@@ -3,7 +3,9 @@ package com.sus.questbound.ui;
 import com.sus.questbound.logic.GameLogicController;
 import com.sus.questbound.model.Item;
 import com.sus.questbound.model.ItemTags;
-import com.sus.questbound.model.Room;
+import com.sus.questbound.model.view.MapExitView;
+import com.sus.questbound.model.view.MapItemView;
+import com.sus.questbound.model.view.MapRoomView;
 import com.sus.questbound.util.Css;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
@@ -30,7 +32,7 @@ import java.util.Objects;
 
 public class MapDialog {
 
-    public static void show(GameLogicController gameLogic, Room playerRoom) {
+    public static void show(GameLogicController gameLogic) {
         Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.setTitle("Map");
@@ -42,11 +44,15 @@ public class MapDialog {
         double paneHeight = 400;
         pane.setPrefSize(paneWidth, paneHeight);
 
-        // Calculate world boundaries to scale the map correctly
-        int minX = gameLogic.getAllRooms().stream().mapToInt(Room::getX).min().orElse(0);
-        int maxX = gameLogic.getAllRooms().stream().mapToInt(Room::getX).max().orElse(0);
-        int minY = gameLogic.getAllRooms().stream().mapToInt(Room::getY).min().orElse(0);
-        int maxY = gameLogic.getAllRooms().stream().mapToInt(Room::getY).max().orElse(0);
+        // Fetch DTO data
+        var rooms = gameLogic.getMapRooms();
+        var exits = gameLogic.getMapExits();
+
+        // Calculate world bounds
+        int minX = rooms.stream().mapToInt(MapRoomView::x).min().orElse(0);
+        int maxX = rooms.stream().mapToInt(MapRoomView::x).max().orElse(0);
+        int minY = rooms.stream().mapToInt(MapRoomView::y).min().orElse(0);
+        int maxY = rooms.stream().mapToInt(MapRoomView::y).max().orElse(0);
 
         // Dynamic scaling so the map fits inside the window
         double scaleX = paneWidth / (maxX - minX + 3);
@@ -54,60 +60,70 @@ public class MapDialog {
         double scale = Math.min(scaleX, scaleY);
 
         // Center the map around the player's current room
-        double offsetX = paneWidth / 2 - (playerRoom.getX() - minX + 0.5) * scale;
-        double offsetY = paneHeight / 2 - (playerRoom.getY() - minY + 0.5) * scale;
+        MapRoomView playerRoom = rooms.stream()
+                .filter(MapRoomView::playerHere)
+                .findFirst()
+                .orElseThrow();
 
-        for (Room room : gameLogic.getAllRooms()) {
+        double offsetX = paneWidth / 2 - (playerRoom.x() - minX + 0.5) * scale;
+        double offsetY = paneHeight / 2 - (playerRoom.y() - minY + 0.5) * scale;
 
-            // Only draw rooms that have been visited (or the player's current room)
-            if (!room.isVisited() && room != playerRoom)
+        // --- DRAW EXITS ---
+        for (MapExitView exit : exits) {
+
+            if (!exit.visible())
                 continue;
 
-            double roomX = (room.getX() - minX + 0.5) * scale + offsetX;
-            double roomY = paneHeight - ((room.getY() - minY + 0.5) * scale + offsetY);
+            double fromX = (exit.fromX() - minX + 0.5) * scale + offsetX;
+            double fromY = paneHeight - ((exit.fromY() - minY + 0.5) * scale + offsetY);
 
-            // Draw exits only if the connected room is also visited
-            room.getExits().forEach((dir, exitRoom) -> {
+            double toX = (exit.toX() - minX + 0.5) * scale + offsetX;
+            double toY = paneHeight - ((exit.toY() - minY + 0.5) * scale + offsetY);
 
-                // Skip exits leading to unvisited rooms
-                if (!exitRoom.isVisited() && exitRoom != playerRoom)
-                    return;
+            Line line = new Line(fromX, fromY, toX, toY);
+            line.setStroke(Color.web("#3A2A1A"));
+            line.setStrokeWidth(3);
+            line.setOpacity(0.35);
+            line.setSmooth(true);
+            pane.getChildren().add(line);
+        }
 
-                // Avoid drawing duplicate lines between rooms
-                if (System.identityHashCode(room) < System.identityHashCode(exitRoom)) {
-                    double exitX = (exitRoom.getX() - minX + 0.5) * scale + offsetX;
-                    double exitY = paneHeight - ((exitRoom.getY() - minY + 0.5) * scale + offsetY);
+        // --- DRAW ROOMS ---
+        for (MapRoomView room : rooms) {
 
-                    Line line = new Line(roomX, roomY, exitX, exitY);
-                    line.setStroke(Color.web("#4B3621"));
-                    line.setStrokeWidth(2);
-                    line.setOpacity(0.5);
-                    pane.getChildren().add(line);
-                }
-            });
+            if (!room.visited() && !room.playerHere())
+                continue;
+
+            double roomX = (room.x() - minX + 0.5) * scale + offsetX;
+            double roomY = paneHeight - ((room.y() - minY + 0.5) * scale + offsetY);
 
             // Room color (brown for normal rooms, blue for dungeon exit)
-            LinearGradient grad = room.isDungeonExit()
+            LinearGradient grad = room.dungeonExit()
                     ? new LinearGradient(0, 0, 1, 1, true, CycleMethod.NO_CYCLE,
-                    new Stop(0, Color.web("#4C90C0")), new Stop(1, Color.web("#2A6CA9")))
+                    new Stop(0, Color.web("#6BB5FF")),
+                    new Stop(1, Color.web("#3A7CC4")))
                     : new LinearGradient(0, 0, 1, 1, true, CycleMethod.NO_CYCLE,
-                    new Stop(0, Color.web("#8B5E3C")), new Stop(1, Color.web("#5A3E21")));
+                    new Stop(0, Color.web("#C49A6C")),
+                    new Stop(1, Color.web("#8B5E3C")));
 
             Circle roomCircle = new Circle(roomX, roomY, 20);
             roomCircle.setFill(grad);
-            roomCircle.setEffect(new DropShadow(5, Color.BLACK));
+            roomCircle.setEffect(new DropShadow(12, Color.rgb(0,0,0,0.4)));
             pane.getChildren().add(roomCircle);
 
             // Draw room name above the circle
-            Text name = new Text(roomX - room.getName().length() * 3, roomY - 30, room.getName());
+            Text name = new Text(roomX - room.name().length() * 3, roomY - 28, room.name());
+            name.setFill(Color.web("#3A2A1A"));
+            name.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
             pane.getChildren().add(name);
 
             // Draw player icon if this is the player's current room
-            if (room.equals(playerRoom)) {
+            if (room.playerHere()) {
                 ImageView playerIcon = new ImageView(
                         new Image(Objects.requireNonNull(MapDialog.class.getResource(
                                 "/com/sus/questbound/icons/player.png")).toExternalForm())
                 );
+                playerIcon.setEffect(new DropShadow(20, Color.GOLD));
                 playerIcon.setFitWidth(24);
                 playerIcon.setFitHeight(24);
                 playerIcon.setX(roomX - 12);
@@ -116,9 +132,9 @@ public class MapDialog {
 
                 // Animated highlight circle behind the player
                 Circle highlight = new Circle(roomX, roomY, 25);
-                highlight.setStroke(Color.ORANGE);
-                highlight.setFill(Color.TRANSPARENT);
-                highlight.setStrokeWidth(2);
+                highlight.setStroke(Color.web("#FFB300"));
+                highlight.setStrokeWidth(3);
+                highlight.setOpacity(0.8);
                 pane.getChildren().add(0, highlight);
 
                 FadeTransition fade = new FadeTransition(Duration.seconds(1), highlight);
@@ -139,42 +155,44 @@ public class MapDialog {
             }
 
             // Draw items only in visited rooms
-            if (room.isVisited()) {
-                int itemCount = room.getItems().size();
-                if (itemCount > 0) {
-                    double itemOffset = Math.max(25, itemCount * 5);
+            if (room.visited() && !room.items().isEmpty()) {
+                int itemCount = room.items().size();
+                double itemOffset = Math.max(25, itemCount * 5);
 
-                    for (int i = 0; i < itemCount; i++) {
-                        Item item = room.getItems().get(i);
+                for (int i = 0; i < itemCount; i++) {
+                    MapItemView item = room.items().get(i);
 
-                        // Position items in a circle around the room
-                        double angle = 2 * Math.PI * i / itemCount;
-                        double ix = roomX + Math.cos(angle) * itemOffset;
-                        double iy = roomY + Math.sin(angle) * itemOffset;
+                    double angle = 2 * Math.PI * i / itemCount;
+                    double ix = roomX + Math.cos(angle) * itemOffset;
+                    double iy = roomY + Math.sin(angle) * itemOffset;
 
-                        Circle itemCircle = getCircle(ix, iy, item);
+                    Circle itemCircle = new Circle(ix, iy, 7);
+                    itemCircle.setFill(Color.web(item.colorHex()));
+                    itemCircle.setStroke(Color.web("#3A2A1A"));
+                    itemCircle.setStrokeWidth(1.5);
+                    itemCircle.setEffect(new DropShadow(5, Color.rgb(0,0,0,0.3)));
 
-                        Tooltip tooltip = new Tooltip(item.name());
-                        Tooltip.install(itemCircle, tooltip);
+                    Tooltip tooltip = new Tooltip(item.name());
+                    Tooltip.install(itemCircle, tooltip);
 
-                        pane.getChildren().add(itemCircle);
-                    }
+                    pane.getChildren().add(itemCircle);
                 }
             }
 
             // Tooltip for visited rooms
-            if (room.isVisited()) {
-                String itemsText = room.getItems().stream()
-                        .map(Item::name)
-                        .reduce("", (a, b) -> a.isEmpty() ? b : a + ", " + b);
+            String tooltipText = room.name() + "\n" + room.description();
 
-                String tooltipText = room.getName() + "\n" + room.getDescription();
-                if (!itemsText.isEmpty())
-                    tooltipText += "\nItems: " + itemsText;
+            if (!room.items().isEmpty()) {
+                String itemList = room.items().stream()
+                        .map(MapItemView::name)
+                        .reduce((a, b) -> a + ", " + b)
+                        .orElse("");
 
-                Tooltip tooltip = new Tooltip(tooltipText);
-                Tooltip.install(roomCircle, tooltip);
+                tooltipText += "\nItems: " + itemList;
             }
+
+            Tooltip tooltip = new Tooltip(tooltipText);
+            Tooltip.install(roomCircle, tooltip);
         }
 
         // Scrollable map container
@@ -182,7 +200,6 @@ public class MapDialog {
         scrollPane.setPannable(true);
         scrollPane.getStyleClass().add(Css.MAP_ROOT);
 
-        // Apply CSS stylesheet
         scrollPane.getStylesheets().add(
                 Objects.requireNonNull(
                         MapDialog.class.getResource("/com/sus/questbound/style.css")
@@ -191,21 +208,5 @@ public class MapDialog {
 
         dialog.setScene(new Scene(scrollPane, paneWidth, paneHeight));
         dialog.showAndWait();
-    }
-
-    private static Circle getCircle(double ix, double iy, Item item) {
-        Circle itemCircle = new Circle(ix, iy, 6);
-
-        // Color items based on type
-        if (item.hasTag(ItemTags.FINAL_KEY.id()))
-            itemCircle.setFill(Color.BLUE);
-        else if (item.isPickupable())
-            itemCircle.setFill(Color.GREEN);
-        else
-            itemCircle.setFill(Color.RED);
-
-        itemCircle.setStroke(Color.BLACK);
-        itemCircle.setStrokeWidth(1);
-        return itemCircle;
     }
 }

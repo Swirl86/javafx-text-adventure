@@ -2,10 +2,11 @@ package com.sus.questbound.logic;
 
 import com.sus.questbound.game.Game;
 import com.sus.questbound.game.MoveResult;
-import com.sus.questbound.model.Direction;
-import com.sus.questbound.model.Item;
-import com.sus.questbound.model.Player;
-import com.sus.questbound.model.Room;
+import com.sus.questbound.model.*;
+import com.sus.questbound.model.view.MapExitView;
+import com.sus.questbound.model.view.MapItemView;
+import com.sus.questbound.model.view.MapRoomView;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -42,6 +43,48 @@ public record GameLogicController(Game game) {
 
     public Set<Room> getAllRooms() {
         return game.getWorld().getAllRooms();
+    }
+
+    // ---------- Map ----------
+    public List<MapRoomView> getMapRooms() {
+        Room playerRoom = getCurrentRoom();
+
+        return getAllRooms().stream()
+                .map(room -> {
+
+                    var items = room.getItems().stream()
+                            .map(item -> new MapItemView(
+                                    item.name(),
+                                    item.hasTag(ItemTags.FINAL_KEY.id()) ? "#0000FF" :   // blue
+                                            item.isPickupable() ? "#00FF00" :            // green
+                                                    "#FF0000"                            // red
+                            ))
+                            .toList();
+
+                    return new MapRoomView(
+                            room.getX(),
+                            room.getY(),
+                            room.getName(),
+                            room.getDescription(),
+                            room.isVisited(),
+                            room.isDungeonExit(),
+                            room == playerRoom,
+                            items
+                    );
+                })
+                .toList();
+    }
+
+    public List<MapExitView> getMapExits() {
+        return getAllRooms().stream()
+                .flatMap(room -> room.getExits().values().stream()
+                        .map(exit -> new MapExitView(
+                                room.getX(), room.getY(),
+                                exit.getX(), exit.getY(),
+                                room.isVisited() && exit.isVisited()
+                        ))
+                )
+                .toList();
     }
 
     // ---------- Movement ----------

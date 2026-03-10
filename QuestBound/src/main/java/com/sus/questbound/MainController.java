@@ -167,9 +167,7 @@ public class MainController {
     @FXML private void onHint() { executeAction(Action.HINT, null); }
     @FXML private void onPickup() { actions.pickup(); }
     @FXML private void onDrop()   { actions.drop(); }
-    @FXML private void onMap() {
-        MapDialog.show(gameLogic, gameLogic.getCurrentRoom());
-    }
+    @FXML private void onMap() { MapDialog.show(gameLogic); }
 
     // TODO implement
     @FXML private void onQuest() { }
