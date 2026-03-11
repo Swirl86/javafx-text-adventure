@@ -1,8 +1,12 @@
 package com.sus.questbound.game;
 
-import com.sus.questbound.game.world.World;
-import com.sus.questbound.game.world.WorldGenerator;
-import com.sus.questbound.model.*;
+import com.sus.questbound.game.engine.MoveResult;
+import com.sus.questbound.game.model.Direction;
+import com.sus.questbound.game.model.Item;
+import com.sus.questbound.game.model.Player;
+import com.sus.questbound.game.model.Room;
+import com.sus.questbound.game.world.GameWorld;
+import com.sus.questbound.game.world.generator.DungeonGenerator;
 
 import java.util.List;
 
@@ -10,17 +14,17 @@ public class Game {
 
     private final Player player;
     private Room currentRoom;
-    private final World world;
+    private final GameWorld gameWorld;
 
-    public Game(Player player, WorldGenerator generator) {
+    public Game(Player player, DungeonGenerator generator) {
         this.player = player;
-        world = generator.generate();
-        this.currentRoom = world.getStartRoom();
+        gameWorld = generator.generate();
+        this.currentRoom = gameWorld.getStartRoom();
         this.currentRoom.setVisited(true);
     }
 
-    public World getWorld() {
-        return world;
+    public GameWorld getWorld() {
+        return gameWorld;
     }
 
     public Room getCurrentRoom() {

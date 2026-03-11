@@ -1,15 +1,15 @@
 package com.sus.questbound.util;
 
-import com.sus.questbound.game.library.gm.GMMessageLibrary;
-import com.sus.questbound.game.library.gm.GMMessageDefinition;
-import com.sus.questbound.model.Item;
+import com.sus.questbound.game.data.gm.GMMessageDefinition;
+import com.sus.questbound.game.data.gm.GMMessageRepository;
+import com.sus.questbound.game.model.Item;
 
 import java.util.List;
 import java.util.Random;
 
 public class GMMsgHelper {
 
-    private static final GMMessageDefinition M = GMMessageLibrary.get();
+    private static final GMMessageDefinition M = GMMessageRepository.get();
     private static final Random RANDOM = new Random();
 
     private static String randomFrom(List<String> list) {

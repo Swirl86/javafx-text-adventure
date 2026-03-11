@@ -1,6 +1,6 @@
 package com.sus.questbound.game.world.generator;
 
-import com.sus.questbound.model.Room;
+import com.sus.questbound.game.model.Room;
 
 import java.util.Collection;
 import java.util.List;
