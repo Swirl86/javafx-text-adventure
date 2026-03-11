@@ -3,8 +3,9 @@ package com.sus.questbound;
 import com.sus.questbound.game.Game;
 import com.sus.questbound.game.MoveResult;
 import com.sus.questbound.game.library.item.ItemLibrary;
-import com.sus.questbound.game.world.FixedWorldGenerator;
-import com.sus.questbound.game.world.RandomWorldGenerator;
+import com.sus.questbound.game.world.config.WorldGenerationConfig;
+import com.sus.questbound.game.world.generator.FixedWorldGenerator;
+import com.sus.questbound.game.world.generator.RandomWorldGenerator;
 import com.sus.questbound.logic.GameEventService;
 import com.sus.questbound.logic.GameLogicController;
 import com.sus.questbound.model.*;
@@ -20,7 +21,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.text.TextFlow;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class MainController {
@@ -40,10 +40,13 @@ public class MainController {
         player.addItem(ItemLibrary.createItemWithTag(ItemTags.NAVIGATION.id()));
         player.addItem(ItemLibrary.createItemWithTag(ItemTags.LIGHT.id()));
 
+        var config = new WorldGenerationConfig(6, 12);
+
         // Fixed world for testing
-        Game game1 = new Game(player, new FixedWorldGenerator());
-        // Random world
-        Game game = new Game(player, new RandomWorldGenerator());
+        Game game1 = new Game(player, new FixedWorldGenerator(config));
+
+        // Random world with config
+        Game game = new Game(player, new RandomWorldGenerator(config));
 
         gameLogic = new GameLogicController(game);
         gameEventService = new GameEventService();

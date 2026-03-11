@@ -1,14 +1,19 @@
-package com.sus.questbound.game.world;
+package com.sus.questbound.game.world.generator;
 
 import com.sus.questbound.game.library.item.ItemLibrary;
+import com.sus.questbound.game.world.World;
+import com.sus.questbound.game.world.WorldGenerator;
+import com.sus.questbound.game.world.config.WorldGenerationConfig;
 import com.sus.questbound.model.Direction;
 import com.sus.questbound.model.ItemTags;
 import com.sus.questbound.model.Room;
 
 /**
- * Creates a static, predictable world for testing and debugging.
+ * Generates a static, predictable world for testing and debugging.
+ * Accepts a WorldGenerationConfig for consistency with other generators,
+ * but ignores it since the world layout is fixed and does not use configuration.
  */
-public class FixedWorldGenerator implements WorldGenerator {
+public record FixedWorldGenerator(WorldGenerationConfig config) implements WorldGenerator {
 
     @Override
     public World generate() {
@@ -19,8 +24,8 @@ public class FixedWorldGenerator implements WorldGenerator {
          (-1,1) Library -- (0,1) Corridor -- (1,1) Armory
                                 |
                         (0,0) Entrance
-
          */
+
         Room entrance = new Room("Entrance Hall", "A large entry hall with cold stone walls.", 0, 0);
         Room corridor = new Room("Corridor", "A narrow corridor with flickering torches.", 0, 1);
         Room armory = new Room("Armory", "A dusty armory with broken weapons.", 1, 1);
