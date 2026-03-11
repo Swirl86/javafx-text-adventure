@@ -1,7 +1,7 @@
 package com.sus.questbound.util;
 
-import com.sus.questbound.ui.OutputController;
-import com.sus.questbound.model.MsgType;
+import com.sus.questbound.game.model.MsgType;
+import com.sus.questbound.ui.GameOutputController;
 
 import java.util.List;
 import java.util.function.Function;
@@ -13,7 +13,7 @@ public final class OutputFormatHelper {
     private OutputFormatHelper() {}
 
     public static <T> void printCollectionWithDetails(
-            OutputController output,
+            GameOutputController output,
             List<T> items,
             MsgType type,
             Supplier<String> emptyMsg,

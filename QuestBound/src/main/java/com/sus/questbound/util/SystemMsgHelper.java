@@ -1,16 +1,16 @@
 package com.sus.questbound.util;
 
-import com.sus.questbound.game.library.system.SystemMessageDefinition;
-import com.sus.questbound.game.library.system.SystemMessageLibrary;
-import com.sus.questbound.model.Player;
-import com.sus.questbound.model.Room;
+import com.sus.questbound.game.data.system.SystemMessageDefinition;
+import com.sus.questbound.game.data.system.SystemMessageRepository;
+import com.sus.questbound.game.model.Player;
+import com.sus.questbound.game.model.Room;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class SystemMsgHelper {
 
-    private static final SystemMessageDefinition MSG = SystemMessageLibrary.get();
+    private static final SystemMessageDefinition MSG = SystemMessageRepository.get();
 
     // ---------- Welcome ----------
     public static String randomWelcome(Player player) {

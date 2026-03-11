@@ -1,5 +1,8 @@
 package com.sus.questbound.model;
 
+import com.sus.questbound.game.model.Item;
+import com.sus.questbound.game.model.Player;
+import com.sus.questbound.game.model.Room;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

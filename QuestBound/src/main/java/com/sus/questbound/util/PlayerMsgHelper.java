@@ -1,9 +1,9 @@
 package com.sus.questbound.util;
 
-import com.sus.questbound.game.library.player.PlayerMessageLibrary;
-import com.sus.questbound.game.library.player.PlayerMessageDefinition;
-import com.sus.questbound.model.Action;
-import com.sus.questbound.model.Direction;
+import com.sus.questbound.game.data.player.PlayerMessageDefinition;
+import com.sus.questbound.game.data.player.PlayerMessageRepository;
+import com.sus.questbound.game.model.Action;
+import com.sus.questbound.game.model.Direction;
 
 import java.util.List;
 import java.util.Random;
@@ -11,7 +11,7 @@ import java.util.Random;
 public final class PlayerMsgHelper {
 
     private static final Random RANDOM = new Random();
-    private static final PlayerMessageDefinition DEF = PlayerMessageLibrary.get();
+    private static final PlayerMessageDefinition DEF = PlayerMessageRepository.get();
 
     private PlayerMsgHelper() {}
 

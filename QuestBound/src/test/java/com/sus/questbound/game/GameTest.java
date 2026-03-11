@@ -1,9 +1,10 @@
 package com.sus.questbound.game;
 
-import com.sus.questbound.game.world.config.WorldGenerationConfig;
-import com.sus.questbound.game.world.generator.FixedWorldGenerator;
-import com.sus.questbound.logic.GameLogicController;
-import com.sus.questbound.model.*;
+import com.sus.questbound.game.engine.GameLogic;
+import com.sus.questbound.game.engine.MoveResult;
+import com.sus.questbound.game.model.*;
+import com.sus.questbound.game.world.config.DungeonGenerationConfig;
+import com.sus.questbound.game.world.generator.FixedDungeonGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,17 +16,17 @@ class GameTest {
 
     private Game game;
     private Player player;
-    private GameLogicController gameLogic;
+    private GameLogic gameLogic;
 
     @BeforeEach
     void setUp() {
         player = new Player("Hero");
 
-        // Config is unused by FixedWorldGenerator, but required for constructor
-        WorldGenerationConfig config = new WorldGenerationConfig(1, 1);
+        // Config is unused by FixedDungeonGenerator, but required for constructor
+        DungeonGenerationConfig config = new DungeonGenerationConfig(1, 1);
 
-        game = new Game(player, new FixedWorldGenerator(config));
-        gameLogic = new GameLogicController(game);
+        game = new Game(player, new FixedDungeonGenerator(config));
+        gameLogic = new GameLogic(game);
     }
 
     // ---------- World & movement ----------
