@@ -1,11 +1,9 @@
 package com.sus.questbound.game;
 
-import com.sus.questbound.game.world.FixedWorldGenerator;
+import com.sus.questbound.game.world.config.WorldGenerationConfig;
+import com.sus.questbound.game.world.generator.FixedWorldGenerator;
 import com.sus.questbound.logic.GameLogicController;
-import com.sus.questbound.model.Direction;
-import com.sus.questbound.model.Item;
-import com.sus.questbound.model.Player;
-import com.sus.questbound.model.Room;
+import com.sus.questbound.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +20,11 @@ class GameTest {
     @BeforeEach
     void setUp() {
         player = new Player("Hero");
-        game = new Game(player, new FixedWorldGenerator());
+
+        // Config is unused by FixedWorldGenerator, but required for constructor
+        WorldGenerationConfig config = new WorldGenerationConfig(1, 1);
+
+        game = new Game(player, new FixedWorldGenerator(config));
         gameLogic = new GameLogicController(game);
     }
 
@@ -30,26 +32,34 @@ class GameTest {
     @Test
     void playerStartsInEntranceHall() {
         Room start = game.getCurrentRoom();
-        assertEquals("Entrance Hall", start.getName());
+        assertNotNull(start, "Game should always have a starting room");
+        assertEquals("Entrance Hall", start.getName(), "Player should start in Entrance Hall");
+        assertTrue(start.isVisited(), "Starting room should be marked as visited");
     }
 
     @Test
     void movingNorthFromEntranceLeadsToCorridor() {
         MoveResult result = gameLogic.move(Direction.NORTH);
-        assertTrue(result.success(), "Move north should succeed");
-        assertEquals("Corridor", game.getCurrentRoom().getName());
-        assertTrue(result.availableExits().contains(Direction.SOUTH));
+
+        assertAll(
+                () -> assertTrue(result.success(), "Move north should succeed"),
+                () -> assertEquals("Corridor", game.getCurrentRoom().getName(), "Player should now be in Corridor"),
+                () -> assertTrue(result.availableExits().contains(Direction.SOUTH), "Corridor should have a south exit"),
+                () -> assertTrue(game.getCurrentRoom().isVisited(), "Corridor should be marked as visited")
+        );
     }
 
     @Test
     void movementAliasesWorkCorrectly() {
-        MoveResult north = gameLogic.move(Direction.NORTH);
-        assertTrue(north.success());
+        gameLogic.move(Direction.NORTH);
         assertEquals("Corridor", game.getCurrentRoom().getName());
 
         MoveResult east = gameLogic.move(Direction.EAST);
-        assertTrue(east.success());
-        assertEquals("Armory", game.getCurrentRoom().getName());
+
+        assertAll(
+                () -> assertTrue(east.success(), "Move east should succeed"),
+                () -> assertEquals("Armory", game.getCurrentRoom().getName(), "Player should now be in Armory")
+        );
     }
 
     @Test
@@ -58,9 +68,11 @@ class GameTest {
 
         MoveResult result = gameLogic.move(Direction.WEST);
 
-        assertFalse(result.success(), "Move west should fail");
-        assertSame(start, game.getCurrentRoom(), "Player should remain in same room");
-        assertTrue(result.availableExits().contains(Direction.NORTH));
+        assertAll(
+                () -> assertFalse(result.success(), "Move west should fail"),
+                () -> assertSame(start, game.getCurrentRoom(), "Player should remain in the same room"),
+                () -> assertTrue(result.availableExits().contains(Direction.NORTH), "Entrance should have a north exit")
+        );
     }
 
     @Test
@@ -69,8 +81,11 @@ class GameTest {
         assertEquals("Corridor", game.getCurrentRoom().getName());
 
         MoveResult back = gameLogic.move(Direction.SOUTH);
-        assertTrue(back.success());
-        assertEquals("Entrance Hall", game.getCurrentRoom().getName());
+
+        assertAll(
+                () -> assertTrue(back.success(), "Move south should succeed"),
+                () -> assertEquals("Entrance Hall", game.getCurrentRoom().getName(), "Player should return to Entrance Hall")
+        );
     }
 
     @Test
@@ -79,37 +94,64 @@ class GameTest {
         Room corridor = result.newRoom();
 
         Set<Direction> exits = corridor.getAvailableExits();
-        assertTrue(exits.contains(Direction.SOUTH));
-        assertTrue(exits.contains(Direction.EAST));
-        assertTrue(exits.contains(Direction.WEST));
+
+        assertAll(
+                () -> assertTrue(exits.contains(Direction.SOUTH), "Corridor should have a south exit"),
+                () -> assertTrue(exits.contains(Direction.EAST), "Corridor should have an east exit"),
+                () -> assertTrue(exits.contains(Direction.WEST), "Corridor should have a west exit")
+        );
     }
 
     // ---------- Items & inventory ----------
     @Test
     void playerCanPickUpAndDropItem() {
-        // Arrange
         Room startingRoom = game.getCurrentRoom();
 
         Item item = startingRoom.getItems().stream()
                 .findFirst()
                 .orElseThrow(() -> new AssertionError("Starting room should contain at least one item"));
 
-        // Act – pick up
+        // Pick up
         Item pickedUpItem = gameLogic.pickupItem(item.name())
-                .orElseThrow(() -> new AssertionError("pickupItem should have returned an item"));
+                .orElseThrow(() -> new AssertionError("pickupItem should return an item"));
 
-        // Assert – pickup
-        assertEquals(item, pickedUpItem, "Picked up item should be the expected item");
-        assertTrue(player.getInventory().contains(item), "Player inventory should contain the item");
-        assertFalse(startingRoom.getItems().contains(item), "Room should no longer contain the item");
+        assertAll(
+                () -> assertEquals(item, pickedUpItem, "Picked up item should match expected item"),
+                () -> assertTrue(player.getInventory().contains(item), "Player inventory should contain the item"),
+                () -> assertFalse(startingRoom.getItems().contains(item), "Room should no longer contain the item")
+        );
 
-        // Act – drop
+        // Drop
         Item droppedItem = gameLogic.dropItem(item.name())
-                .orElseThrow(() -> new AssertionError("dropItem should have returned an item"));
+                .orElseThrow(() -> new AssertionError("dropItem should return an item"));
 
-        // Assert – drop
-        assertEquals(item, droppedItem, "Dropped item should be the same item");
-        assertFalse(player.getInventory().contains(item), "Item should be removed from player inventory");
-        assertTrue(startingRoom.getItems().contains(item), "Item should be added back to the room");
+        assertAll(
+                () -> assertEquals(item, droppedItem, "Dropped item should be the same item"),
+                () -> assertFalse(player.getInventory().contains(item), "Item should be removed from inventory"),
+                () -> assertTrue(startingRoom.getItems().contains(item), "Item should be placed back in the room")
+        );
+    }
+
+    // ---------- Fixed world structure ----------
+    @Test
+    void fixedWorldHasDungeonExitInArmory() {
+        gameLogic.move(Direction.NORTH); // Corridor
+        gameLogic.move(Direction.EAST);  // Armory
+
+        Room armory = game.getCurrentRoom();
+
+        assertTrue(armory.isDungeonExit(), "Armory should be marked as dungeon exit");
+    }
+
+    @Test
+    void fixedWorldHasKeyInCorridor() {
+        gameLogic.move(Direction.NORTH); // Corridor
+
+        Room corridor = game.getCurrentRoom();
+
+        boolean hasKey = corridor.getItems().stream()
+                .anyMatch(i -> i.tags().contains(ItemTags.FINAL_KEY.id()));
+
+        assertTrue(hasKey, "Corridor should contain the FINAL_KEY item");
     }
 }
