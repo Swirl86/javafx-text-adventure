@@ -21,6 +21,7 @@ module com.sus.questbound {
     exports com.sus.questbound;
     exports com.sus.questbound.ui;
     exports com.sus.questbound.ui.view;
+    exports com.sus.questbound.ui.renderer;
     exports com.sus.questbound.game;
     exports com.sus.questbound.game.engine;
     exports com.sus.questbound.game.world;
