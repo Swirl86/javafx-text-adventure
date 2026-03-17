@@ -7,6 +7,11 @@ import com.sus.questbound.util.GMMsgHelper;
 
 import java.util.Optional;
 
+/**
+ * Handles dynamic game events triggered by player actions,
+ * such as entering rooms with special conditions or items.
+ * Returns optional GM messages that the UI may display.
+ */
 public class GameEventService {
 
     public Optional<String> onEnterRoom(Room room, Player player) {

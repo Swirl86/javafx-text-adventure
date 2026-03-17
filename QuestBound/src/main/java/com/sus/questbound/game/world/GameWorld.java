@@ -4,6 +4,10 @@ import com.sus.questbound.game.model.Room;
 
 import java.util.*;
 
+/**
+ * Represents the complete game world starting from an initial room.
+ * Collects all reachable rooms and exposes them for navigation and map rendering.
+ */
 public class GameWorld {
     private final Room startRoom;
     private final Set<Room> allRooms;

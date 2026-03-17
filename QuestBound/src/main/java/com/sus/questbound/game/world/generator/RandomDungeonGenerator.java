@@ -7,6 +7,10 @@ import com.sus.questbound.game.world.config.DungeonGenerationConfig;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * Generates a dungeon layout based on the provided configuration.
+ * Used by Game to construct the initial world state.
+ */
 public class RandomDungeonGenerator implements DungeonGenerator {
 
     private final DungeonLayoutGenerator layout = new DungeonLayoutGenerator();

@@ -6,6 +6,10 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
+/**
+ * Handles formatted output to the game's text display,
+ * including message styling, scrolling, and line management.
+ */
 public record GameOutputController(TextFlow outputFlow, ScrollPane scrollPane) {
 
     public void println(String msg, MsgType type) {

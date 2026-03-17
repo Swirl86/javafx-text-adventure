@@ -18,6 +18,10 @@ import javafx.scene.text.TextFlow;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Main UI controller responsible for handling player input and updating the game view.
+ * Delegates all gameplay operations to GameEngine and manages output rendering.
+ */
 public class GameController {
 
     @FXML private TextFlow outputFlow;

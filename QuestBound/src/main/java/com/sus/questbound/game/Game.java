@@ -10,6 +10,10 @@ import com.sus.questbound.game.world.generator.DungeonGenerator;
 
 import java.util.List;
 
+/**
+ * Represents a single game session, containing the player, world, and dungeon generator.
+ * Provides low-level state transitions such as movement and item interactions.
+ */
 public class Game {
 
     private final Player player;

@@ -10,6 +10,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Core game logic responsible for manipulating the game state.
+ * Provides movement, inventory handling, room access, and map data.
+ * Used internally by GameEngine to keep UI and logic cleanly separated.
+ */
 public record GameLogic(Game game) {
 
     // ---------- Player ----------

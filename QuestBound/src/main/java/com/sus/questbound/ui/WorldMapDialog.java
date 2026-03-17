@@ -23,6 +23,10 @@ import javafx.stage.Stage;
 
 import java.util.Objects;
 
+/**
+ * Displays an interactive world map dialog based on the current game state.
+ * Uses map view models from GameEngine to render rooms, exits, items, and player position.
+ */
 public class WorldMapDialog {
 
     private static final double WIDTH = 600;

@@ -13,6 +13,10 @@ import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+/**
+ * Translates UI button actions into game operations.
+ * Acts as a thin interaction layer between the UI and GameEngine.
+ */
 public record PlayerActionController(
         GameEngine engine,
         BiConsumer<Action, Direction> executeAction,
