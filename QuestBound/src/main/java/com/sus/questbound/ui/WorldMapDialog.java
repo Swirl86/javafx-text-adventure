@@ -1,6 +1,5 @@
 package com.sus.questbound.ui;
 
-import com.sus.questbound.game.engine.GameLogic;
 import com.sus.questbound.ui.map.MapController;
 import com.sus.questbound.ui.map.MapLayoutCalculator;
 import com.sus.questbound.ui.renderer.ExitRenderer;
@@ -19,7 +18,6 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -35,14 +33,14 @@ public class WorldMapDialog {
     private final PlayerMarkerRenderer playerRenderer = new PlayerMarkerRenderer();
     private final ExitRenderer exitRenderer = new ExitRenderer();
 
-    public static void show(GameLogic gameLogic) {
-        new WorldMapDialog().open(gameLogic);
+    public static void show(GameEngine engine) {
+        new WorldMapDialog().open(engine);
     }
 
-    private void open(GameLogic gameLogic) {
+    private void open(GameEngine engine) {
 
         // Controller layer
-        MapController controller = new MapController(gameLogic);
+        MapController controller = new MapController(engine);
         var rooms = controller.getRooms();
         var exits = controller.getExits();
         var playerRoom = controller.getPlayerRoom();

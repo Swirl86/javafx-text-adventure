@@ -1,6 +1,6 @@
 package com.sus.questbound.ui.map;
 
-import com.sus.questbound.game.engine.GameLogic;
+import com.sus.questbound.ui.GameEngine;
 import com.sus.questbound.ui.view.MapExitView;
 import com.sus.questbound.ui.view.MapRoomView;
 
@@ -10,18 +10,18 @@ import java.util.List;
  * Provides map-related data and utilities for rendering.
  * Acts as a bridge between GameLogic and the UI layer.
  */
-public record MapController(GameLogic gameLogic) {
+public record MapController(GameEngine engine) {
 
     public List<MapRoomView> getRooms() {
-        return gameLogic.getMapRooms();
+        return engine.getMapRooms();
     }
 
     public List<MapExitView> getExits() {
-        return gameLogic.getMapExits();
+        return engine.getMapExits();
     }
 
     public MapRoomView getPlayerRoom() {
-        return gameLogic.getMapRooms().stream()
+        return engine.getMapRooms().stream()
                 .filter(MapRoomView::playerHere)
                 .findFirst()
                 .orElseThrow();

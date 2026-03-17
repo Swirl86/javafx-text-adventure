@@ -2,8 +2,6 @@ package com.sus.questbound.ui;
 
 import com.sus.questbound.game.Game;
 import com.sus.questbound.game.data.item.ItemRepository;
-import com.sus.questbound.game.engine.GameEventService;
-import com.sus.questbound.game.engine.GameLogic;
 import com.sus.questbound.game.engine.MoveResult;
 import com.sus.questbound.game.model.*;
 import com.sus.questbound.game.world.config.DungeonGenerationConfig;
@@ -25,8 +23,7 @@ public class GameController {
     @FXML private TextFlow outputFlow;
     @FXML private ScrollPane outputScroll;
 
-    private GameLogic gameLogic;
-    private GameEventService gameEventService;
+    private GameEngine engine;
     private PlayerActionController actions;
     private GameOutputController outputController;
 
@@ -45,19 +42,18 @@ public class GameController {
         // Random world with config
         Game game = new Game(player, new RandomDungeonGenerator(config));
 
-        gameLogic = new GameLogic(game);
-        gameEventService = new GameEventService();
+        engine = new GameEngine(game);
 
         outputController = new GameOutputController(outputFlow, outputScroll);
 
         actions = new PlayerActionController(
-                gameLogic,
+                engine,
                 this::executeAction,
                 outputController
         );
 
-        outputController.println(SystemMsgHelper.randomWelcome(gameLogic.getPlayer()), MsgType.SYSTEM);
-        outputController.println(SystemMsgHelper.enterRoom(gameLogic.getCurrentRoom()), MsgType.SYSTEM);
+        outputController.println(SystemMsgHelper.randomWelcome(engine.getPlayer()), MsgType.SYSTEM);
+        outputController.println(SystemMsgHelper.enterRoom(engine.getCurrentRoom()), MsgType.SYSTEM);
     }
 
     private void executeAction(Action action, Direction direction) {
@@ -81,7 +77,7 @@ public class GameController {
     private void handleLook() {
         OutputFormatHelper.printCollectionWithDetails(
                 outputController,
-                gameLogic.getRoomItems(),
+                engine.getRoomItems(),
                 MsgType.SYSTEM,
                 SystemMsgHelper::nothingToSee,
                 it -> SystemMsgHelper.singleItemInRoom(it.name(), it.description()),
@@ -93,7 +89,7 @@ public class GameController {
     private void handleInventory() {
         OutputFormatHelper.printCollectionWithDetails(
                 outputController,
-                gameLogic.getPlayerInventory(),
+                engine.getPlayerInventory(),
                 MsgType.SYSTEM,
                 SystemMsgHelper::inventoryEmpty,
                 it -> SystemMsgHelper.singleItemInInventory(it.name(), it.description()),
@@ -103,11 +99,11 @@ public class GameController {
     }
 
     private void handleGo(Direction direction) {
-        MoveResult result = gameLogic.move(direction);
+        MoveResult result = engine.move(direction);
         String dirName = direction.label();
 
         if (result.success()) {
-            Room newRoom = gameLogic.getCurrentRoom();
+            Room newRoom = engine.getCurrentRoom();
 
             String message = String.format(
                     "%s %s",
@@ -117,8 +113,8 @@ public class GameController {
 
             outputController.println(message, MsgType.SYSTEM);
 
-            gameEventService
-                    .onEnterRoom(newRoom, gameLogic.getPlayer())
+            engine
+                    .triggerEnterRoomEvent(newRoom)
                     .ifPresent(msg ->
                             outputController.println(msg, MsgType.GM)
                     );
@@ -139,7 +135,7 @@ public class GameController {
 
         OutputFormatHelper.printCollectionWithDetails(
                 outputController,
-                gameLogic.getAvailableExits(),
+                engine.getAvailableExits(),
                 MsgType.SYSTEM,
                 SystemMsgHelper::noVisibleExits,
                 dir -> SystemMsgHelper.singleVisibleExit(dir.label()),
@@ -167,7 +163,7 @@ public class GameController {
     @FXML private void onHint() { executeAction(Action.HINT, null); }
     @FXML private void onPickup() { actions.pickup(); }
     @FXML private void onDrop()   { actions.drop(); }
-    @FXML private void onMap() { WorldMapDialog.show(gameLogic); }
+    @FXML private void onMap() { WorldMapDialog.show(engine); }
 
     // TODO implement
     @FXML private void onQuest() { }

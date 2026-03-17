@@ -1,6 +1,5 @@
 package com.sus.questbound.ui;
 
-import com.sus.questbound.game.engine.GameLogic;
 import com.sus.questbound.game.model.Action;
 import com.sus.questbound.game.model.Direction;
 import com.sus.questbound.game.model.Item;
@@ -15,7 +14,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public record PlayerActionController(
-        GameLogic gameLogic,
+        GameEngine engine,
         BiConsumer<Action, Direction> executeAction,
         GameOutputController output
 ) {
@@ -28,7 +27,7 @@ public record PlayerActionController(
     public void pickup() {
         output.println(PlayerMsgHelper.getPlayerMsg(Action.PICKUP, null), MsgType.PLAYER);
 
-        List<Item> pickupableItems = gameLogic.getPickupableItems();
+        List<Item> pickupableItems = engine.getPickupableItems();
 
         if (pickupableItems.isEmpty()) {
             output.println(SystemMsgHelper.nothingToPickup(), MsgType.SYSTEM);
@@ -45,7 +44,7 @@ public record PlayerActionController(
                 SystemMsgHelper.pickupDialogHeader(),
                 SystemMsgHelper.pickupDialogContent(),
                 itemNames,
-                itemName -> gameLogic.pickupItem(itemName)
+                itemName -> engine.pickupItem(itemName)
                         .ifPresentOrElse(
                                 it -> output.println(GMMsgHelper.pickup(it), MsgType.GM),
                                 () -> output.println(SystemMsgHelper.itemNotHere(itemName), MsgType.SYSTEM)
@@ -57,7 +56,7 @@ public record PlayerActionController(
     public void drop() {
         output.println(PlayerMsgHelper.getPlayerMsg(Action.DROP, null), MsgType.PLAYER);
 
-        List<Item> inventory = gameLogic.getPlayerInventory();
+        List<Item> inventory = engine.getPlayerInventory();
 
         if (inventory.isEmpty()) {
             output.println(SystemMsgHelper.inventoryEmpty(), MsgType.SYSTEM);
@@ -74,7 +73,7 @@ public record PlayerActionController(
                 SystemMsgHelper.dropDialogHeader(),
                 SystemMsgHelper.dropDialogContent(),
                 itemNames,
-                itemName -> gameLogic.dropItem(itemName)
+                itemName -> engine.dropItem(itemName)
                         .ifPresentOrElse(
                                 it -> output.println(GMMsgHelper.drop(it), MsgType.GM),
                                 () -> output.println(SystemMsgHelper.itemNotInInventory(itemName), MsgType.SYSTEM)
